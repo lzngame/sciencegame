@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>WebSocket Echo Demo</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+        var ws = new WebSocket("ws://192.168.1.108:8181");
+        ws.onopen = function(e) {
+          console.log('Connection to server opened');
+        }
+
+        function sendMessage() {
+        	var msg = (Math.random()*1000).toString();
+            ws.send(msg);
+        }
+    </script>
+</head>
+<body lang="en">
+    <div class="vertical-center">
+    <div class="container">
+        <p>&nbsp;</p>
+    <form role="form" id="chat_form" onsubmit="sendMessage(); return false;">
+        <div class="form-group">
+        <input class="form-control" type="text" name="message" id="message"
+          placeholder="Type text to echo in here" value="" autofocus/>
+        </div>
+        <button type="button" id="send" class="btn btn-primary"
+          onclick="sendMessage();">Send!</button>
+    </form>
+    </div>
+    </div>
+</body>
+</html>
