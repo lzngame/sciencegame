@@ -2,32 +2,12 @@
 	var AttackScene = ns.AttackScene = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.attack,
-		topHeadPanel:null,
-		coinvaluebox: null,
-		attackContainer: null,
-		bottomContainer: null,
-		monsterHpline:null,
-		attackBtn: null,
-		shieldBtn: null,
 		
 		hero:null,
 		currentMonster:null,
 		awardbox: null,
 		pointdata:null,
 		currentIndex: 2,
-		
-		monsterName:null,
-		topHeight:null,
-		attackStageHeight:null,
-		lastmask:null,
-		attentionPanel:null,
-		
-		windelayTime:0,
-		isWin:false,
-		
-		isShowHand:false,
-		showHandTime:0,
-		flashHand:null,
 		
 		heroCurrentExp:0,
 		heroCurrentUpExp:0,
@@ -41,6 +21,8 @@
 		
 		fallfan:null,
 		falllamp:null,
+		
+		blocks:null,
 		constructor: function(properties) {
 			AttackScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -110,6 +92,50 @@
              }
          	}; 
 		},
+		initBlocks:function(){
+			//this.blocks = [[214,405,303,123]];//,[97,513,108,64],[95,577,98,177],[0,0,893,437],[893,437,124,67]];
+			
+			this.blocks = [[214,405,303,123],[97,513,108,64],[95,577,98,177],[0,0,893,437],[893,437,124,67]];
+			for(var i=0;i<this.blocks.length;i++){
+				var rect = this.blocks[i];
+				var w = rect[2];
+				var h = rect[3];
+				var x = rect[0];
+				var y = rect[1];
+				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				g.lineStyle(1,"#998877").beginFill("#0ff").drawRect(0,0,w,h).endFill().addTo(this);
+			}
+		},
+		checkBlocks:function(){
+			for(var i=0;i<this.blocks.length;i++){
+				var rect = this.blocks[i];
+				var w = rect[2];
+				var h = rect[3];
+				var x = rect[0];
+				var y = rect[1];
+				if(this.hero.speedx < 0 && Math.abs(this.hero.posx -(x+w) ) < 20  && (this.hero.posy > y && this.hero.posy < y+h)){
+					this.hero.blockStop();
+				}
+				if(this.hero.speedx > 0 && Math.abs(this.hero.posx - x)< 20  && (this.hero.posy > y && this.hero.posy < y+h)){
+					this.hero.speedx = 0;
+					this.hero.speedy = 0;
+					this.hero.targetx = this.hero.posx;
+					this.hero.targety = this.hero.posy;
+				}
+				if(this.hero.speedy > 0 && Math.abs(this.hero.posy - y)< 5  && (this.hero.posx > x && this.hero.posx < x+w)){
+					this.hero.speedx = 0;
+					this.hero.speedy = 0;
+					this.hero.targetx = this.hero.posx;
+					this.hero.targety = this.hero.posy;
+				}
+				if(this.hero.speedy < 0 && Math.abs(this.hero.posy - (y+h))< 10  && (this.hero.posx > x && this.hero.posx < x+w)){
+					this.hero.speedx = 0;
+					this.hero.speedy = 0;
+					this.hero.targetx = this.hero.posx;
+					this.hero.targety = this.hero.posy;
+				}
+			}
+		},
 		receiveMsg: function(msg) {
 			switch (msg.msgtype) {
 				case game.configdata.MSAGE_TYPE.herosquat:
@@ -151,34 +177,12 @@
 		shakeRoom:function(){
 			this.shakeTime = 200;
 		},
-		shake:function(){
-			var target = this;//this.attackContainer;
-			var inity = target.y;
-			var initx = target.x;
-			Hilo.Tween.to(target, {
-				y: inity + 10,
-				//x:initx + 10,
-			}, {
-				duration: 30,
-				ease: Hilo.Ease.Bounce.EaseOut,
-				onComplete: function() {
-					Hilo.Tween.to(target, {
-						y: inity - 10,
-						//x:initx - 10,
-					}, {
-						duration: 250,
-						onComplete: function() {
-							target.y = inity;
-							//target.x = initx;
-						}
-					});
-				}
-			});
-		},
 		layoutBgMap:function(){
 			var bg = new Hilo.Bitmap({
 				image: game.getImg('bedroom_before'),
 			}).addTo(this);
+			
+			this.initBlocks();
 			var plug01 = new Hilo.Bitmap({
 				image:game.getImg('objects'),
 				rect:game.configdata.getObjectSize('plug01'),
@@ -188,47 +192,23 @@
 			
 			this.fallfan = new game.FallObject({
 				x:200,
-				y:5,
+				y:0,
+				imgInity:-15,
+				floorline:500,
 				wholeState:'ceilingfan01',
 				brokenState:'ceilingfan02'
 			}).addTo(this);
 			
 			this.falllamp = new game.FallObject({
 				x:500,
-				y:-30,
+				y:0,
+				imgInity:-5,
+				floorline:450,
 				wholeState:'ceilinglamp01',
 				brokenState:'ceilinglamp02'
 			}).addTo(this);
-			/*this.topHeadPanel = new game.TopHeadPanel({	
-				width:this.width,
-			});
-			this.topHeight = this.topHeadPanel.height;
-			this.attackStageHeight = 212;//this.height - this.topHeight;
-			var img = game.getImg('bedroom_before');
-			var imgs = this.pointdata.bgs;
-			var maskGraphics = new Hilo.Graphics({
-				width: this.width,
-				height: this.attackStageHeight,
-				y: this.topHeight
-			});
-			maskGraphics.lineStyle(1, "#000").beginFill("#000").drawRect(0, 0, maskGraphics.width, maskGraphics.height).endFill();
-
-			this.attackContainer = new Hilo.Container({ 
-				width: this.width,
-				height: imgs.length * this.attackStageHeight,
-				y:this.topHeight - this.currentIndex * this.attackStageHeight,
-			}).addTo(this);
-			for (var i = 0; i < imgs.length; i++) {
-				var rect = game.configdata.getPngSize(imgs[i]);
-				new Hilo.Bitmap({
-					image: img,
-					rect:rect,
-					width:this.width,
-					height:rect[3]*2,
-					y: this.attackStageHeight * i
-				}).addTo(this.attackContainer);
-			}
-			this.attackContainer.mask = maskGraphics;*/
+			
+			
 		},
 		layoutUI:function(){
 			var img =  game.getImg('uimap');
@@ -255,105 +235,6 @@
 				scene.shake();
 			});
 		},
-		showBagInfo:function(){
-			var scene = this;
-			this.ignoreTouch = true;
-			this.hideFlashHand();
-			
-			this.stop();
-			this.ignoreTouch = true;
-			var panel = new game.BagPanel({
-				isinstore:false
-			}).addTo(this);
-			panel.refresh(game.userData.heroData.bagdata);
-			panel.backBtn.on(Hilo.event.POINTER_START, function(e){
-				this.removeFromParent();
-				scene.ignoreTouch = false;
-				scene.topHeadPanel.setTopItembox(game.userData.heroData);
-				scene.play();
-			});
-		},
-		hideFlashHand:function(){
-			if(this.flashHand){
-				this.flashHand.visible = false;
-			}
-			this.isShowHand = false;
-			this.showHandTime = 0;
-		},
-		stop:function(){
-			this.hero.stop();
-			this.currentMonster.stop();
-		},
-		play:function(){
-			this.hero.play();
-			this.currentMonster.play();
-		},
-		layoutBottomUI:function(){
-			var img = game.getImg('uimap');
-			var rect = game.configdata.getPngSize('monstername');
-			var h = this.height - this.topHeight;
-			var y = h + this.currentIndex * h;
-			this.bottomContainer = new Hilo.Container({
-				width: rect[2],
-				height: rect[3],
-				y: this.height+36,
-			}).addTo(this);
-			var monsternamebg = new Hilo.Bitmap({
-				image: img,
-				rect: rect,
-				width:rect[2],
-				height:rect[3]
-			}).addTo(this.bottomContainer);
-			
-			this.bottomContainer.x = this.width / 2 - this.bottomContainer.width / 2;
-			
-			this.monsterHpline = new game.HpBorderLine({
-				w:this.bottomContainer.width/2,
-				h:15,
-				x:this.bottomContainer.width/4,
-				y:-17,
-			}).addTo(this.bottomContainer);
-			
-			
-			var font = "14px arial";
-			this.monsterName = new Hilo.Text({
-				font: font,
-                color:'white',
-               	lineSpacing: 10,
-                width:rect[2],
-                height:rect[3],
-				text: '',
-				textAlign:'center'
-			}).addTo(this.bottomContainer);
-			this.monsterName.y = 3;//this.bottomContainer.height / 2;
-			this.bottomContainer.visible = true;
-			this.bottomContainer.y = this.height - 36;
-			this.monsterName.text = this.pointdata.monsternames[this.currentIndex];
-
-			var btndis = 100;
-			this.shieldBtn = new Hilo.Bitmap({
-				image: img,
-				rect: game.configdata.getPngSize('defend'),
-			}).addTo(this);
-			this.shieldBtn.y = this.topHeight + this.attackStageHeight + 10;
-			this.shieldBtn.x = this.width / 2 - this.shieldBtn.width - btndis;
-
-			this.attackBtn = new game.AttackBtn({
-				img: img,
-				cdtime:game.userData.heroData.attackCd,
-			}).addTo(this);
-			this.attackBtn.y = this.shieldBtn.y;
-			this.attackBtn.x = this.width / 2 - this.attackBtn.width / 2 + btndis;
-			
-			this.lastmask = new Hilo.Bitmap({
-				width:this.width,
-				height:this.height,
-				image:img,
-				rect:game.configdata.getPngSize('bg022'),
-				alpha:0.3,
-				visible:false
-			}).addTo(this);
-		},		
 		initData:function(){
 			var monsterindex = this.pointdata.monsters[this.currentIndex];
 			this.addCharacter(monsterindex,this.currentIndex);
@@ -366,69 +247,12 @@
 			this.heroCurrentExp = game.userData.heroData.exp;
 			this.heroCurrentUpExp = game.userData.heroData.exp;
 		},
-		addFinialScore:function(){
-			var rect = game.configdata.getPngSize('image308');
-			var scene = this;
-			var img = game.getImg('uimap');
-			var score = new Hilo.Container({
-				x:this.width/2 - rect[2]/2,
-				y:-128,
-			}).addTo(this);
-			new Hilo.Bitmap({
-				image:img,
-				rect:rect
-			}).addTo(score);
-			var scorenum = game.userData.heroData.exp - this.heroCurrentExp;
-			new game.NumFontBmp({
-				txt: scorenum,
-				sourceImg: img,
-				prefix:'bitwhitenum',
-				y: 95,
-				x: 98,
-			}).addTo(score);
-			new Hilo.Tween.to(score,{
-				y:108
-			},{
-				delay:500,
-				duration:500,
-				onComplete:function(){
-					scene.lastmask.visible = true;
-					new Hilo.Tween.to(scene.lastmask,{
-						alpha:0.9
-					},{
-						delay:500,
-						duration:1500,
-						onComplete:function(){
-							game.switchScene(game.configdata.SCENE_NAMES.failure);
-						}
-					});
-				}
-			});
-		},
 		addCharacter:function(monsterIndex,passIndex){
 			if(monsterIndex < 1000){
 				this.addMonster(monsterIndex,passIndex);
 			}else{
 				this.addNpc(monsterIndex,passIndex);
 			}
-		},
-		addNpc:function(monsterIndex,passIndex){
-			game.stage.off();
-			this.currentMonster = new game.Npc({
-				name: 'npc',
-				x: 180,
-				y: passIndex * this.attackStageHeight + 30,
-				frames: game.configdata.getEffectFrames('hpman'),
-				interval: 5,
-			}).addTo(this.attackContainer);
-			this.attentionPanel.show(game.configdata.GAMETXTS.touchme);
-		},
-		addAwardbox:function(){
-			this.awardbox = new game.Goldbox({
-				x: 290,
-				y: this.currentIndex * this.attackStageHeight+132,
-				frames: game.configdata.getEffectFrames('boxclose'),
-			}).addTo(this.attackContainer);
 		},
 		addHero:function(){
 			this.hero = new game.Hero({
@@ -482,129 +306,6 @@
 				
 			});
 		},
-		initTouchAttack:function(){
-			var scene = this;
-			game.stage.off();
-			game.stage.on(Hilo.event.POINTER_START, function(e) {
-				if(scene.ignoreTouch)
-					return;
-				console.log('touch state:attack');
-				var stagex = e.stageX;
-				var stagey = e.stageY;
-				var posx = stagex - scene.x;
-				var posy = stagey - scene.y;
-				if (scene.checkoutrange(stagex, stagey)) {
-					console.log('out range-- onstart:ignore move and moveend');
-				} else {
-					if (posx < scene.width / 2) {
-						scene.hero.shield();
-						scene.attackBtn.pause();
-					} else {
-						if (!scene.attackBtn.iscd) {
-							scene.hero.attack();
-							scene.attackBtn.startCd();
-						} else {
-							scene.attackBtn.warning();
-						}
-					}
-				}
-			});
-		},
-		initToucheventScroll:function(){
-			var inity = 0;
-			var scene = this;
-			game.stage.off();
-			game.stage.on(Hilo.event.POINTER_START, function(e) {
-				if(scene.ignoreTouch)
-					return;
-				console.log('touch state: scroll');
-				var stagex = e.stageX;
-				var stagey = e.stageY;
-				if (scene.checkoutrange(stagex, stagey,scene)) {
-					console.log('out range-- onstart:ignore move and moveend');
-				} else {
-					var posx = stagex - scene.x;
-					var posy = stagey - scene.y;
-					inity = posy;
-				}
-			});
-			var sumdy = 0;
-			game.stage.on(Hilo.event.POINTER_MOVE, function(e) {
-				if(scene.ignoreTouch)
-					return;
-				scene.hideFlashHand();
-					
-				var stagey = e.stageY;
-				var posy = stagey - scene.y;
-				var dy = posy - inity;
-				sumdy += dy;
-				if (Math.abs(sumdy) < 100) {
-					scene.attackContainer.y += dy;
-				}
-				inity = posy;
-			});
-			game.stage.on(Hilo.event.POINTER_END, function(e) {
-				if(scene.ignoreTouch)
-					return;
-				var stagey = e.stageY;
-				
-				
-				
-				var imgs = scene.pointdata.bgs;
-				if (sumdy > 0 && scene.currentIndex > 0) {
-					scene.currentIndex--;
-					scene.hideFlashHand();
-				} else if (sumdy < 0 && scene.currentIndex < imgs.length - 1) {
-					scene.currentIndex++;
-					scene.hideFlashHand();
-				}
-				
-				var targety = scene.topHeight - scene.currentIndex * scene.attackStageHeight;
-				Hilo.Tween.to(scene.attackContainer, {
-					y: targety
-				}, {
-					duration: 1000,
-					ease: Hilo.Ease.Cubic.EaseOut,
-					onStart:function(e){
-						game.stage.off();
-					},
-					onComplete: function(e) {
-						scene.hero.y = scene.currentIndex * scene.attackStageHeight + 100;
-						var monsterindex = scene.pointdata.monsters[scene.currentIndex];
-						var state = scene.pointdata.state[scene.currentIndex];
-						
-						if(scene.flashHand){
-							scene.flashHand.visible = false; 
-						}
-						if(state == 0){
-							scene.initTouchAttack();
-							scene.addCharacter(monsterindex,scene.currentIndex);
-							scene.addAwardbox();
-							var h = scene.height - this.topHeight;
-							var y = h + scene.currentIndex * h -36;
-							scene.bottomContainer.visible = true;
-							scene.monsterName.text = scene.pointdata.monsternames[scene.currentIndex];
-							Hilo.Tween.to(scene.bottomContainer, {
-								y: scene.height - 36
-							}, {
-								duration: 500,
-								ease: Hilo.Ease.Cubic.EaseOut,
-								onComplete: function() {
-									scene.attackBtn.visible = true;
-									scene.shieldBtn.visible = true;
-								}
-							});
-						}else{
-							scene.initToucheventScroll();
-						}
-					}
-				});
-				sumdy = 0;
-			});
-		},
-		checkoutrange:function(stagex, stagey) {
-			return (stagey < (this.y + this.topHeight) || stagey > (this.y + this.height) || stagex < this.x || stagex > (this.x + this.width));
-		},
 		onUpdate:function(){
 			if(this.shakeTime > 0){
 				this.x = this.initx;
@@ -635,17 +336,7 @@
 				this.falllamp.isFall = true;
 			}
 			
-			if(this.isShowHand){
-				this.showHandTime += game.clock.fpstick;
-				if(this.showHandTime > 4500){
-					//this.isShowHand = false;
-					this.showHandTime = 0;
-					var scene = this;
-					scene.flashHand = new game.FlashHand({
-						visible:true
-					}).addTo(this);
-				}
-			}
+			this.checkBlocks();
 		},
 	});
 })(window.game);

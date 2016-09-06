@@ -14,6 +14,7 @@
 		shieldoffsetx:50,
 		shieldoffsety:32,
 		petrifyTime:0,
+		
 		offsetx:-252,
 		offsety:-353,
 		offsetxRight:-252,
@@ -22,7 +23,7 @@
 		posy:0,
 		jumpspeed:0,
 		floory:0,
-		speed:3.0,
+		speed:5.0,
 		speedx:0,
 		speedy:0,
 		targetx:0,
@@ -56,7 +57,13 @@
 			this.scaleX = 1;
 			this.offsetx = this.offsetxRight;
 		},
-		
+		blockStop:function(){
+			this.speedx = 0;
+			this.speedy = 0;
+			this.targetx = this.hero.posx;
+			this.targety = this.hero.posy;
+			this.switchState('idle');
+		},
 		onUpdate: function() {
 			this.atLastFrame();
 			if(this.framename =='jump'){
@@ -225,130 +232,6 @@
 		},
 	});
 
-	var Monster = ns.Monster = Hilo.Class.create({
-		Extends: Hilo.Sprite,
-		name: '',
-		framename: '',
-		atlas: null,
-		initx: 0,
-		iscd: false,
-		hp: 200,
-		isdead:false,
-		sumtime: 0,
-		iswin:false,
-		sendcd:true,
-		attackPower:20,
-		hitoffsetx:0,
-		hitoffsety:0,
-		shieldoffsetx:0,
-		shieldoffsety:0,
-		attackKeyFrame:3,
-		update:null,
-		behit:null,
-		blockidleTime:0,
-		lv:1,
-		isboss:false,
-		constructor: function(properties) {
-			Monster.superclass.constructor.call(this, properties);
-			this.init(properties);
-			this.initx = this.x;
-		},
-		init: function(properties) {
-			this._frames = this.atlas.getSprite('idle');
-		},
-		switchState: function(name, interval) {
-			this.framename = name;
-			this._frames = this.atlas.getSprite(name);
-			this.interval = interval;
-			this.currentFrame = 0;
-		},
-		onUpdate: function() {
-			this.update(this);
-		},
-		atLastFrame: function() {
-			if (this.currentFrame == this.getNumFrames() - 1) {
-				switch (this.framename) {
-					case 'behit':
-					case 'attack':
-					case 'attackMagic':
-					case 'shield':
-					case 'relive':
-						this.regainIdle();
-						break;
-					case 'playdead':
-						this.switchState('relive',3);
-						break;
-					case 'dead':
-						if(!this.isdead){
-							this.addDeadPict(this.getFrame(this.currentFrame));
-							this.sendMsg(game.currentScene,game.configdata.MSAGE_TYPE.monsterdead,'monster had dead');
- 							this.removeFromParent();
-						}
-						this.isdead = true;
-						break;
-					case 'blockidle':
-						this.blockidleTime+= 10;
-						if(this.blockidleTime > 500){
-							this.blockidleTime = 0;
-							this.regainIdle();
-						}
-						break;
-					default:
-						this.regainIdle();
-						break;
-				}
-			}
-		},
-		addDeadPict:function(frameinfo){
-			new Hilo.Bitmap({
-				image:frameinfo.image,
-				rect:frameinfo.rect,
-				x:this.x,
-				y:this.y
-			}).addTo(this.parent);
-		},
-		regainIdle: function() {
-			this._frames = this.atlas.getSprite('idle');
-			this.currentFrame = 0;
-			this.framename = 'idle';
-			this.iscd = false;
-			this.interval = 5;
-			this.x = this.initx;
-			this.sendcd = true;
-		},
-		sendMsg: function(target, msgtype, msgdata) {
-			target.receiveMsg({
-				msgtype: msgtype,
-				msgdata: msgdata
-			});
-		},
-		receiveMsg: function(msg) {
-			switch (msg.msgtype) {
-				case game.configdata.MSAGE_TYPE.behit:
-					if (this.framename == 'idle')
-						this.exeBehit(msg.msgdata);
-					else if (this.framename == 'shield' || this.framename == 'blockidle')
-						this.exeShield();
-					else if(this.framename == 'attack')
-						this.exeBehit(msg.msgdata);
-					break;
-			}
-		},
-		exeBehit: function(power) {
-			if(this.behit){
-				this.behit(power,this);
-			}
-		},
-		exeShield: function() {
-			addEffect(this,'shield');
-			var txt = new game.FlashUpText({
-				x:this.x+10,
-				y:this.y+10,
-				text:'格挡',
-				txtclr:'white'
-			}).addTo(this.parent);
-		}
-	});
 })(window.game);
 
 function getLostBlood(n,direct,x,y,inity,floory){

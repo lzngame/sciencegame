@@ -6,6 +6,8 @@
 		brokenState:null,
 		isFall:false,
 		fallspeed:3,
+		floorline:450,
+		imgInity:0,
 		constructor: function(properties) {
 			FallObject.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -14,6 +16,7 @@
 			this.img = new Hilo.Bitmap({
 				image: game.getImg('objects'),
 				rect:game.configdata.getObjectSize(this.wholeState),
+				y:this.imgInity,
 			}).addTo(this);
 			/*var rect = game.configdata.getPngSize('atack');
 			var h = rect[2];
@@ -44,8 +47,8 @@
 		},
 		onUpdate:function(){
 			if(this.isFall){
-				if(this.y < 500){
-					this.fallspeed += 0.8;
+				if(this.y < this.floorline){
+					this.fallspeed += 1;
 					this.y += this.fallspeed;
 				}else{
 					this.isFall = false;
