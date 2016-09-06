@@ -12,7 +12,7 @@
 		heroCurrentExp:0,
 		heroCurrentUpExp:0,
 		
-		
+		bgImg:null,
 		shakeTime:0,
 		shakeLevel:4,
 		initx:0,
@@ -21,8 +21,10 @@
 		
 		fallfan:null,
 		falllamp:null,
+		//plug:null,
 		
 		blocks:null,
+		activeObjects:null,
 		constructor: function(properties) {
 			AttackScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -36,6 +38,7 @@
 			this.background = '#1A0A04';
 			this.initx = this.x;
 			this.inity = this.y;
+			this.activeObjects = new Array();
 		},
 		active: function(doorIndex) {
 			console.log('%s active:', this.name);
@@ -93,18 +96,31 @@
          	}; 
 		},
 		initBlocks:function(){
-			//this.blocks = [[214,405,303,123]];//,[97,513,108,64],[95,577,98,177],[0,0,893,437],[893,437,124,67]];
-			
-			this.blocks = [[214,405,303,123],[97,513,108,64],[95,577,98,177],[0,0,893,437],[893,437,124,67]];
+			this.blocks = [[214,405,303,123],[97,513,108,64],[5,577,98,177],[0,0,1202,437],[893,437,124,67],[983,505,217,77],[1105,581,91,167]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#998877").beginFill("#0ff").drawRect(0,0,w,h).endFill().addTo(this);
+				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				//g.lineStyle(1,"#998877").beginFill("#0ff").drawRect(0,0,w,h).endFill().addTo(this);
 			}
+		},
+		checkInBlocks:function(mousex,mousey){
+			var isIn = false;
+			for(var i=0;i<this.blocks.length;i++){
+				var rect = this.blocks[i];
+				var w = rect[2];
+				var h = rect[3];
+				var x = rect[0];
+				var y = rect[1];
+				if(mousex > x && mousex < x+w && mousey > y && mousey < y+h){
+					isIn = true;
+					break;
+				}
+			}
+			return isIn;
 		},
 		checkBlocks:function(){
 			for(var i=0;i<this.blocks.length;i++){
@@ -113,28 +129,39 @@
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				if(this.hero.speedx < 0 && Math.abs(this.hero.posx -(x+w) ) < 20  && (this.hero.posy > y && this.hero.posy < y+h)){
-					this.hero.blockStop();
-				}
-				if(this.hero.speedx > 0 && Math.abs(this.hero.posx - x)< 20  && (this.hero.posy > y && this.hero.posy < y+h)){
-					this.hero.speedx = 0;
-					this.hero.speedy = 0;
-					this.hero.targetx = this.hero.posx;
-					this.hero.targety = this.hero.posy;
-				}
-				if(this.hero.speedy > 0 && Math.abs(this.hero.posy - y)< 5  && (this.hero.posx > x && this.hero.posx < x+w)){
-					this.hero.speedx = 0;
-					this.hero.speedy = 0;
-					this.hero.targetx = this.hero.posx;
-					this.hero.targety = this.hero.posy;
-				}
-				if(this.hero.speedy < 0 && Math.abs(this.hero.posy - (y+h))< 10  && (this.hero.posx > x && this.hero.posx < x+w)){
-					this.hero.speedx = 0;
-					this.hero.speedy = 0;
-					this.hero.targetx = this.hero.posx;
-					this.hero.targety = this.hero.posy;
+				if(
+					(this.hero.speedx < 0 && Math.abs(this.hero.posx -(x+w) ) < 20  && (this.hero.posy > y && this.hero.posy < y+h)) ||
+					(this.hero.speedx > 0 && Math.abs(this.hero.posx - x)	  < 20  && (this.hero.posy > y && this.hero.posy < y+h)) ||
+					(this.hero.speedy > 0 && Math.abs(this.hero.posy - y)     < 5  && (this.hero.posx > x && this.hero.posx < x+w))  ||
+					(this.hero.speedy < 0 && Math.abs(this.hero.posy - (y+h))< 10  && (this.hero.posx > x && this.hero.posx < x+w))
+				)
+				{
+					this.heroStopBlock();
 				}
 			}
+		},
+		checkActiveObjects:function(mouseX,mouseY){
+			for(var i=0;i<this.activeObjects.length;i++){
+				var obj = this.activeObjects[i];
+				var x = obj.clickArea[0]+obj.x;
+				var y = obj.clickArea[1]+obj.y;
+				var w = obj.clickArea[2];
+				var h = obj.clickArea[3];
+				if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
+					if(x - this.hero.posx <100 && y - this.hero.posy <250){
+						obj.onActive();
+						this.hero.switchState('handon',10);
+					}else{
+						console.log('pls close');						
+					}
+				}
+			}
+		},
+		heroStopBlock:function(){
+			this.hero.speedx = 0;
+			this.hero.speedy = 0;
+			this.hero.targetx = this.hero.posx;
+			this.hero.targety = this.hero.posy;
 		},
 		receiveMsg: function(msg) {
 			switch (msg.msgtype) {
@@ -142,6 +169,7 @@
 					console.log('hero squat');
 					this.hero.speedx = this.hero.speedy = 0;
 					this.hero.switchState('squat');
+					this.changeBg();
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
 					this.hero.jumpspeed = -18;
@@ -177,22 +205,43 @@
 		shakeRoom:function(){
 			this.shakeTime = 200;
 		},
+		changeBg:function(){
+			var scene = this;
+			Hilo.Tween.to(this, {
+				alpha:0.1
+			}, {
+				duration: 1800,
+				ease: Hilo.Ease.Bounce.EaseOut,
+				onComplete: function() {
+					scene.alpha = 1;
+					scene.bgImg.setImage(game.getImg('bedroom_after'));
+				}
+			});
+		},
 		layoutBgMap:function(){
-			var bg = new Hilo.Bitmap({
+			var scene = this;
+			this.bgImg = new Hilo.Bitmap({
 				image: game.getImg('bedroom_before'),
 			}).addTo(this);
 			
 			this.initBlocks();
-			var plug01 = new Hilo.Bitmap({
-				image:game.getImg('objects'),
-				rect:game.configdata.getObjectSize('plug01'),
+			var plug  = new game.ActiveObject({
 				x:838,
-				y:230
+				y:230,
+				readyImgUrl:'plug01',
+				finishedImgUrl:'plug02',
+				clickArea:[96,12,30,60],
+				activeFunc:function(){
+					console.log(this);
+					console.log('ok');
+				},
 			}).addTo(this);
+			this.activeObjects.push(plug);
 			
 			this.fallfan = new game.FallObject({
 				x:200,
 				y:0,
+				name:'fallfan',
 				imgInity:-15,
 				floorline:500,
 				wholeState:'ceilingfan01',
@@ -202,6 +251,7 @@
 			this.falllamp = new game.FallObject({
 				x:500,
 				y:0,
+				name:'falllamp',
 				imgInity:-5,
 				floorline:450,
 				wholeState:'ceilinglamp01',
@@ -283,27 +333,26 @@
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.ignoreTouch)
 					return;
-				scene.hero.switchState('walk',5);
 				var stagex = e.stageX;
 				var stagey = e.stageY;
 				var targetx = stagex - scene.x;
 				var targety = stagey - scene.y;
-				console.log('targetx:%d   targety:%d',targetx,targety);
-				var disX = targetx - scene.hero.posx;
-				var disY = targety - scene.hero.posy;
-				var angle = Math.atan2(disY,disX);
-				console.log(angle+":"+angle/Math.PI * 180);
-				console.log('disx:%d  disy:%d',disX,disY);
-				scene.hero.speedx = Math.cos(angle) *  scene.hero.speed ;
-				scene.hero.speedy = Math.sin(angle) *  scene.hero.speed ;
-				scene.hero.targetx = targetx;
-				scene.hero.targety = targety;
-				if(disX < 0)
-					scene.hero.turnleft();
-				else
-					scene.hero.turnright();
-				console.log('speedx:%f  speedy:%f',scene.hero.speedx,scene.hero.speedy);
+				if(!scene.checkInBlocks(targetx,targety)){
+					scene.hero.switchState('walk',5);
+					var disX = targetx - scene.hero.posx;
+					var disY = targety - scene.hero.posy;
+					var angle = Math.atan2(disY,disX);
+					scene.hero.speedx = Math.cos(angle) *  scene.hero.speed ;
+					scene.hero.speedy = Math.sin(angle) *  scene.hero.speed ;
+					scene.hero.targetx = targetx;
+					scene.hero.targety = targety;
+					if(disX < 0)
+						scene.hero.turnleft();
+					else
+						scene.hero.turnright();
+				}
 				
+				scene.checkActiveObjects(targetx,targety);
 			});
 		},
 		onUpdate:function(){

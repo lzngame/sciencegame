@@ -1,6 +1,7 @@
 (function(ns) {
 	var FallObject = ns.FallObject = Hilo.Class.create({
 		Extends: Hilo.Container,
+		name:'fallobject',
 		img:null,
 		wholeState:null,
 		brokenState:null,
@@ -18,32 +19,7 @@
 				rect:game.configdata.getObjectSize(this.wholeState),
 				y:this.imgInity,
 			}).addTo(this);
-			/*var rect = game.configdata.getPngSize('atack');
-			var h = rect[2];
-			this.maskgraphics = new Hilo.Graphics({
-			});
-			this.maskgraphics.lineStyle(1, "#000").beginFill("#1A0A04").drawRect(0, 0, rect[2], rect[3]).endFill();
-			this.maskgraphics.scaleY = 1;
 			
-			this.moveimg = new Hilo.Bitmap({
-				image: this.img,
-				rect: rect,
-			}).addTo(this);
-			this.moveimg.mask = this.maskgraphics;
-			
-			this.bgimg = new Hilo.Bitmap({
-				image: this.img,
-				rect: rect,
-				alpha:0.3,
-			}).addTo(this);
-			
-			this.warncd = new Hilo.Bitmap({
-				image: game.getImg('uimap2'),
-				rect:game.configdata.getPngSize2('nocd'),
-				x:-60,
-				y:-75,
-				alpha:0,
-			}).addTo(this);*/
 		},
 		onUpdate:function(){
 			if(this.isFall){
@@ -54,54 +30,44 @@
 					this.isFall = false;
 					this.img.setImage(game.getImg('objects'),game.configdata.getObjectSize(this.brokenState));
 					this.fallspeed = 4;
-					/*this.img = new Hilo.Bitmap({
-						image: game.getImg('objects'),
-						rect:game.configdata.getObjectSize('ceilingfan02'),
-					}).addTo(this);*/
 				}
 			}
 		},
-		startCd:function(){
-			this.maskgraphics.scaleY = 0;
-			this.iscd = true;
-			this.resetCd();
+	});
+	
+	var ActiveObject = ns.ActiveObject = Hilo.Class.create({
+		Extends: Hilo.Container,
+		img:null,
+		status:1,    //0 未激活 1激活 2完成
+		readyImgUrl:'',
+		finishedImgUrl:'',
+		activeFunc:null,
+		clickArea:[0,0,0,0],
+		constructor: function(properties) {
+			ActiveObject.superclass.constructor.call(this, properties);
+			this.init(properties);
 		},
-		pause:function(){
-			if(this.tween){
-				this.tween.pause();
-			}
+		init: function(properties) {
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('objects'),
+				rect:game.configdata.getObjectSize(this.readyImgUrl),
+				y:this.imgInity,
+			}).addTo(this);
+			var x = this.clickArea[0];
+			var y = this.clickArea[1];
+			var w = this.clickArea[2];
+			var h = this.clickArea[3];
+			//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			//g.lineStyle(1,"#998877").beginFill("#0ff").drawRect(0,0,w,h).endFill().addTo(this);
 		},
-		continueCD:function(){
-			if(this.tween){
-				this.tween.resume();
-			}
+		onActive:function(){
+			console.log(this.name+':ACTIVE');
+			this.status = 2;
+			this.activeFunc();
+			this.img.setImage(game.getImg('objects'),game.configdata.getObjectSize(this.finishedImgUrl));	
 		},
-		resetCd:function(){
-			var self = this;
-			self.iscd = true;
-			self.tween = new Hilo.Tween.to(this.maskgraphics,{
-				scaleY:1,
-			},{
-				delay:100,
-				duration:self.cdtime,
-				onComplete:function(){
-					self.iscd = false;
-				}
-			});
-		},
-		warning:function(){
-			var self = this;
-			this.warncd.alpha = 1;
-			this.warncd.visible = true;
-			new Hilo.Tween.to(this.warncd,{
-				alpha:0,
-			},{
-				duration:500,
-				ease: Hilo.Ease.Bounce.EaseOut,
-				onComplete:function(){
-					
-				}
-			});
+		onUpdate:function(){
+			
 		},
 	});
 })(window.game);

@@ -62,7 +62,7 @@
 			this.speedy = 0;
 			this.targetx = this.hero.posx;
 			this.targety = this.hero.posy;
-			this.switchState('idle');
+			//this.switchState('idle',6);
 		},
 		onUpdate: function() {
 			this.atLastFrame();
@@ -128,6 +128,9 @@
 						this.isActionFirst = true;
 						break;
 					case 'shield':
+						this.regainIdle();
+						break;
+					case 'handon':
 						this.regainIdle();
 						break;
 					case 'dead':

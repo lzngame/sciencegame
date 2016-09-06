@@ -294,6 +294,8 @@ game.monsterdata = new function(){
 					
 					[0,1143,373,381],//jump 9
 					
+					[373,1524,373,381],//arm 10
+					
 					[68, 2, 64, 64],
 					[134, 2, 64, 64],
 					[200, 2, 64, 64],
@@ -392,6 +394,7 @@ game.monsterdata = new function(){
 					idle: [7,7,8,8],
 					squat:[6,6],
 					jump:[9,9],
+					handon:[10,10],
 					attack: {from: 17,to: 25},
 					behit:[5,5,6,6],
 					dead:{from:63,to:92},
