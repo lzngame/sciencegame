@@ -12,6 +12,7 @@
 		heroCurrentExp:0,
 		heroCurrentUpExp:0,
 		
+		readyShakeTime:0,
 		bgImg:null,
 		shakeTime:0,
 		shakeLevel:4,
@@ -231,10 +232,6 @@
 				readyImgUrl:'plug01',
 				finishedImgUrl:'plug02',
 				clickArea:[96,12,30,60],
-				activeFunc:function(){
-					console.log(this);
-					console.log('ok');
-				},
 			}).addTo(this);
 			this.activeObjects.push(plug);
 			
@@ -245,7 +242,7 @@
 				imgInity:-15,
 				floorline:500,
 				wholeState:'ceilingfan01',
-				brokenState:'ceilingfan02'
+				brokenState:'ceilingfan02',
 			}).addTo(this);
 			
 			this.falllamp = new game.FallObject({
@@ -255,10 +252,8 @@
 				imgInity:-5,
 				floorline:450,
 				wholeState:'ceilinglamp01',
-				brokenState:'ceilinglamp02'
+				brokenState:'ceilinglamp02',
 			}).addTo(this);
-			
-			
 		},
 		layoutUI:function(){
 			var img =  game.getImg('uimap');
@@ -356,6 +351,12 @@
 			});
 		},
 		onUpdate:function(){
+			if(this.readyShakeTime == 500){
+				this.shakeRoom();
+				this.readyShakeTime = 1000;
+			}else{
+				this.readyShakeTime++;
+			}
 			if(this.shakeTime > 0){
 				this.x = this.initx;
 				this.y = this.inity;
@@ -383,6 +384,10 @@
 			}
 			if(this.toFallTime == 1200){
 				this.falllamp.isFall = true;
+			}
+			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
+				console.log('once check:'+this.fallfan.name);
+				this.fallfan.onDanger = false;
 			}
 			
 			this.checkBlocks();

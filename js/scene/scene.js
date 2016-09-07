@@ -388,9 +388,11 @@
 			game.stage.swapChildren(this, game.previousScene);
 			var scene = this;
 			this.alpha = 1;
-			var img = game.getImg('uimap');
 			
 			var obj = game.pointdata.doors[game.userData.heroData.activeDoorIndex];
+			/*var img = game.getImg('uimap');
+			
+			
 			var storyimg = new Hilo.Bitmap({
 				image: obj.storyimg,
 				x:this.width/2 - 160,
@@ -428,7 +430,7 @@
 				x:this.width -20,
 				y:this.height - 50,
 				scaleX:-1,
-			}).addTo(this);
+			}).addTo(this);*/
 			
 			var font = "14px arial";
             var content = "Hello World! Hilo是一款HTML5 2D游戏引擎，欢迎使用。";

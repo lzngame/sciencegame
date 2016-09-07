@@ -9,6 +9,7 @@
 		fallspeed:3,
 		floorline:450,
 		imgInity:0,
+		onDanger:false,
 		constructor: function(properties) {
 			FallObject.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -24,12 +25,13 @@
 		onUpdate:function(){
 			if(this.isFall){
 				if(this.y < this.floorline){
-					this.fallspeed += 1;
+					this.fallspeed += 1.5;
 					this.y += this.fallspeed;
 				}else{
 					this.isFall = false;
 					this.img.setImage(game.getImg('objects'),game.configdata.getObjectSize(this.brokenState));
 					this.fallspeed = 4;
+					this.onDanger = true;
 				}
 			}
 		},

@@ -58,7 +58,8 @@ game.configdata = new function(){
 		failure:'FAILURE_SCENE',
 		win:'WIN_SCENE',
 		unlock:'UNLOCK_SCENE',
-		coach:'COACH_SCEN',
+		coach:'COACH_SCENE',
+		point:'POINT_SCENE',
 	};
 	
 	self.MSAGE_TYPE ={
