@@ -56,12 +56,16 @@ game.configdata = new function(){
 	};
 	
 	self.SCENE_NAMES ={
+		cookieroom:'COOKIEROOM',
+		
+		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
 		main:'MAIN_SCENE_NAME',
 		over:'GAME_SCENE_NAME',
 		shop:'SHOP_SCENE_NAME',
 		attack: 'ATTACK_SCENE',
+		
 		story:'STORY_SCENE',
 		map:'MAP_SCENE',
 		stash:'STASH_SCENE',

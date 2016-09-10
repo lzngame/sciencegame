@@ -1,7 +1,7 @@
 (function(ns) {
-	var AttackScene = ns.AttackScene = Hilo.Class.create({
+	var CookieroomScene = ns.CookieroomScene = Hilo.Class.create({
 		Extends: Hilo.Container,
-		name: game.configdata.SCENE_NAMES.attack,
+		name: game.configdata.SCENE_NAMES.cookieroom,
 		hero:null,
 		headPanel:null,
 		
@@ -13,22 +13,20 @@
 		inity:0,
 		toFallTime:0,
 		
-		fallfan:null,
-		falllamp:null,
-		plug:null,
-		pillow:null,
-		safeArea:null,
+		
+		
+		annihilator:null,
+		annihilatorEffect:null,
 		doorhandler:null,
 		finger:null,
 		notepanel:null,
 		tvflash:null,
 		
 		blocks:null,
-		activeObjects:null,
 		
 		passstep:0,
 		constructor: function(properties) {
-			AttackScene.superclass.constructor.call(this, properties);
+			CookieroomScene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -94,7 +92,7 @@
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[0,0,850,310],[0,310,355,60],[0,370,80,120],[810,310,40,175],[665,310,145,100]];
+			this.blocks = [[0,0,850,350],[0,350,155,60],[0,370,80,120],[810,310,40,175],[665,310,145,100]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
@@ -140,9 +138,9 @@
 		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
+			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
 				this.hero.switchState('handup',10);
-				this.pillow.removeFromParent();
+				this.annihilator.removeFromParent();
 				this.safeArea.visible = true;
 				this.safeArea.status = 1;
 				this.hero.ispillow = true;
@@ -150,18 +148,7 @@
 				this.finger.setpos(500,300);
 				this.passstep = 1;
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
-				this.hero.switchState('handon',10);
-				this.tvflash.visible = false;
-				this.plug.setEndImg(10,80);
-				this.doorhandler.status = 1;
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
-				this.finger.visible = true;
-				this.finger.setpos(720,310);
-			}
-			if(this.checkActiveItem(mouseX,mouseY,this.safeArea)){
-				
-			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
 			}
@@ -222,47 +209,20 @@
 					break;
 			}
 		},
-		shakeRoom:function(){
-			this.shakeTime = 200;
-		},
-		changeBg:function(){
-			var scene = this;
-			Hilo.Tween.to(this, {
-				alpha:0.1
-			}, {
-				duration: 800,
-				ease: Hilo.Ease.Bounce.EaseOut,
-				onComplete: function() {
-					scene.alpha = 1;
-					scene.bgImg.setImage(game.getImg('bedroomafter'));
-					scene.step = 3;
-					scene.safeArea.visible = false;
-					scene.notepanel.show(true,game.configdata.GAMETXTS.pass01_tvflash);
-					scene.tvflash.visible = true;
-					scene.plug.status = 1;
-				}
-			});
-		},
+		
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('bedroombefore'),
+				image: game.getImg('cookieroom'),
 			}).addTo(this);
 			
 			this.initBlocks();
-			this.plug  = new game.ActiveObject({
-				x:654,
-				y:183,
-				readyImgUrl:'plug1',
-				finishedImgUrl:'plug2',
-				clickArea:[9,0,20,40],
-			}).addTo(this);
 			
-			this.pillow  = new game.ActiveObject({
+			this.annihilator  = new game.ActiveObject({
 				x:164,
 				y:270,
-				readyImgUrl:'pillow',
-				finishedImgUrl:'pillow',
+				readyImgUrl:'annihilator',
+				finishedImgUrl:'annihilator',
 				clickArea:[9,0,130,50],
 			}).addTo(this);
 
@@ -274,34 +234,9 @@
 				clickArea:[9,0,40,40],
 			}).addTo(this);
 			
-			this.safeArea  = new game.ActiveObject({
-				x:535,
-				y:305,
-				readyImgUrl:'safearea1',
-				finishedImgUrl:'safearea1',
-				clickArea:[29,5,70,40],
-			}).addTo(this);
-			this.safeArea.visible = false;
 			
-			this.fallfan = new game.FallObject({
-				x:200,
-				y:0,
-				name:'fallfan',
-				imgInity:0,
-				floorline:400,
-				wholeState:'ceilingfan',
-				brokenState:'ceilingfan_piece',
-			}).addTo(this);
 			
-			this.falllamp = new game.FallObject({
-				x:500,
-				y:0,
-				name:'falllamp',
-				imgInity:0,
-				floorline:400,
-				wholeState:'ceilinglamp',
-				brokenState:'ceilinglamp_piece',
-			}).addTo(this);
+			
 			
 			
 			this.headPanel = new game.TopHeadPanel({
@@ -325,23 +260,46 @@
                 width: 1024,
                 height: 1024,
                 frames: [
-                	[636,174,84,71],
-                	[636,316,84,71],
-                	[636,458,84,71],
-                	[636,387,84,71],
-                	[636,245,84,71],
-                	[636,529,84,71],
+                	[380,834,128,69],
+                	[380,903,128,69],
+                	[508,834,128,69],
+                	[526,0,128,69],
+                	[508,903,128,69],//0-4 fire
+                	
+                	[0,0,234,160],
+                	[0,800,234,160],
+                	[0,640,234,160],
+                	[0,160,234,160],
+                	[0,320,234,160],//annihilator effect 5-9
+                	
+                	
                 ],
                 sprites: {
-                    tv: {from:0, to:5}
+                    tv: {from:0, to:4},
+                    effect:{from:5,to:9}
                 }
             });
 			this.tvflash = new Hilo.Sprite({
 				frames: atlas.getSprite('tv'),
-				x:680,
-				y:235,
+				x:620,
+				y:295,
 				interval:8,
-				visible:false,
+			}).addTo(this);
+			
+			this.annihilatorEffect = new Hilo.Sprite({
+				frames: atlas.getSprite('effect'),
+				x:520,
+				y:195,
+				interval:8,
+			}).addTo(this);
+			
+			
+			
+			this.annihilatorEffect = new Hilo.Sprite({
+				frames: atlas.getSprite('tv'),
+				x:620,
+				y:295,
+				interval:8,
 			}).addTo(this);
 		},
 		addHero:function(){
@@ -405,59 +363,12 @@
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart);
 			}
 			
-			if(this.readyShakeTime == 400){
-				this.shakeRoom();
-			}
-			if(this.readyShakeTime == 530){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_pillow);
-				this.finger.visible = true;
-				this.pillow.status = 1;
-			}
+			
 			
 			this.readyShakeTime++;
 			
-			if(this.shakeTime > 0){
-				this.x = this.initx;
-				this.y = this.inity;
-				var offsetx = Math.random()*this.shakeLevel;
-				var offsety = Math.random()*this.shakeLevel;
-				var d1 = Math.random();
-				var d2 = Math.random();
-				if(d1 > 0.5)
-				  this.x += offsetx;
-				else
-				  this.x -= offsetx;
-				if(d2 > 0.5)
-				  this.y += offsety;
-				else
-				  this.y -= offsety;
-				this.shakeTime -= 2;
-			}else{
-				this.shakeTime = 0;
-				this.x = this.initx;
-				this.y = this.inity;
-			}
-			this.toFallTime++;
-			if(this.toFallTime == 1000){
-				this.fallfan.isFall = true;
-			}
-			if(this.toFallTime == 1200){
-				this.falllamp.isFall = true;
-			}
-			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
-				console.log('once check:'+this.fallfan.name);
-				this.fallfan.onDanger = false;
-			}
 			
-			if(this.passstep ==1){
-				if(this.checkActiveItem(this.hero.posx,this.hero.posy,this.safeArea)){
-					this.notepanel.show(true,game.configdata.GAMETXTS.pass01_squat);
-					this.finger.visible = false;
-					this.hero.ispillow = false;
-					//this.safeArea.visible = false;
-					this.passstep = 2;
-				}
-			}
+			
 			
 			this.checkBlocks();
 		},

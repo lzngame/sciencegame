@@ -102,6 +102,8 @@
 			this.scenes[game.configdata.SCENE_NAMES.shop]    = new game.ShopScene();
 			this.scenes[game.configdata.SCENE_NAMES.win]     = new game.WinoverScene();
 			this.scenes[game.configdata.SCENE_NAMES.coach]   = new game.CoachScene();
+			
+			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);
