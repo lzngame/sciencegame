@@ -28,6 +28,7 @@
 		speedy:0,
 		targetx:0,
 		targety:0,
+		ispillow:false,
 		constructor: function(properties) {
 			Hero.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -86,8 +87,14 @@
 				this.posy = this.targety;
 				this.speedx = 0;
 				this.speedy = 0;
-				if(this.framename != 'idle')
-					this.switchState('idle',5);
+				if(this.framename != 'idle' && this.framename != 'handup'){
+					if(this.ispillow){
+						this.switchState('handup',5);
+					}else{
+						this.switchState('idle',5);
+					}
+				}
+					
 			}else{
 				this.posx += this.speedx;
 				this.posy += this.speedy;

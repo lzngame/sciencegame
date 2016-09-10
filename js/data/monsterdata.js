@@ -400,15 +400,7 @@ game.monsterdata = new function(){
 					jump:[9,9],
 					handon:[10,10],
 					handup:[11,11],
-					
-					attack: {from: 17,to: 25},
-					behit:[5,5,6,6],
-					dead:{from:63,to:92},
-					shield:{from:9,to:16},
-					frozen:[7,7],
-					petrify:[8,8],
-					magic:{from:35,to:43},
-					win:[53,54,55,56,57,58,59,60,61,62,53,54,55,56,57,58,59,60,61,62,62,62],
+					pillowup:{from:12,to:17},
 				}
 			});
 	};

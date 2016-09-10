@@ -61,6 +61,10 @@
 			this.img.scaleX = -1;
 			this.img.x = 125;
 		},
+		setpos:function(x,y){
+			this.x = x;
+			this.y = y;
+		},
 		onUpdate:function(){
 			if(this.right){
 				this.img.x++;
@@ -82,7 +86,6 @@
 		status:0,    //0 未激活 1激活 2完成
 		readyImgUrl:'',
 		finishedImgUrl:'',
-		activeFunc:null,
 		clickArea:[0,0,0,0],
 		constructor: function(properties) {
 			ActiveObject.superclass.constructor.call(this, properties);
@@ -92,7 +95,6 @@
 			this.img = new Hilo.Bitmap({
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect(this.readyImgUrl,'uimap'),
-				y:this.imgInity,
 			}).addTo(this);
 			var x = this.clickArea[0];
 			var y = this.clickArea[1];
@@ -101,11 +103,12 @@
 			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
 			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
 		},
-		onActive:function(){
+		setEndImg:function(x,y){
 			console.log(this.name+':ACTIVE');
 			this.status = 2;
-			this.activeFunc();
-			this.img.setImage(game.getImg('objects'),game.configdata.getObjectSize(this.finishedImgUrl));	
+			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.finishedImgUrl,'uimap'));	
+			this.img.x = x;
+			this.img.y = y;
 		},
 		onUpdate:function(){
 			
@@ -171,6 +174,11 @@
 		name:'doctor note txt',
 		headimg:'doctorhead',
 		noteimg:'doctorbg',
+		txt:'............',
+		text1:null,
+		text2:null,
+		showtime:100,
+		sumtime:0,
 		constructor: function(properties) {
 			DrNote.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -188,32 +196,61 @@
 			}).addTo(this);
 			
 			var font = "14px arial";
-			new Hilo.Text({
+			this.text1 = new Hilo.Text({
                 	font: font,
                 	color:'black',
-                	text: '遇到地震不惊慌，镇静听从老师教.',
+                	text: this.txt,
                		lineSpacing: 10,
                 	width:400,
                 	height:30,
                 	textAlign:'center',
                		textVAlign:'middle',
-                	y: 110,
+                	y: 90,
                 	x:135,
            		 }).addTo(this);
-           	new Hilo.Text({
+           	this.text2 = new Hilo.Text({
                 	font: font,
                 	color:'white',
-                	text: '遇到地震不惊慌，镇静听从老师教.',
+                	text: this.txt,
                		lineSpacing: 10,
                 	width:400,
                 	height:30,
                 	textAlign:'center',
                		textVAlign:'middle',
-                	y: 111,
+                	y: 91,
                 	x:134,
            		 }).addTo(this);
 		},
+		show:function(hide,txt,showtime){
+			var targetx = -700;
+			if(hide){
+				targetx = 0;
+				this.txt = txt;
+				this.text1.text = this.txt;
+				this.text2.text = this.txt;
+				this.sumtime = 0;
+				if(showtime){
+					this.showtime = showtime;
+				}
+			}
+			
+			new Hilo.Tween.to(this,{
+					x:targetx
+				},{
+					duration:300,
+					onComplete:function(){
+						
+					}
+				});
+		},
 		onUpdate:function(){
+			if(this.x == 0){
+				this.sumtime++;
+			}
+			if(this.sumtime >= this.showtime){
+				this.show(false);
+				this.sumtime = 0;
+			}
 		},
 	});
 	

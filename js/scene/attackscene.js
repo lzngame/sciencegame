@@ -25,6 +25,8 @@
 		
 		blocks:null,
 		activeObjects:null,
+		
+		passstep:0,
 		constructor: function(properties) {
 			AttackScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -143,9 +145,19 @@
 				this.pillow.removeFromParent();
 				this.safeArea.visible = true;
 				this.safeArea.status = 1;
+				this.hero.ispillow = true;
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_hide);
+				this.finger.setpos(500,300);
+				this.passstep = 1;
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
 				this.hero.switchState('handon',10);
+				this.tvflash.visible = false;
+				this.plug.setEndImg(10,80);
+				this.doorhandler.status = 1;
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
+				this.finger.visible = true;
+				this.finger.setpos(720,310);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.safeArea)){
 				
@@ -208,14 +220,6 @@
 					}
 					this.topHeadPanel.setHealth(n);
 					break;
-				case game.configdata.MSAGE_TYPE.useItem:
-					var index = msg.msgdata;
-					var data = shopdata[index];
-					if(index == 10 || index == 11){
-						game.userData.heroData.hp++;
-						this.topHeadPanel.setHealth(game.userData.heroData.hp);
-					}
-					break;
 			}
 		},
 		shakeRoom:function(){
@@ -226,11 +230,16 @@
 			Hilo.Tween.to(this, {
 				alpha:0.1
 			}, {
-				duration: 1800,
+				duration: 800,
 				ease: Hilo.Ease.Bounce.EaseOut,
 				onComplete: function() {
 					scene.alpha = 1;
 					scene.bgImg.setImage(game.getImg('bedroomafter'));
+					scene.step = 3;
+					scene.safeArea.visible = false;
+					scene.notepanel.show(true,game.configdata.GAMETXTS.pass01_tvflash);
+					scene.tvflash.visible = true;
+					scene.plug.status = 1;
 				}
 			});
 		},
@@ -252,7 +261,6 @@
 			this.pillow  = new game.ActiveObject({
 				x:164,
 				y:270,
-				status:1,
 				readyImgUrl:'pillow',
 				finishedImgUrl:'pillow',
 				clickArea:[9,0,130,50],
@@ -261,7 +269,6 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:822,
 				y:300,
-				status:1,
 				readyImgUrl:'handler',
 				finishedImgUrl:'handler',
 				clickArea:[9,0,40,40],
@@ -302,14 +309,15 @@
 				healthIcon:'heart02',
 			}).addTo(this);
 			
-			new game.FingerPoint({
-				x:400,
-				y:100,
-				visible:true,
+			this.finger = new game.FingerPoint({
+				x:70,
+				y:278,
+				visible:false,
 			}).addTo(this);
 			
 			this.notepanel = new game.DrNote({
-				
+				txt:game.configdata.GAMETXTS.pass01_notestart,
+				x:-700,
 			}).addTo(this);
 			
 			var atlas = new Hilo.TextureAtlas({
@@ -332,7 +340,8 @@
 				frames: atlas.getSprite('tv'),
 				x:680,
 				y:235,
-				interval:8
+				interval:8,
+				visible:false,
 			}).addTo(this);
 		},
 		addHero:function(){
@@ -369,7 +378,12 @@
 				var targetx = stagex - scene.x;
 				var targety = stagey - scene.y;
 				if(!scene.checkInBlocks(targetx,targety)){
-					scene.hero.switchState('walk',5);
+					if(scene.hero.ispillow){
+						scene.hero.switchState('pillowup',5);
+					}else{
+						scene.hero.switchState('walk',5);
+					}
+					
 					var disX = targetx - scene.hero.posx;
 					var disY = targety - scene.hero.posy;
 					var angle = Math.atan2(disY,disX);
@@ -387,12 +401,21 @@
 			});
 		},
 		onUpdate:function(){
-			if(this.readyShakeTime == 500){
-				this.shakeRoom();
-				this.readyShakeTime = 1000;
-			}else{
-				this.readyShakeTime++;
+			if(this.readyShakeTime == 100){
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart);
 			}
+			
+			if(this.readyShakeTime == 400){
+				this.shakeRoom();
+			}
+			if(this.readyShakeTime == 530){
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_pillow);
+				this.finger.visible = true;
+				this.pillow.status = 1;
+			}
+			
+			this.readyShakeTime++;
+			
 			if(this.shakeTime > 0){
 				this.x = this.initx;
 				this.y = this.inity;
@@ -424,6 +447,16 @@
 			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
 				console.log('once check:'+this.fallfan.name);
 				this.fallfan.onDanger = false;
+			}
+			
+			if(this.passstep ==1){
+				if(this.checkActiveItem(this.hero.posx,this.hero.posy,this.safeArea)){
+					this.notepanel.show(true,game.configdata.GAMETXTS.pass01_squat);
+					this.finger.visible = false;
+					this.hero.ispillow = false;
+					//this.safeArea.visible = false;
+					this.passstep = 2;
+				}
 			}
 			
 			this.checkBlocks();
