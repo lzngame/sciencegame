@@ -12,6 +12,8 @@
 		heroCurrentExp:0,
 		heroCurrentUpExp:0,
 		
+		headPanel:null,
+		
 		readyShakeTime:0,
 		bgImg:null,
 		shakeTime:0,
@@ -22,7 +24,9 @@
 		
 		fallfan:null,
 		falllamp:null,
-		//plug:null,
+		plug:null,
+		pillow:null,
+		safeArea:null,
 		
 		blocks:null,
 		activeObjects:null,
@@ -44,10 +48,6 @@
 		active: function(doorIndex) {
 			console.log('%s active:', this.name);
 			var scene = this;
-			this.pointdata = game.pointdata.getPointData(game.pointdata.doors[doorIndex].pointDataIndex);
-			var obj = _.map(this.pointdata.state,function(x){return 0;});
-			this.pointdata.state = obj;
-			game.userData.heroData.activeDoorIndex = doorIndex;
 			
 			this.addTo(game.stage);
 			this.alpha = 1;
@@ -97,15 +97,15 @@
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[214,405,303,123],[97,513,108,64],[5,577,98,177],[0,0,1202,437],[893,437,124,67],[983,505,217,77],[1105,581,91,167]];
+			this.blocks = [[0,0,850,310],[0,310,370,60],[0,370,80,135],[810,310,40,175],[665,310,145,100]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				//g.lineStyle(1,"#998877").beginFill("#0ff").drawRect(0,0,w,h).endFill().addTo(this);
+				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){
@@ -215,44 +215,65 @@
 				ease: Hilo.Ease.Bounce.EaseOut,
 				onComplete: function() {
 					scene.alpha = 1;
-					scene.bgImg.setImage(game.getImg('bedroom_after'));
+					scene.bgImg.setImage(game.getImg('bedroomafter'));
 				}
 			});
 		},
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('bedroom_before'),
+				image: game.getImg('bedroombefore'),
 			}).addTo(this);
 			
 			this.initBlocks();
-			var plug  = new game.ActiveObject({
-				x:838,
-				y:230,
-				readyImgUrl:'plug01',
-				finishedImgUrl:'plug02',
-				clickArea:[96,12,30,60],
+			this.plug  = new game.ActiveObject({
+				x:654,
+				y:176,
+				readyImgUrl:'plug1',
+				finishedImgUrl:'plug2',
+				clickArea:[9,0,20,40],
 			}).addTo(this);
-			this.activeObjects.push(plug);
+			
+			this.pillow  = new game.ActiveObject({
+				x:164,
+				y:250,
+				readyImgUrl:'pillow',
+				finishedImgUrl:'pillow',
+				clickArea:[9,0,130,50],
+			}).addTo(this);
+			
+			this.saftArea  = new game.ActiveObject({
+				x:535,
+				y:305,
+				readyImgUrl:'safearea1',
+				finishedImgUrl:'safearea1',
+				clickArea:[9,0,80,50],
+			}).addTo(this);
 			
 			this.fallfan = new game.FallObject({
 				x:200,
 				y:0,
 				name:'fallfan',
-				imgInity:-15,
-				floorline:500,
-				wholeState:'ceilingfan01',
-				brokenState:'ceilingfan02',
+				imgInity:0,
+				floorline:300,
+				wholeState:'ceilingfan',
+				brokenState:'ceilingfan_piece',
 			}).addTo(this);
 			
 			this.falllamp = new game.FallObject({
 				x:500,
 				y:0,
 				name:'falllamp',
-				imgInity:-5,
-				floorline:450,
-				wholeState:'ceilinglamp01',
-				brokenState:'ceilinglamp02',
+				imgInity:0,
+				floorline:300,
+				wholeState:'ceilinglamp',
+				brokenState:'ceilinglamp_piece',
+			}).addTo(this);
+			
+			
+			this.headPanel = new game.TopHeadPanel({
+				headImgUrl:'headicon2',
+				healthIcon:'heart02',
 			}).addTo(this);
 		},
 		layoutUI:function(){
@@ -303,8 +324,8 @@
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 328,
-				posy: 605,
+				posx: 443,
+				posy: 400,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,

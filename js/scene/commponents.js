@@ -166,10 +166,13 @@
 		},
 	});
 	
+	//头像控件 -- 有生命值
 	var TopHeadPanel = ns.TopHeadPanel = Hilo.Class.create({
 		Extends: Hilo.Container,
 		headImg:null,
-		lvNum:null,
+		headImgUrl:null,
+		healthValue:3,
+		healthIcon:'',
 		expNum:null,
 		powerNum:null,
 		nimbleNum:null,
@@ -187,203 +190,31 @@
 			console.log('topheadpanel init');
 			var self = this;
 			var img = game.getImg('uimap');
-			this.background = '#262A30';
-			this.height = 185;
-			
-			new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead01'),
-				width:this.width,
-				height:8
-			}).addTo(this);
-			var rect = game.configdata.getPngSize('uihead02');
-			new Hilo.Bitmap({
-				image: img,
-				rect:rect,
-				y:this.height - rect[3],
-				width:this.width,
-				height:rect[3],
-			}).addTo(this);
-			
-			var headBorder = new Hilo.Bitmap({
-				image: img,
-				rect: game.configdata.getPngSize('image2833'),
-				x:10,
-				y:15
-			}).addTo(this);
-			var rect = game.configdata.getPngSize('small_icon0head');
 			this.headImg = new Hilo.Bitmap({
 				image: img,
-				rect:rect,
-				x:headBorder.x + headBorder.width/2 - rect[2]/2,
-				y:headBorder.y + headBorder.height/2 - rect[3]/2
+				rect:game.configdata.getPngRect(this.headImgUrl,'uimap'),
+				width:64,
+				height:64
 			}).addTo(this);
 			
-			this.checkBag = new game.ImgTxtBtn({
-				txt:'背包',
-				txtclr:game.configdata.GAME_COLORS.btntxtclr,
-				rectname:'image348',
-				disy:-2,
-				x:5,
-				y:65,
+			this.hpContainer = new Hilo.Container({
+				x:75,
+				y:5,
 			}).addTo(this);
 			
-			var expstart = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead06'),
-				x:70,
-				y:65
-			}).addTo(this);
-			var expBg = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead11'),
-				x:92,
-				y:65
-			}).addTo(this);
-			var expBg2 = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead11'),
-				x:180,
-				y:65
-			}).addTo(this);
-			
-			var magicBg = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead03'),
-				x:67,
-				y:42
-			}).addTo(this);
-			var powerBg = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead05'),
-				x:this.width - 60,
-				y:10
-			}).addTo(this);
-			var nimbleBg = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngSize('uihead04'),
-				x:this.width - 60,
-				y:50,
-			}).addTo(this);
-			
-			this.lvNum = new game.NumFontBmp({
-				txt: '12300',
-				sourceImg: img,
-				x: expBg.x + 10,
-				y: expBg.y+5,
-			}).addTo(this);
-			
-			this.expNum = new game.NumFontBmp({
-				txt: '12',
-				sourceImg: img,
-				x:expBg2.x + 10,
-				y:expBg2.y + 5,
-			}).addTo(this);  
-
-			this.powerNum = new game.NumFontBmp({
-				txt: '0',
-				sourceImg: img,
-				x:powerBg.x + 32,
-				y:powerBg.y + 12,
-			}).addTo(this);
-			
-			this.nimbleNum = new game.NumFontBmp({
-				txt: '1',
-				sourceImg: img,
-				x:nimbleBg.x + 32,
-				y:nimbleBg.y + 10,
-			}).addTo(this);
-			
-			
-			this.magicContainer = new Hilo.Container({
-				x:magicBg.x,
-				y:magicBg.y,
-			}).addTo(this);
-			
-			this.hpContainer = new game.HpBorderLine({
-				x:70,
-				y:18,
-				totalValue:game.userData.heroData.hp,
-				currentValue:game.userData.heroData.hp,
-				w:179,
-				h:22,
-			}).addTo(this);
-
-			this.itemTopbox = new game.TopItembox({
-				x: this.width - 90,
-				y: 88,
-				category:'ITEM',
-			}).addTo(this);
-			this.equipTopbox = new game.TopItembox({
-				x: this.width - 174,
-				y: 88,
-				category:'EQUIP'
-			}).addTo(this);
-		},
-		refresh:function(){
-			this.initData(game.userData.heroData);
-		},
-		initData:function(data){
-			this.lvNum.setText(data.lv);
-			this.expNum.setText(data.exp);
-			this.powerNum.setText(data.power);
-			this.nimbleNum.setText(data.nimble);
-			this.hpContainer.setValue(data.totalhp,data.totalhp);
-			this.setMagic(data.magic);
-			this.setTopItembox(data);
+			this.setHealth(3);
 		},
 		setHealth: function(n) {
-			this.hpContainer.setCurrent(n);
-		},
-		setMagic: function(n) {
-			this.magicContainer.removeAllChildren();
+			this.hpContainer.removeAllChildren();
 			var img = game.getImg('uimap');
 			for (var i = 0; i < n; i++) {
 				new Hilo.Bitmap({
 					image: img,
-					rect: game.configdata.getPngSize('magicicon'),
-					x: i * 21+4,
+					rect: game.configdata.getPngRect(this.healthIcon,'uimap'),
+					x: i * 64 + 4,
 					y:2
-				}).addTo(this.magicContainer);
+				}).addTo(this.hpContainer);
 			}
-		},
-		setTopItembox:function(herodata){
-			var bagdata = herodata.bagdata;
-			if(bagdata[1][0] != -1){
-				var data = shopdata[bagdata[0][bagdata[1][0]]];
-				this.equipTopbox.initItem(data,1);
-			}else{
-				this.equipTopbox.unloaditem();
-			}
-			if(bagdata[1][1] != -1){
-				var data = shopdata[bagdata[0][bagdata[1][1]]];
-				this.itemTopbox.initItem(data,1);
-			}else{
-				this.itemTopbox.unloaditem();
-			}
-		},
-		loadItem:function(category,index,value){
-			var bagdata = game.userData.heroData.bagdata;
-			bagdata[0].push(index);
-			if(category == 'EQUIP'){
-				this.currentItembox = this.equipTopbox;
-				bagdata[1][0] = bagdata[0].length -1;
-			}else{
-				this.currentItembox = this.itemTopbox;
-				bagdata[1][1] = bagdata[0].length -1;
-			}
-			this.currentItembox.loaditem(category,index,value);
-		},
-		unloadItem:function(){
-			this.itembox.unloaditem();
-		},
-		useItem:function(category,index,value){
-			var data = shopdata[index];
-			console.log('使用物品:%s',data.name);
-			var bagdata = game.userData.heroData.bagdata;
-			bagdata[0].splice(bagdata[1][1],1);
-			bagdata[1][1] = -1;
-			sendMsg(game.currentScene, game.configdata.MSAGE_TYPE.useItem, index);
 		},
 	});
 	

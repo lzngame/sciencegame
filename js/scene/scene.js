@@ -114,7 +114,7 @@
 			this.removeFromParent();
 		},
 		startLoadQueue: function() {
-			var list = this.getDownloadList(game.configdata.DOWNLOADLIST_PNGS, 'heromonsters');
+			var list = this.getDownloadList(game.configdata.DOWNLOADLIST_PNGS, 'loadimgs');
 			var total = list.length;
 			var m = Math.floor(list.length / 10);
 			var self = this;
@@ -193,51 +193,40 @@
 			var bg = new Hilo.Bitmap({
 				width:this.width,
 				height:this.height,
+				image:game.getImg('mainbg'),
+			}).addTo(this);
+			var boy = new Hilo.Bitmap({
 				image:img,
-				rect:game.configdata.getPngSize('bg022'),
-			}).addTo(this);
-			var rect = game.configdata.getPngSize('mainmenu');
-			var centerImg = new Hilo.Bitmap({
-				image:img,
-				rect:rect,
-				x:this.width/2 - rect[2],
-				y:this.height/2 - rect[3],
-				width:rect[2]*2,
-				height:rect[3]*2
-			}).addTo(this);
-			var btn01 = new game.ImgTxtBtn({
-				txt:game.configdata.GAMETXTS.playgame,
-				txtclr:game.configdata.GAME_COLORS.btntxtclr,
-				rectname:'image166',
-				y:centerImg.y + 30,
-			}).addTo(this);
-			btn01.x = this.width / 2 - btn01.width / 2;
-			
- 			var btn02 = new game.ImgTxtBtn({
-				txt:game.configdata.GAMETXTS.options,
-				txtclr:game.configdata.GAME_COLORS.btntxtclr,
-				rectname:'image166',
-				y:centerImg.y + 85,
-				x:btn01.x,
+				rect:game.configdata.getPngRect('boy','uimap'),
+				x:70,
+				y:70
 			}).addTo(this);
 			
-			var btn03 = new game.ImgTxtBtn({
-				txt:game.configdata.GAMETXTS.regame,
-				txtclr:game.configdata.GAME_COLORS.btntxtclr,
-				rectname: 'image166',
-				y:centerImg.y + 140,
-				x:btn01.x,
+			var btn01 = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('pass01','uimap'),
+				x:300,
+				y:100
+			}).addTo(this);
+			var btnpass01 = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('pass02','uimap'),
+				x:550,
+				y:100
+			}).addTo(this);
+ 			var btnExit = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('quitbt','uimap'),
+				x:700,
+				y:400
 			}).addTo(this);
 			
 			var scene = this;
-			btn01.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.story);
+			btnpass01.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.attack);
 			});
-			btn02.on(Hilo.event.POINTER_START, function(e) {
-				game.userData.saveHeroDataJsonSt();
-			});
-			btn03.on(Hilo.event.POINTER_START, function(e) {
-				game.userData.clear();
+			btnExit.on(Hilo.event.POINTER_START, function(e) {
+				window.close();
 			});
 
 			Hilo.Tween.to(this, {

@@ -16,8 +16,8 @@
 		},
 		init: function(properties) {
 			this.img = new Hilo.Bitmap({
-				image: game.getImg('objects'),
-				rect:game.configdata.getObjectSize(this.wholeState),
+				image: game.getImg('iconobjs'),
+				rect:game.configdata.getPngRect(this.wholeState,'object'),
 				y:this.imgInity,
 			}).addTo(this);
 			
@@ -29,7 +29,7 @@
 					this.y += this.fallspeed;
 				}else{
 					this.isFall = false;
-					this.img.setImage(game.getImg('objects'),game.configdata.getObjectSize(this.brokenState));
+					this.img.setImage(game.getImg('iconobjs'),game.configdata.getPngRect(this.brokenState,'object'));
 					this.fallspeed = 4;
 					this.onDanger = true;
 				}
@@ -51,16 +51,16 @@
 		},
 		init: function(properties) {
 			this.img = new Hilo.Bitmap({
-				image: game.getImg('objects'),
-				rect:game.configdata.getObjectSize(this.readyImgUrl),
+				image: game.getImg('iconobjs'),
+				rect:game.configdata.getPngRect(this.readyImgUrl,'object'),
 				y:this.imgInity,
 			}).addTo(this);
 			var x = this.clickArea[0];
 			var y = this.clickArea[1];
 			var w = this.clickArea[2];
 			var h = this.clickArea[3];
-			//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-			//g.lineStyle(1,"#998877").beginFill("#0ff").drawRect(0,0,w,h).endFill().addTo(this);
+			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
 		},
 		onActive:function(){
 			console.log(this.name+':ACTIVE');
