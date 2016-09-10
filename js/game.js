@@ -93,7 +93,7 @@
 			this.scenes = {};
 			this.scenes[game.configdata.SCENE_NAMES.load]    = new game.LoadScene();
 			this.scenes[game.configdata.SCENE_NAMES.main]    = new game.MainScene();
-			this.scenes[game.configdata.SCENE_NAMES.attack]  = new game.AttackScene();
+
 			this.scenes[game.configdata.SCENE_NAMES.story]   = new game.StoryScene();
 			this.scenes[game.configdata.SCENE_NAMES.map]     = new game.MapScene();
 			this.scenes[game.configdata.SCENE_NAMES.stash]   = new game.StashScene();
@@ -103,7 +103,10 @@
 			this.scenes[game.configdata.SCENE_NAMES.win]     = new game.WinoverScene();
 			this.scenes[game.configdata.SCENE_NAMES.coach]   = new game.CoachScene();
 			
+			this.scenes[game.configdata.SCENE_NAMES.attack]  = new game.AttackScene();
+			this.scenes[game.configdata.SCENE_NAMES.choice]  = new game.ChoiceScene();
 			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();
+			this.scenes[game.configdata.SCENE_NAMES.lift]   = new game.LifeScene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

@@ -36,6 +36,13 @@ game.configdata = new function(){
 		pass02_annihilator:'找到灭火器，扑灭厨房火源',
 		pass02_ok:'干得不错，现在可以去走廊了',
 		
+		pass03_ask:'考考你，地震发生时，走楼梯，还是电梯？',
+		pass03_right:'非常正确，地震发生时，要走楼梯',
+		pass03_wrong:'小心点，电梯会发生坠落',
+		
+		pass04_warn:'你最好马上出去',
+		pass04_fall:'地震时，乘坐电梯会发生坠落的危险',
+		
 		enterpass:'进 入 关 卡',
 		itemdescription:'点击物品查看详情,进行操作',
 		bagnote:'背包容量:5件   不可以堆叠',
@@ -61,7 +68,8 @@ game.configdata = new function(){
 	
 	self.SCENE_NAMES ={
 		cookieroom:'COOKIEROOM',
-		
+		choice:'CHOICESCNE',
+		lift:'LIFESCENE_NAME',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',

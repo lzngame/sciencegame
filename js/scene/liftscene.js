@@ -1,7 +1,7 @@
 (function(ns) {
-	var ChoiceScene = ns.ChoiceScene = Hilo.Class.create({
+	var LifeScene = ns.LifeScene = Hilo.Class.create({
 		Extends: Hilo.Container,
-		name: game.configdata.SCENE_NAMES.choice,
+		name: game.configdata.SCENE_NAMES.lift,
 		hero:null,
 		headPanel:null,
 		
@@ -23,8 +23,11 @@
 		blocks:null,
 		
 		passstep:0,
+		fallspeed:5,
+		
+		liftbody:null,
 		constructor: function(properties) {
-			ChoiceScene.superclass.constructor.call(this, properties);
+			LifeScene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -53,44 +56,12 @@
 			//this.initTouchAttack();
 			//this.initData();
 			//this.hideFlashHand();
-			this.initkeyevent();
+			//this.initkeyevent();
 			this.initTouchEvent();
 		},
-		initkeyevent:function(){
-			var scene = this;
-			document.onkeydown=function(event){
-             var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // ctrl
- 					//console.log('Jum');
- 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herojump});
-                }
-              if(e && e.keyCode==18){ // alt 
- 					console.log('squat');
- 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
- 					//scene.shakeRoom();
- 					//scene.fallfan.isFall = true;
-                }            
-              if(e && e.keyCode==13){ // enter 键
-             }
-         	}; 
-         	document.onkeyup=function(event){
-             var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // 松开 ctrl 
-                  //要做的事情
- 					//console.log('Jum');
-                }
-              if(e && e.keyCode==18){ // 松开 alt 
-                  //要做的事情
- 					//console.log('squat to idle');
- 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat2idle});
-                }            
-              if(e && e.keyCode==13){ // enter 键
-                  //要做的事情
-             }
-         	}; 
-		},
+		
 		initBlocks:function(){
-			this.blocks = [[0,0,850,280],[505,275,345,40],[586,315,264,43],[708,358,139,127]];
+			this.blocks = [[0,0,850,420],[0,420,150,140],[700,420,150,50]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
@@ -136,20 +107,6 @@
 		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass03_wrong,200);
-				new Hilo.Tween.to(this,{
-					alpha:0.99
-				},{
-					duration:2000,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.lift);
-					}
-				});
-			}
-			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
 				var scene = this;
@@ -224,26 +181,24 @@
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('corridor'),
+				image: game.getImg('liftbg'),
+			}).addTo(this);
+			
+			this.liftbody = new Hilo.Bitmap({
+				image: game.getImg('lift'),
+				x:25,
+				y:-500,
 			}).addTo(this);
 			
 			this.initBlocks();
 			
-			this.annihilator  = new game.ActiveObject({
-				x:684,
-				y:250,
-				readyImgUrl:'empty',
-				finishedImgUrl:'empty',
-				clickArea:[12,10,70,50],
-				status:1
-			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
-				x:260,
-				y:180,
+				x:40,
+				y:280,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[9,0,40,40],
+				clickArea:[9,0,30,130],
 				status:1,
 			}).addTo(this);
 			
@@ -252,15 +207,13 @@
 				healthIcon:'heart02',
 			}).addTo(this);
 			
-			new game.FingerPoint({
-				x:180,
-				y:190,
+			this.finger = new game.FingerPoint({
+				x:50,
+				y:380,
+				right:false
 			}).addTo(this);
 			
-			new game.FingerPoint({
-				x:642,
-				y:272,
-			}).addTo(this);
+			
 			
 			this.notepanel = new game.DrNote({
 				txt:game.configdata.GAMETXTS.pass01_notestart,
@@ -274,7 +227,7 @@
 				name: 'Hero',
 				framename: 'idle',
 				posx: 383,
-				posy: 420,
+				posy: 440,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
@@ -327,17 +280,32 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 50){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass03_ask,200);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_warn,50);
 			}
-			
-			
-			
+			if(this.readyShakeTime == 150){
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
+				this.ignoreTouch = true;
+				this.finger.visible = false;
+			}
+			if(this.readyShakeTime > 150){
+				this.fallspeed++;
+				this.liftbody.y+=this.fallspeed;
+				this.hero.posy+=this.fallspeed;
+			}
+			if(this.readyShakeTime ==400){
+				var btnpass01 = new Hilo.Bitmap({
+					image:game.getImg('uimap'),
+					rect:game.configdata.getPngRect('pass02','uimap'),
+					x:550,
+					y:100
+				}).addTo(this);
+ 				btnpass01.on(Hilo.event.POINTER_START, function(e) {
+					game.switchScene(game.configdata.SCENE_NAMES.choice);
+				});
+			}
+			this.checkBlocks();
 			this.readyShakeTime++;
 			
-			
-			
-			
-			this.checkBlocks();
 		},
 	});
 })(window.game);

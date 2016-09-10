@@ -223,7 +223,7 @@
 			
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.cookieroom);
+				game.switchScene(game.configdata.SCENE_NAMES.choice);
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();
