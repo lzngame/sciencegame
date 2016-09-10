@@ -20,6 +20,8 @@
 		safeArea:null,
 		doorhandler:null,
 		finger:null,
+		notepanel:null,
+		tvflash:null,
 		
 		blocks:null,
 		activeObjects:null,
@@ -257,8 +259,8 @@
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
-				x:800,
-				y:310,
+				x:822,
+				y:300,
 				status:1,
 				readyImgUrl:'handler',
 				finishedImgUrl:'handler',
@@ -305,50 +307,33 @@
 				y:100,
 				visible:true,
 			}).addTo(this);
-		},
-		layoutUI:function(){
-			var img =  game.getImg('uimap');
-			this.coinvaluebox = new game.Showbox({
-				img: img,
-				hidey:this.topHeadPanel.height - 68,
-				showy:this.topHeadPanel.height -34,
+			
+			this.notepanel = new game.DrNote({
+				
 			}).addTo(this);
 			
-			this.attentionPanel = new game.AttentionPanel({
-				x:this.width/2 - 118,
-				width:this.width
+			var atlas = new Hilo.TextureAtlas({
+                image:game.getImg('effects'),
+                width: 1024,
+                height: 1024,
+                frames: [
+                	[636,174,84,71],
+                	[636,316,84,71],
+                	[636,458,84,71],
+                	[636,387,84,71],
+                	[636,245,84,71],
+                	[636,529,84,71],
+                ],
+                sprites: {
+                    tv: {from:0, to:5}
+                }
+            });
+			this.tvflash = new Hilo.Sprite({
+				frames: atlas.getSprite('tv'),
+				x:680,
+				y:235,
+				interval:8
 			}).addTo(this);
-			this.attentionPanel.y = this.topHeadPanel.height -this.attentionPanel.height,
-			this.attentionPanel.inity = this.attentionPanel.y;
-			this.topHeadPanel.addTo(this);
-			
-			var scene = this;
-			this.topHeadPanel.checkBag.on(Hilo.event.POINTER_START,function(e){
-				scene.showBagInfo();
-			});
-			this.topHeadPanel.headImg.on(Hilo.event.POINTER_START, function(e) {
-				//scene.addAbilityPanel();
-				scene.shake();
-			});
-		},
-		initData:function(){
-			var monsterindex = this.pointdata.monsters[this.currentIndex];
-			this.addCharacter(monsterindex,this.currentIndex);
-			this.hero.y = this.currentIndex * this.attackStageHeight + 100;
-			this.addAwardbox();
-			this.coinvaluebox.setCoinValue(game.userData.userInfo.goldcoinNum);
-			game.userData.heroData.hp = game.userData.heroData.totalhp;
-			this.topHeadPanel.initData(game.userData.heroData);
-			this.monsterHpline.setValue(this.currentMonster.hp,this.currentMonster.hp);
-			this.heroCurrentExp = game.userData.heroData.exp;
-			this.heroCurrentUpExp = game.userData.heroData.exp;
-		},
-		addCharacter:function(monsterIndex,passIndex){
-			if(monsterIndex < 1000){
-				this.addMonster(monsterIndex,passIndex);
-			}else{
-				this.addNpc(monsterIndex,passIndex);
-			}
 		},
 		addHero:function(){
 			this.hero = new game.Hero({

@@ -165,4 +165,56 @@
 		},
 	});
 	
+	
+	var DrNote = ns.DrNote = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'doctor note txt',
+		headimg:'doctorhead',
+		noteimg:'doctorbg',
+		constructor: function(properties) {
+			DrNote.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.noteimg,'uimap'),
+				x:170,
+				y:40
+			}).addTo(this);
+			new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.headimg,'uimap'),
+			}).addTo(this);
+			
+			var font = "14px arial";
+			new Hilo.Text({
+                	font: font,
+                	color:'black',
+                	text: '遇到地震不惊慌，镇静听从老师教.',
+               		lineSpacing: 10,
+                	width:400,
+                	height:30,
+                	textAlign:'center',
+               		textVAlign:'middle',
+                	y: 110,
+                	x:135,
+           		 }).addTo(this);
+           	new Hilo.Text({
+                	font: font,
+                	color:'white',
+                	text: '遇到地震不惊慌，镇静听从老师教.',
+               		lineSpacing: 10,
+                	width:400,
+                	height:30,
+                	textAlign:'center',
+               		textVAlign:'middle',
+                	y: 111,
+                	x:134,
+           		 }).addTo(this);
+		},
+		onUpdate:function(){
+		},
+	});
+	
 })(window.game);
