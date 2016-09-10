@@ -166,57 +166,7 @@
 		},
 	});
 	
-	//头像控件 -- 有生命值
-	var TopHeadPanel = ns.TopHeadPanel = Hilo.Class.create({
-		Extends: Hilo.Container,
-		headImg:null,
-		headImgUrl:null,
-		healthValue:3,
-		healthIcon:'',
-		expNum:null,
-		powerNum:null,
-		nimbleNum:null,
-		equipTopbox:null,
-		itemTopbox:null,
-		currentItembox:null,
-		magicContainer:null,
-		hpContainer:null,
-		checkBag:null,
-		constructor: function(properties) {
-			TopHeadPanel.superclass.constructor.call(this, properties);
-			this.init(properties);
-		},
-		init: function(properties) {
-			console.log('topheadpanel init');
-			var self = this;
-			var img = game.getImg('uimap');
-			this.headImg = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngRect(this.headImgUrl,'uimap'),
-				width:64,
-				height:64
-			}).addTo(this);
-			
-			this.hpContainer = new Hilo.Container({
-				x:75,
-				y:5,
-			}).addTo(this);
-			
-			this.setHealth(3);
-		},
-		setHealth: function(n) {
-			this.hpContainer.removeAllChildren();
-			var img = game.getImg('uimap');
-			for (var i = 0; i < n; i++) {
-				new Hilo.Bitmap({
-					image: img,
-					rect: game.configdata.getPngRect(this.healthIcon,'uimap'),
-					x: i * 64 + 4,
-					y:2
-				}).addTo(this.hpContainer);
-			}
-		},
-	});
+	
 	
 	var DoorIcon = ns.DoorIcon = Hilo.Class.create({
 		Extends: Hilo.Container,

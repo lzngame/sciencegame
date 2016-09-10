@@ -2,16 +2,7 @@
 	var AttackScene = ns.AttackScene = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.attack,
-		
 		hero:null,
-		currentMonster:null,
-		awardbox: null,
-		pointdata:null,
-		currentIndex: 2,
-		
-		heroCurrentExp:0,
-		heroCurrentUpExp:0,
-		
 		headPanel:null,
 		
 		readyShakeTime:0,
@@ -27,6 +18,8 @@
 		plug:null,
 		pillow:null,
 		safeArea:null,
+		doorhandler:null,
+		finger:null,
 		
 		blocks:null,
 		activeObjects:null,
@@ -97,7 +90,7 @@
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[0,0,850,310],[0,310,370,60],[0,370,80,135],[810,310,40,175],[665,310,145,100]];
+			this.blocks = [[0,0,850,310],[0,310,355,60],[0,370,80,120],[810,310,40,175],[665,310,145,100]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
@@ -141,23 +134,43 @@
 				}
 			}
 		},
+		
 		checkActiveObjects:function(mouseX,mouseY){
-			for(var i=0;i<this.activeObjects.length;i++){
-				var obj = this.activeObjects[i];
-				var x = obj.clickArea[0]+obj.x;
-				var y = obj.clickArea[1]+obj.y;
-				var w = obj.clickArea[2];
-				var h = obj.clickArea[3];
-				if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
-					if(x - this.hero.posx <100 && y - this.hero.posy <250){
-						obj.onActive();
-						this.hero.switchState('handon',10);
-					}else{
-						console.log('pls close');						
-					}
-				}
+			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
+				this.hero.switchState('handup',10);
+				this.pillow.removeFromParent();
+				this.safeArea.visible = true;
+				this.safeArea.status = 1;
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
+				this.hero.switchState('handon',10);
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.safeArea)){
+				
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
+				this.hero.switchState('handon',10);
 			}
 		},
+		
+		checkActiveItem:function(mouseX,mouseY,obj){
+			var isClickIn = false;
+			var x = obj.clickArea[0]+obj.x;
+			var y = obj.clickArea[1]+obj.y;
+			var w = obj.clickArea[2];
+			var h = obj.clickArea[3];
+			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
+				if(x - this.hero.posx <100 && y - this.hero.posy <250){
+					isClickIn = true;
+					
+				}else{
+					isClickIn = false;
+					console.log('pls close');						
+				}
+			}
+			return isClickIn;
+		},
+		
 		heroStopBlock:function(){
 			this.hero.speedx = 0;
 			this.hero.speedy = 0;
@@ -228,7 +241,7 @@
 			this.initBlocks();
 			this.plug  = new game.ActiveObject({
 				x:654,
-				y:176,
+				y:183,
 				readyImgUrl:'plug1',
 				finishedImgUrl:'plug2',
 				clickArea:[9,0,20,40],
@@ -236,26 +249,37 @@
 			
 			this.pillow  = new game.ActiveObject({
 				x:164,
-				y:250,
+				y:270,
+				status:1,
 				readyImgUrl:'pillow',
 				finishedImgUrl:'pillow',
 				clickArea:[9,0,130,50],
 			}).addTo(this);
+
+			this.doorhandler  = new game.ActiveObject({
+				x:800,
+				y:310,
+				status:1,
+				readyImgUrl:'handler',
+				finishedImgUrl:'handler',
+				clickArea:[9,0,40,40],
+			}).addTo(this);
 			
-			this.saftArea  = new game.ActiveObject({
+			this.safeArea  = new game.ActiveObject({
 				x:535,
 				y:305,
 				readyImgUrl:'safearea1',
 				finishedImgUrl:'safearea1',
-				clickArea:[9,0,80,50],
+				clickArea:[29,5,70,40],
 			}).addTo(this);
+			this.safeArea.visible = false;
 			
 			this.fallfan = new game.FallObject({
 				x:200,
 				y:0,
 				name:'fallfan',
 				imgInity:0,
-				floorline:300,
+				floorline:400,
 				wholeState:'ceilingfan',
 				brokenState:'ceilingfan_piece',
 			}).addTo(this);
@@ -265,7 +289,7 @@
 				y:0,
 				name:'falllamp',
 				imgInity:0,
-				floorline:300,
+				floorline:400,
 				wholeState:'ceilinglamp',
 				brokenState:'ceilinglamp_piece',
 			}).addTo(this);
@@ -274,6 +298,12 @@
 			this.headPanel = new game.TopHeadPanel({
 				headImgUrl:'headicon2',
 				healthIcon:'heart02',
+			}).addTo(this);
+			
+			new game.FingerPoint({
+				x:400,
+				y:100,
+				visible:true,
 			}).addTo(this);
 		},
 		layoutUI:function(){
