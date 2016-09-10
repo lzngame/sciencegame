@@ -305,6 +305,8 @@ game.monsterdata = new function(){
 					[0,644,217,310],
 					[483,0,217,310], //pillow up  12-17
 					
+					[1519,629,217,310], //annihilator 18
+					
 					[68, 68, 64, 64],
 					[2, 134, 64, 64],
 					[68, 134, 64, 64],
@@ -401,6 +403,7 @@ game.monsterdata = new function(){
 					handon:[10,10],
 					handup:[11,11],
 					pillowup:{from:12,to:17},
+					annihilator:[18,18],
 				}
 			});
 	};

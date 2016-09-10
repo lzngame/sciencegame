@@ -32,6 +32,10 @@ game.configdata = new function(){
 		pass01_squat:'Alt 键 蹲下，等强震过后',
 		pass01_tvflash:'地震过后，防止电器着火，拔下插座',
 		pass01_okend:'做的很好，请离开房间去下一关卡',
+		
+		pass02_annihilator:'找到灭火器，扑灭厨房火源',
+		pass02_ok:'干得不错，现在可以去走廊了',
+		
 		enterpass:'进 入 关 卡',
 		itemdescription:'点击物品查看详情,进行操作',
 		bagnote:'背包容量:5件   不可以堆叠',
