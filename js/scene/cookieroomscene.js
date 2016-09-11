@@ -139,6 +139,9 @@
 		
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
+				if(this.hero.scaleX == -1)
+					return;
+				
 				this.hero.switchState('annihilator',10);
 				this.annihilator.visible = false;
 				this.annihilatorEffect.visible = true;
@@ -146,7 +149,7 @@
 				this.annihilatorEffect.y = this.hero.posy - 120;
 				this.ignoreTouch = true;
 				
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_hide);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 				this.passstep = 1;
 				var scene = this;
 				new Hilo.Tween.to(scene.tvflash,{

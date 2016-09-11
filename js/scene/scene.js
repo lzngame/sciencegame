@@ -73,7 +73,7 @@
 				},
 			}).addTo(this);
 			new Hilo.Text({
-				text: 'BigFour 工作室制作.2016~2017',
+				text: '科普知识制作.2016~2017',
 				color: '#FFF200',
 				x: game.screenWidth - 200,
 				y: game.screenHeight - 22,
@@ -221,9 +221,16 @@
 				y:400
 			}).addTo(this);
 			
+			var lockpass = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('lockicon','uimap'),
+				x:300,
+				y:100
+			}).addTo(this);
+			
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.runaway);
+				game.switchScene(game.configdata.SCENE_NAMES.story);
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();
@@ -377,66 +384,86 @@
 			game.stage.swapChildren(this, game.previousScene);
 			var scene = this;
 			this.alpha = 1;
-			
-			var obj = game.pointdata.doors[game.userData.heroData.activeDoorIndex];
-			/*var img = game.getImg('uimap');
-			
-			
-			var storyimg = new Hilo.Bitmap({
-				image: obj.storyimg,
-				x:this.width/2 - 160,
-				y:10,
-			}).addTo(this);
-		
-			var bordertop = new Hilo.Bitmap({
-				image: img,
-				rect: game.configdata.getPngSize('bordertopstory'),
-				width:scene.width,
-				height:60,
-			}).addTo(this);
-			var borderleft = new Hilo.Bitmap({
-				image: img,
-				rect: game.configdata.getPngSize('borderleftstory'),
-			}).addTo(this);
-			borderleft.y = 15;
-			var borderright = new Hilo.Bitmap({
-				image: img,
-				rect: game.configdata.getPngSize('borderrightstory'), 
-			}).addTo(this);
-			borderright.y = borderleft.y;
-			borderright.x = bordertop.width + bordertop.x - borderright.width;
-			var borderbottom = new Hilo.Bitmap({
-				image:img,
-				rect: game.configdata.getPngSize('image351'),
-			}).addTo(this);
-			borderbottom.width = bordertop.width;
-			borderbottom.y = borderleft.y + borderleft.height;
-			borderbottom.height = this.height - borderleft.y - borderleft.height;
-			
 			new Hilo.Bitmap({
-				image: img,
-				rect: game.configdata.getPngSize('nobtn'),
-				x:this.width -20,
-				y:this.height - 50,
-				scaleX:-1,
-			}).addTo(this);*/
+				image:game.getImg('mainbg')
+			}).addTo(this);
+			
+			var img = game.getImg('uimap');
+			new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('pass01btn','uimap'),
+				x:360,
+				y:10
+			}).addTo(this);
+			
+			var bedroom = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('bedroompass','uimap'),
+				x:330,
+				y:100
+			}).addTo(this);
+			var cookieroom = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('cookiepass','uimap'),
+				x:600,
+				y:100
+			}).addTo(this);
+			var liftroom = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('liftpass','uimap'),
+				x:330,
+				y:300
+			}).addTo(this);
+			var corridor = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('corridorpass','uimap'),
+				x:600,
+				y:300
+			}).addTo(this);
+			
+			var btnback = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('backbtn','uimap'),
+				x:760,
+				y:20
+			}).addTo(this);
+			
+			
 			
 			var font = "14px arial";
-            var content = "Hello World! Hilo是一款HTML5 2D游戏引擎，欢迎使用。";
-
             //text view
             var text = new Hilo.Text({
                 font: font,
-                color:'white',
-                text: obj.storynote,
+                color:'#333330',
+                text:game.configdata.GAMETXTS.note01,
                 lineSpacing: 10,
                 width: 250,
                 height: 100,
                 x: 40,
-                y: 330
+                y: 100
             }).addTo(this);
+            
+            bedroom.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.attack);
+			});
+			
+			cookieroom.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.cookieroom);
+			});
+			
+			liftroom.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.choice);
+			});
+			
+			corridor.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.runaway);
+			});
+			
+			btnback.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.main);
+			});
 
-			this.on(Hilo.event.POINTER_START,function(e){
+			/*this.on(Hilo.event.POINTER_START,function(e){
 				new Hilo.Tween.to(this,{
 					alpha:0.05
 				},{
@@ -449,7 +476,7 @@
 						}
 					}
 				})
-			});
+			});*/
 		},
 		deactive: function() {
 			this.destory();

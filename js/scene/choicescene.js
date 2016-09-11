@@ -159,7 +159,7 @@
 				},{
 					duration:3000,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.attack);
+						game.switchScene(game.configdata.SCENE_NAMES.runaway);
 					}
 				});
 			}

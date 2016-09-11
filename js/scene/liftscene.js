@@ -26,6 +26,10 @@
 		fallspeed:5,
 		
 		liftbody:null,
+		timeImgs:null,
+		starttime:true,
+		showTimeImg:null,
+		showIndex:0,
 		constructor: function(properties) {
 			LifeScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -40,6 +44,7 @@
 			this.initx = this.x;
 			this.inity = this.y;
 			this.activeObjects = new Array();
+			this.timeImgs = ['iconnum09','iconnum08','iconnum07','iconnum06','iconnum05','iconnum04','iconnum03','iconnum02','iconnum01','iconnum00'];
 		},
 		active: function(doorIndex) {
 			console.log('%s active:', this.name);
@@ -48,8 +53,10 @@
 			this.addTo(game.stage);
 			this.alpha = 1;
 			this.currentIndex = 0;
-			
+			this.readyShakeTime = 0;
+			this.fallspeed = 0;
 			this.layoutBgMap();
+			this.showIndex = 0;
 			//this.layoutUI();
 			this.addHero();
 			//this.layoutBottomUI();
@@ -61,7 +68,7 @@
 		},
 		
 		initBlocks:function(){
-			this.blocks = [[0,0,850,420],[0,420,150,140],[700,420,150,50]];
+			this.blocks = [[0,0,850,420],[0,420,100,140],[700,420,150,50]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
@@ -116,7 +123,7 @@
 				},{
 					duration:3000,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.attack);
+						game.switchScene(game.configdata.SCENE_NAMES.choice);
 					}
 				});
 			}
@@ -192,6 +199,12 @@
 			
 			this.initBlocks();
 			
+			this.showTimeImg = new Hilo.Bitmap({
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.timeImgs[0],'uimap'),
+				x:680,
+				y:30
+			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
 				x:40,
@@ -226,8 +239,8 @@
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 383,
-				posy: 440,
+				posx: 223,
+				posy: 450,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
@@ -279,24 +292,35 @@
 			});
 		},
 		onUpdate:function(){
+			if(this.readyShakeTime > 0 && this.readyShakeTime % 50 == 0){
+				if(this.showIndex < 9){
+					this.showIndex ++;
+				}
+				this.showTimeImg.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.timeImgs[this.showIndex],'uimap'));	
+			}
+			
 			if(this.readyShakeTime == 50){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_warn,50);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_warn,80);
+				this.finger.visible = true;
 			}
 			if(this.readyShakeTime == 150){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
-				this.ignoreTouch = true;
-				this.finger.visible = false;
+				//this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
+				//this.ignoreTouch = true;
+				
 			}
-			if(this.readyShakeTime > 150){
+			if(this.showIndex == 9){
 				this.fallspeed++;
 				this.liftbody.y+=this.fallspeed;
 				this.hero.posy+=this.fallspeed;
+				this.finger.visible = false;
+				this.doorhandler.visible = false;
 			}
-			if(this.readyShakeTime ==400){
+			if(this.readyShakeTime ==510){
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
 				var btnpass01 = new Hilo.Bitmap({
 					image:game.getImg('uimap'),
-					rect:game.configdata.getPngRect('pass02','uimap'),
-					x:550,
+					rect:game.configdata.getPngRect('backbtn','uimap'),
+					x:500,
 					y:100
 				}).addTo(this);
  				btnpass01.on(Hilo.event.POINTER_START, function(e) {

@@ -222,7 +222,7 @@
 			this.bglayer2 = new Hilo.Container({
 			}).addTo(this.bg2);
 			
-			this.bg1.alpha = 0.5;
+			//this.bg1.alpha = 0.5;
 			
 			this.initBlocks();
 			
@@ -324,14 +324,14 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway);
 			}
 			
 			if(this.readyShakeTime == 400){
 				this.shakeRoom();
 			}
 			if(this.readyShakeTime == 530){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_pillow);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway_tile);
 			}
 			
 			this.readyShakeTime++;

@@ -26,6 +26,8 @@ game.configdata = new function(){
 	self.STORESIZE = 15;
 	
 	self.GAMETXTS ={
+		note01:'地震是一种自然现象，目前人列尚不能阻止地震的发生。但是，我们可以采取有效措施，最大限度地减轻地震灾害。由于地球不断运动，逐渐积累了巨大能量，在地壳某些脆弱地带造成岩层突然发生破裂或错动，这就是地震。 地震前兆指地震发生前出现的异常现象，如地震活动、地表的明显变化以及地磁、地电、重力等地球物理异常，地下水位、水化学、动物的异常行为等。',
+		
 		pass01_notestart:'地震避险自救：鼠标点击走动，alt键 蹲下',
 		pass01_pillow:'拿起枕头顶在头上防止掉落物砸伤',
 		pass01_hide:'做的很好，迅速躲到坚固的墙体',
@@ -41,7 +43,10 @@ game.configdata = new function(){
 		pass03_wrong:'小心点，电梯会发生坠落',
 		
 		pass04_warn:'你最好马上出去',
-		pass04_fall:'地震时，乘坐电梯会发生坠落的危险',
+		pass04_fall:'地震时，乘坐电梯会发生坠落的危险', 
+		
+		pass05_runaway:'Alt 键减速 Ctrl跳跃',
+		pass05_runaway_tile:'地震中行走要小心掉落物和地上的障碍',
 		
 		enterpass:'进 入 关 卡',
 		itemdescription:'点击物品查看详情,进行操作',
