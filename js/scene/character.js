@@ -22,6 +22,7 @@
 		posx:0,
 		posy:0,
 		jumpspeed:0,
+		jumpPower:-18,
 		floory:0,
 		speed:5.0,
 		speedx:0,
@@ -29,6 +30,8 @@
 		targetx:0,
 		targety:0,
 		ispillow:false,
+		
+		isRunaway:false,
 		constructor: function(properties) {
 			Hero.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -73,7 +76,11 @@
 					this.speedy = 0;
 					this.targetx = this.posx;
 					this.targety = this.posy;
-					this.switchState('idle',6);
+					if(this.isRunaway){
+						this.switchState('run',6);
+					}else{
+						this.switchState('idle',6);
+					}
 					this.jumpspeed = 0;
 				}else{
 					this.jumpspeed += 1.5;

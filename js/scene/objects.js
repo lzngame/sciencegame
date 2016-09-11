@@ -115,6 +115,33 @@
 		},
 	});
 	
+	var RunblockObj = ns.RunblockObj = Hilo.Class.create({
+		Extends: Hilo.Container,
+		body:null,
+		img:null,
+		name:'runblock',
+		clickArea:[0,0,10,10],
+		constructor: function(properties) {
+			ActiveObject.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.body = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.img,'uimap'),
+			}).addTo(this);
+			var x = this.clickArea[0];
+			var y = this.clickArea[1];
+			var w = this.clickArea[2];
+			var h = this.clickArea[3];
+			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
+		},
+		onUpdate:function(){
+			
+		},
+	});
+	
 	
 	//头像控件 -- 有生命值
 	var TopHeadPanel = ns.TopHeadPanel = Hilo.Class.create({
