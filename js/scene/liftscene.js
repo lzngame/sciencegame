@@ -194,7 +194,7 @@
 			this.liftbody = new Hilo.Bitmap({
 				image: game.getImg('lift'),
 				x:25,
-				y:-500,
+				y:-600,
 			}).addTo(this);
 			
 			this.initBlocks();

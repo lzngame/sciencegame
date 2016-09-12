@@ -134,6 +134,9 @@
 		atLastFrame: function() {
 			if (this.currentFrame == this.getNumFrames() - 1) {
 				switch (this.framename) {
+					case 'fallhit':
+						this.regainIdle();
+						break;
 					case 'behit':
 						this.regainIdle();
 						break;

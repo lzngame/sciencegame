@@ -116,6 +116,9 @@
 		},
 		pauseGame: function(ispause) {
 			ispause ? this.ticker.pause() : this.ticker.resume();
-		}
+		},
+		checkInRect:function(x,y,x1,y1,w1,h1){
+			return  (x > x1 && x < x1+w1 && y > y1 && y <y1+h1);
+		},
 	};
 })();

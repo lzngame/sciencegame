@@ -9,6 +9,8 @@
 		bgImg:null,
 		shakeTime:0,
 		shakeLevel:4,
+		shakeSpeed:1,
+		shakeOnce:false,
 		initx:0,
 		inity:0,
 		toFallTime:0,
@@ -22,9 +24,9 @@
 		finger:null,
 		notepanel:null,
 		tvflash:null,
+		aftershake:false,
 		
 		blocks:null,
-		activeObjects:null,
 		
 		passstep:0,
 		constructor: function(properties) {
@@ -40,7 +42,6 @@
 			this.background = '#1A0A04';
 			this.initx = this.x;
 			this.inity = this.y;
-			this.activeObjects = new Array();
 		},
 		active: function(doorIndex) {
 			console.log('%s active:', this.name);
@@ -51,31 +52,23 @@
 			this.currentIndex = 0;
 			
 			this.layoutBgMap();
-			//this.layoutUI();
 			this.addHero();
-			//this.layoutBottomUI();
-			//this.initTouchAttack();
-			//this.initData();
-			//this.hideFlashHand();
 			this.initkeyevent();
 			this.initTouchEvent();
 		},
+		
 		initkeyevent:function(){
 			var scene = this;
 			document.onkeydown=function(event){
              var e = event || window.event || arguments.callee.caller.arguments[0];
              if(e && e.keyCode==17){ // ctrl
- 					console.log('Jum');
  					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herojump});
                 }
               if(e && e.keyCode==18){ // alt 
- 					console.log('squat');
  					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
- 					scene.shakeRoom();
- 					//scene.fallfan.isFall = true;
                 }            
               if(e && e.keyCode==13){ // enter 键
-             }
+              }
          	}; 
          	document.onkeyup=function(event){
              var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -185,7 +178,6 @@
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
 				if(x - this.hero.posx <100 && y - this.hero.posy <250){
 					isClickIn = true;
-					
 				}else{
 					isClickIn = false;
 					console.log('pls close');						
@@ -206,28 +198,31 @@
 					console.log('hero squat');
 					this.hero.speedx = this.hero.speedy = 0;
 					this.hero.switchState('squat');
-					this.changeBg();
+					var x = this.hero.posx;
+					var y = this.hero.posy;
+					var x1 = this.safeArea.clickArea[0] + this.safeArea.x;
+					var y1 = this.safeArea.clickArea[1] + this.safeArea.y;
+					var w1 = this.safeArea.clickArea[2];
+					var h1 = this.safeArea.clickArea[3];
+					if(game.checkInRect(x,y,x1,y1,w1,h1) && !this.aftershake && this.hero.ispillow){
+						this.shakeRoom();
+						this.changeBg();
+						this.aftershake = true;
+					}
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
-					this.hero.jumpspeed = -18;
-					this.hero.floory = this.hero.posy;
-					this.hero.switchState('jump');
+					if(!this.hero.ispillow){
+						this.hero.jumpspeed = -18;
+						this.hero.floory = this.hero.posy;
+						this.hero.switchState('jump');
+					}
 					break;
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
-					console.log('hero squat');
-					this.hero.switchState('idle',5);
-					break;
-				case game.configdata.MSAGE_TYPE.herodead:
-					game.stage.off();
-					this.currentMonster.iswin = true;
-					this.addFinialScore();
-					break;
-				case game.configdata.MSAGE_TYPE.changeHerohp:
-					var n = msg.msgdata;
-					if(n <= 0){
-						game.stage.off();
+					if(this.hero.ispillow){
+						this.hero.switchState('handup',5);
+					}else{
+						this.hero.switchState('idle',5);
 					}
-					this.topHeadPanel.setHealth(n);
 					break;
 			}
 		},
@@ -237,18 +232,27 @@
 		changeBg:function(){
 			var scene = this;
 			Hilo.Tween.to(this, {
-				alpha:0.1
+				alpha:0
 			}, {
 				duration: 800,
 				ease: Hilo.Ease.Bounce.EaseOut,
 				onComplete: function() {
-					scene.alpha = 1;
-					scene.bgImg.setImage(game.getImg('bedroomafter'));
-					scene.step = 3;
-					scene.safeArea.visible = false;
-					scene.notepanel.show(true,game.configdata.GAMETXTS.pass01_tvflash);
-					scene.tvflash.visible = true;
-					scene.plug.status = 1;
+					Hilo.Tween.to(this, {
+						alpha:1
+					}, {
+						duration: 200,
+						ease: Hilo.Ease.Bounce.EaseOut,
+						onComplete: function() {
+							scene.alpha = 1;
+							scene.bgImg.setImage(game.getImg('bedroomafter'));
+							scene.step = 3;
+							scene.safeArea.visible = false;
+							scene.notepanel.show(true,game.configdata.GAMETXTS.pass01_tvflash);
+							scene.tvflash.visible = true;
+							scene.plug.status = 1;
+							scene.hero.ispillow = false;
+						}
+					});
 				}
 			});
 		},
@@ -312,7 +316,6 @@
 				brokenState:'ceilinglamp_piece',
 			}).addTo(this);
 			
-			
 			this.headPanel = new game.TopHeadPanel({
 				headImgUrl:'headicon2',
 				healthIcon:'heart02',
@@ -369,7 +372,6 @@
 			this.destory();
 		},
 		destory: function() {
-			console.log('%s destory',this.name);
 			this.hero.removeFromParent();
 			this.removeAllChildren();
 			this.removeFromParent();
@@ -414,7 +416,7 @@
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart);
 			}
 			
-			if(this.readyShakeTime == 400){
+			if(this.readyShakeTime == 300){
 				this.shakeRoom();
 			}
 			if(this.readyShakeTime == 530){
@@ -433,13 +435,13 @@
 				var d1 = Math.random();
 				var d2 = Math.random();
 				if(d1 > 0.5)
-				  this.x += offsetx;
+				  this.x += this.shakeSpeed;
 				else
-				  this.x -= offsetx;
+				  this.x -= this.shakeSpeed;
 				if(d2 > 0.5)
-				  this.y += offsety;
+				  this.y += this.shakeSpeed;
 				else
-				  this.y -= offsety;
+				  this.y -= this.shakeSpeed;
 				this.shakeTime -= 2;
 			}else{
 				this.shakeTime = 0;
@@ -447,27 +449,36 @@
 				this.y = this.inity;
 			}
 			this.toFallTime++;
-			if(this.toFallTime == 1000){
+			if(this.toFallTime == 400){
 				this.fallfan.isFall = true;
 			}
-			if(this.toFallTime == 1200){
+			if(this.toFallTime == 500){
 				this.falllamp.isFall = true;
 			}
 			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
 				console.log('once check:'+this.fallfan.name);
 				this.fallfan.onDanger = false;
+				if(Math.abs(this.hero.posx -270) < 30   &&  Math.abs(this.hero.posy -447)<30){
+					this.hero.switchState('fallhit',6);
+				}
+			}
+			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
+				console.log('once check:'+this.fallfan.name);
+				this.fallfan.onDanger = false;
+				if(Math.abs(this.hero.posx -270) < 30   &&  Math.abs(this.hero.posy -447)<30){
+					this.hero.switchState('fallhit',6);
+				}
 			}
 			
 			if(this.passstep ==1){
 				if(this.checkActiveItem(this.hero.posx,this.hero.posy,this.safeArea)){
 					this.notepanel.show(true,game.configdata.GAMETXTS.pass01_squat);
 					this.finger.visible = false;
-					this.hero.ispillow = false;
+					
 					//this.safeArea.visible = false;
 					this.passstep = 2;
 				}
 			}
-			
 			this.checkBlocks();
 		},
 	});

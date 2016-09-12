@@ -414,7 +414,8 @@ game.monsterdata = new function(){
 					pillowup:{from:12,to:17},
 					annihilator:[18,18],
 					run:[19,20,21,22,23,24],
-					runstop:[25,25]
+					runstop:[25,25],
+					fallhit:[25,25],
 				}
 			});
 	};

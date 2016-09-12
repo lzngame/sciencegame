@@ -139,7 +139,7 @@
 		
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
-				if(this.hero.scaleX == -1)
+				if(this.hero.scaleX == -1 || this.hero.framename != 'idle')
 					return;
 				
 				this.hero.switchState('annihilator',10);

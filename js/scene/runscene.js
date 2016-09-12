@@ -127,20 +127,29 @@
 			return isIn;
 		},
 		checkBlocks:function(){
-			for(var i=0;i<this.blocks.length;i++){
-				var rect = this.blocks[i];
+			var objs = this.bglayer1.children;
+			for(var i=0;i<objs;i++){
+				var rect = objs[i].clickArea;
 				var w = rect[2];
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				if(
-					(this.hero.speedx < 0 && Math.abs(this.hero.posx -(x+w) ) < 20  && (this.hero.posy > y && this.hero.posy < y+h)) ||
-					(this.hero.speedx > 0 && Math.abs(this.hero.posx - x)	  < 20  && (this.hero.posy > y && this.hero.posy < y+h)) ||
-					(this.hero.speedy > 0 && Math.abs(this.hero.posy - y)     < 5  && (this.hero.posx > x && this.hero.posx < x+w))  ||
-					(this.hero.speedy < 0 && Math.abs(this.hero.posy - (y+h))< 10  && (this.hero.posx > x && this.hero.posx < x+w))
-				)
-				{
-					this.heroStopBlock();
+				if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h)){
+					console.log('block');
+				}
+			}
+			var objs2 = this.bglayer2.children;
+			if(objs.length > 0 || objs2.length > 0){
+				console.log('pause');
+			}
+			for(var i=0;i<objs2;i++){
+				var rect = objs2[i].clickArea;
+				var w = rect[2];
+				var h = rect[3];
+				var x = rect[0];
+				var y = rect[1];
+				if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h)){
+					console.log('block---------------------');
 				}
 			}
 		},
@@ -301,6 +310,7 @@
 			 var radX = Math.random() *540;
 			 var block = new game.RunblockObj({
 			 	img:'block02',
+			 	clickArea:[0,0,100,50],
 			 	x:radX,
 			 	y:this.blockline
 			 }).addTo(bglayer);
