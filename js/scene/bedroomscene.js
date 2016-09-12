@@ -459,6 +459,9 @@
 				console.log('once check:'+this.fallfan.name);
 				this.fallfan.onDanger = false;
 				if(Math.abs(this.hero.posx -270) < 30   &&  Math.abs(this.hero.posy -447)<30){
+					
+				}
+				if(game.checkInRect(this.hero.posx,this.hero.posy,200,400,100,50)){
 					this.hero.switchState('fallhit',6);
 				}
 			}

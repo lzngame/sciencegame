@@ -13,21 +13,22 @@
 		inity:0,
 		toFallTime:0,
 		
-		
 		notepanel:null,
-		
 		
 		blocks:null,
 		activeObjects:null,
 		
 		//---run away
-		defaultBgspeed:5,
+		defaultBgspeed:4,
 		bgspeed:0,
 		bg1:null,
 		bg2:null,
 		bglayer1:null,
 		bglayer2:null,
-		blockline:400,
+		blockline:370,
+		fallblockLayer:null,
+		isProtect:false,
+		protectTime:0,
 		
 		passstep:0,
 		constructor: function(properties) {
@@ -53,10 +54,9 @@
 			this.addTo(game.stage);
 			this.alpha = 1;
 			this.currentIndex = 0;
-			
 			this.layoutBgMap();
-			//this.layoutUI();
 			this.addHero();
+			this.headPanel.setHealth(this.hero.currentHealth);
 			//this.layoutBottomUI();
 			//this.initTouchAttack();
 			//this.initData();
@@ -96,11 +96,11 @@
               if(e && e.keyCode==16){ // shift 键
                   //要做的事情
                   scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.runstop2run});
-             }
+             	}
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[0,0,850,310],[0,310,355,60],[0,370,80,120],[810,310,40,175],[665,310,145,100]];
+			this.blocks = [[0,0,850,280]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
@@ -128,34 +128,49 @@
 		},
 		checkBlocks:function(){
 			var objs = this.bglayer1.children;
-			for(var i=0;i<objs;i++){
-				var rect = objs[i].clickArea;
-				var w = rect[2];
-				var h = rect[3];
-				var x = rect[0];
-				var y = rect[1];
-				if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h)){
-					console.log('block');
+			for(var i=0;i<objs.length;i++){
+				var item = objs[i];
+				var rect = item.clickArea;
+				if(rect){
+					var x = rect[0]+item.x + this.bg1.x;
+					var y = rect[1]+item.y;
+					var w = rect[2];
+					var h = rect[3];
+					if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h)){
+						this.hero.switchState('fallhit');
+						if(!this.isProtect){
+							this.isProtect = true;
+							this.hero.currentHealth--;
+							if(this.hero.currentHealth <= 0){
+								this.hero.currentHealth = 0;
+								this.showFailNote();
+							}
+							this.headPanel.setHealth(this.hero.currentHealth);
+						}
+					}
 				}
 			}
-			var objs2 = this.bglayer2.children;
-			if(objs.length > 0 || objs2.length > 0){
-				console.log('pause');
-			}
-			for(var i=0;i<objs2;i++){
-				var rect = objs2[i].clickArea;
-				var w = rect[2];
-				var h = rect[3];
-				var x = rect[0];
-				var y = rect[1];
-				if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h)){
-					console.log('block---------------------');
+			var fallobjs = this.fallblockLayer.children;
+			for(var i=0;i<fallobjs.length;i++){
+				var item = fallobjs[i];
+				var rect = item.clickArea;
+				if(rect && item.onDanger){
+					var x = rect[0]+item.x;
+					var y = rect[1]+item.y;
+					var w = rect[2];
+					var h = rect[3];
+					
+					var x1 = this.hero.posx -50;
+					var y1 = this.hero.posy - 200;
+					var w1 = 100;
+					var h1 = 200;
+					if(game.checkTwoBox(x,y,w,h,x1,y1,w1,h1)){
+						this.hero.switchState('fallhit');
+						this.headPanel.setHealth(this.hero.currentHealth);
+					}
 				}
 			}
 		},
-		
-		
-		
 		heroStopBlock:function(){
 			this.hero.speedx = 0;
 			this.hero.speedy = 0;
@@ -214,40 +229,35 @@
 			var scene = this;
 			
 			this.bg1 = new Hilo.Container({
+				width:850*6,
 			}).addTo(this);
-			this.bg2 = new Hilo.Container({
-				x:850
-			}).addTo(this);
-			
-			new Hilo.Bitmap({
-				image: game.getImg('corridorrbg'),
-			}).addTo(this.bg1);
-			new Hilo.Bitmap({
-				image: game.getImg('corridorrbg'),
-			}).addTo(this.bg2);
+			for(var i=0;i<5;i++){
+				new Hilo.Bitmap({
+					image: game.getImg('corridorrbg'),
+					x:i*850
+				}).addTo(this.bg1);
+			}
 			
 			this.bglayer1 = new Hilo.Container({
 			}).addTo(this.bg1);
-			this.bglayer2 = new Hilo.Container({
-			}).addTo(this.bg2);
+			this.addBlock();
 			
-			//this.bg1.alpha = 0.5;
+			this.fallblockLayer = new Hilo.Container({
+			}).addTo(this);
 			
 			this.initBlocks();
 			
-			
-			
 			this.headPanel = new game.TopHeadPanel({
+				healthValue:game.configdata.DEFAULTHEROHP,
 				headImgUrl:'headicon2',
 				healthIcon:'heart02',
+				healthIconBlack:'heart01',
 			}).addTo(this);
 			
 			this.notepanel = new game.DrNote({
 				txt:game.configdata.GAMETXTS.pass01_notestart,
 				x:-700,
 			}).addTo(this);
-			
-			
 		},
 		addHero:function(){
 			this.hero = new game.Hero({
@@ -303,34 +313,39 @@
 					else
 						scene.hero.turnright();
 				}
-				
 			});
 		},
-		addBlock:function(bglayer){
-			 var radX = Math.random() *540;
-			 var block = new game.RunblockObj({
-			 	img:'block02',
-			 	clickArea:[0,0,100,50],
-			 	x:radX,
-			 	y:this.blockline
-			 }).addTo(bglayer);
+		addBlock:function(){
+			for(var i=0;i< 8;i++){
+				var radX = Math.random() * 200 + i * 450;
+				var block = new game.RunblockObj({
+			 		img:'block02',
+			 		clickArea:[40,0,100,90],
+			 		x:radX,
+			 		y:this.blockline
+			 	}).addTo(this.bglayer1);
+			}
 		},
-		addFallBlock:function(bglayer){
-			if(Math.random() < 0.3){
+		addFallBlock:function(){
+			if(Math.random() < 0.5){
 				return;
 			}
-			 var radX2 = Math.random() * 300+480;
+			var runspeed = this.bgspeed;
+			 var radX2 = Math.random() * 700+100;
 			 new game.FallObject({
 				x:radX2,
 				y:0,
 				isFall:true,
-				fallspeed:2,
+				isRun:true,
+				runspeed:runspeed,
+				fallspeed:1,
 				name:'fallfan',
 				imgInity:0,
 				floorline:400,
 				wholeState:'ceilingfan',
 				brokenState:'ceilingfan_piece',
-			}).addTo(bglayer);
+				clickArea:[10,10,100,40],
+			}).addTo(this.fallblockLayer);
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
@@ -345,7 +360,57 @@
 			}
 			
 			this.readyShakeTime++;
+			this.shakeScene();
 			
+			this.toFallTime++;
+			
+			if(this.bg1.x >= -850*4){
+				this.bg1.x -= this.bgspeed;
+			}else{
+				this.hero.isRunaway = false;
+				this.hero.switchState('idle',7);
+			}
+			
+			if(this.readyShakeTime % 100 == 0 && this.readyShakeTime < 500){
+				this.addFallBlock();
+			}
+			this.checkBlocks();
+			this.heroProtect();
+		},
+		showFailNote:function(){
+			this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
+			var btnpass01 = new Hilo.Bitmap({
+					image:game.getImg('uimap'),
+					rect:game.configdata.getPngRect('backbtn','uimap'),
+					x:500,
+					y:100
+				}).addTo(this);
+ 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
+					game.switchScene(game.configdata.SCENE_NAMES.main);
+				});
+			this.bgspeed = 0;
+			this.fallblockLayer.removeFromParent();
+			this.bglayer1.removeFromParent();
+			this.hero.isRunaway = false;
+			this.hero.switchState('idle',7);
+			this.hero.visible = false;
+			new Hilo.Bitmap({
+					image:game.getImg('uimap'),
+					rect:game.configdata.getPngRect('boy','uimap'),
+					x:500,
+					y:185,
+			}).addTo(this);
+		},
+		heroProtect:function(){
+			if(this.isProtect){
+				this.protectTime++;
+				if(this.protectTime > 50){
+					this.isProtect = false;
+					this.protectTime = 0;
+				}
+			}
+		},
+		shakeScene:function(){
 			if(this.shakeTime > 0){
 				this.x = this.initx;
 				this.y = this.inity;
@@ -367,28 +432,6 @@
 				this.x = this.initx;
 				this.y = this.inity;
 			}
-			this.toFallTime++;
-			
-			this.bg1.x -= this.bgspeed;
-			this.bg2.x -= this.bgspeed;
-			if(this.bg1.x <= -850){
-				this.bglayer1.removeAllChildren();
-				this.bg1.x = 850;
-				if(this.bglayer1.getNumChildren() < 3){
-					this.addBlock(this.bglayer1);
-					this.addFallBlock(this.bglayer2);
-				}
-			}
-			if(this.bg2.x <= -850){
-				this.bglayer2.removeAllChildren();
-				this.bg2.x = 850;
-				if(this.bglayer2.getNumChildren() < 3){
-					this.addBlock(this.bglayer2);
-					this.addFallBlock(this.bglayer1);
-				}
-			}
-			
-			this.checkBlocks();
 		},
 	});
 })(window.game);

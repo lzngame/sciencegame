@@ -30,8 +30,10 @@
 		targetx:0,
 		targety:0,
 		ispillow:false,
-		
 		isRunaway:false,
+		
+		currentHealth:5,
+		
 		constructor: function(properties) {
 			Hero.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -135,7 +137,11 @@
 			if (this.currentFrame == this.getNumFrames() - 1) {
 				switch (this.framename) {
 					case 'fallhit':
-						this.regainIdle();
+						if(this.isRunaway){
+							this.switchState('run',7);
+						}else{
+							this.regainIdle();
+						}
 						break;
 					case 'behit':
 						this.regainIdle();

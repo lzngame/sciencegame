@@ -9,7 +9,10 @@
 		fallspeed:3,
 		floorline:450,
 		imgInity:0,
-		onDanger:false,
+		isRun:false,
+		runspeed:0,
+		onDanger:true,
+		clickArea:[0,0,10,10],
 		constructor: function(properties) {
 			FallObject.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -20,7 +23,12 @@
 				rect:game.configdata.getPngRect(this.wholeState,'uimap'),
 				y:this.imgInity,
 			}).addTo(this);
-			
+			var x = this.clickArea[0];
+			var y = this.clickArea[1];
+			var w = this.clickArea[2];
+			var h = this.clickArea[3];
+			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
 		},
 		onUpdate:function(){
 			if(this.isFall){
@@ -31,7 +39,13 @@
 					this.isFall = false;
 					this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.brokenState,'object'));
 					this.fallspeed = 4;
-					this.onDanger = true;
+					this.onDanger = false;
+				}
+			}
+			if(this.isRun){
+				this.x -= this.runspeed;
+				if(this.x < -100){
+					this.removeFromParent();
 				}
 			}
 		},
@@ -52,6 +66,7 @@
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect('finger01','uimap'),
 			}).addTo(this);
+			
 			if(!this.right){
 				this.turnleft();
 			}
@@ -148,8 +163,9 @@
 		Extends: Hilo.Container,
 		headImg:null,
 		headImgUrl:null,
-		healthValue:3,
+		healthValue:0,
 		healthIcon:'',
+		healthIconBlack:'',
 		expNum:null,
 		powerNum:null,
 		nimbleNum:null,
@@ -179,11 +195,19 @@
 				y:5,
 			}).addTo(this);
 			
-			this.setHealth(3);
+			this.setHealth(0);
 		},
 		setHealth: function(n) {
 			this.hpContainer.removeAllChildren();
 			var img = game.getImg('uimap');
+			for (var i = 0; i < this.healthValue; i++) {
+				new Hilo.Bitmap({
+					image: img,
+					rect: game.configdata.getPngRect(this.healthIconBlack,'uimap'),
+					x: i * 50 ,
+					y:2
+				}).addTo(this.hpContainer);
+			}
 			for (var i = 0; i < n; i++) {
 				new Hilo.Bitmap({
 					image: img,
