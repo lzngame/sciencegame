@@ -17,6 +17,7 @@
 		
 		fallfan:null,
 		falllamp:null,
+		fallfanShader:null,
 		plug:null,
 		pillow:null,
 		safeArea:null,
@@ -55,6 +56,7 @@
 			this.addHero();
 			this.initkeyevent();
 			this.initTouchEvent();
+			this.headPanel.setHealth(this.hero.currentHealth);
 		},
 		
 		initkeyevent:function(){
@@ -87,7 +89,7 @@
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[0,0,850,310],[0,310,355,60],[0,370,80,120],[810,310,40,175],[665,310,145,100]];
+			this.blocks = [[0,0,1202,443],[0,443,500,80],[0,500,200,80],[0,580,80,100],[934,440,270,70],[980,506,223,70],[1115,506,84,96],[1175,593,27,88],[718,516,90,30]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
@@ -95,7 +97,7 @@
 				var x = rect[0];
 				var y = rect[1];
 				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
+				g.lineStyle(1,"#00f").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){
@@ -262,68 +264,95 @@
 				image: game.getImg('bedroombefore'),
 			}).addTo(this);
 			
+			new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('chuanglian','uimap'),
+				x:592-170,
+				y:119-55
+			}).addTo(this);
+			
 			this.initBlocks();
 			this.plug  = new game.ActiveObject({
-				x:654,
-				y:183,
+				x:906,
+				y:262,
 				readyImgUrl:'plug1',
 				finishedImgUrl:'plug2',
-				clickArea:[9,0,20,40],
+				clickArea:[19,0,40,40],
 			}).addTo(this);
 			
 			this.pillow  = new game.ActiveObject({
-				x:164,
-				y:270,
+				x:414,
+				y:410,
 				readyImgUrl:'pillow',
 				finishedImgUrl:'pillow',
 				clickArea:[9,0,130,50],
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
-				x:822,
-				y:300,
+				x:1162,
+				y:422,
 				readyImgUrl:'handler',
 				finishedImgUrl:'handler',
-				clickArea:[9,0,40,40],
+				clickArea:[0,0,50,50],
 			}).addTo(this);
 			
 			this.safeArea  = new game.ActiveObject({
-				x:535,
-				y:305,
+				x:769,
+				y:425,
 				readyImgUrl:'safearea1',
 				finishedImgUrl:'safearea1',
-				clickArea:[29,5,70,40],
+				clickArea:[29,5,100,60],
 			}).addTo(this);
-			this.safeArea.visible = false;
+			this.safeArea.visible = true;
+			
+			            
+            var frames = [
+                    //[357,1267,292,171],
+					//[0,1474,357,207],
+					[357,1060,357,207],
+					[0,1681,357,207],
+					[0,1060,357,207],
+					[0,1267,357,207], //0-5
+                ];
 			
 			this.fallfan = new game.FallObject({
 				x:200,
-				y:0,
+				y:-30,
 				name:'fallfan',
-				imgInity:0,
-				floorline:400,
-				wholeState:'ceilingfan',
-				brokenState:'ceilingfan_piece',
+				imgInity:-30,
+				floorline:470,
+				wholeState:'ceilingfan1',
+				animaFrames:frames,
 			}).addTo(this);
 			
-			this.falllamp = new game.FallObject({
+			this.fallfanShader = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('fanshader','uimap'),
+				y:550,
+				x:200
+			}).addTo(this);
+			/*this.falllamp = new game.FallObject({
 				x:500,
 				y:0,
 				name:'falllamp',
 				imgInity:0,
 				floorline:400,
-				wholeState:'ceilinglamp',
+				wholeState:'ceilinglamp1',
 				brokenState:'ceilinglamp_piece',
-			}).addTo(this);
+			}).addTo(this);*/
 			
 			this.headPanel = new game.TopHeadPanel({
+				healthValue:game.configdata.DEFAULTHEROHP,
 				headImgUrl:'headicon2',
 				healthIcon:'heart02',
+				healthIconBlack:'heart01',
+				x:20,
+				y:20,
 			}).addTo(this);
 			
 			this.finger = new game.FingerPoint({
-				x:70,
-				y:278,
+				x:408,
+				y:428,
 				visible:false,
 			}).addTo(this);
 			
@@ -360,8 +389,8 @@
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 443,
-				posy: 400,
+				posx: 256,
+				posy: 627,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
@@ -453,23 +482,17 @@
 				this.fallfan.isFall = true;
 			}
 			if(this.toFallTime == 500){
-				this.falllamp.isFall = true;
+				//this.falllamp.isFall = true;
 			}
 			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
 				console.log('once check:'+this.fallfan.name);
+				this.fallfanShader.removeFromParent();
 				this.fallfan.onDanger = false;
-				if(Math.abs(this.hero.posx -270) < 30   &&  Math.abs(this.hero.posy -447)<30){
-					
-				}
-				if(game.checkInRect(this.hero.posx,this.hero.posy,200,400,100,50)){
+				
+				if(game.checkInRect(this.hero.posx,this.hero.posy,256,598,200,50)){
 					this.hero.switchState('fallhit',6);
-				}
-			}
-			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
-				console.log('once check:'+this.fallfan.name);
-				this.fallfan.onDanger = false;
-				if(Math.abs(this.hero.posx -270) < 30   &&  Math.abs(this.hero.posy -447)<30){
-					this.hero.switchState('fallhit',6);
+					this.hero.currentHealth--;
+					this.headPanel.setHealth(this.hero.currentHealth);
 				}
 			}
 			

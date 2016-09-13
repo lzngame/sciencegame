@@ -11,8 +11,14 @@
 		imgInity:0,
 		isRun:false,
 		runspeed:0,
+		frames:null,
 		onDanger:true,
 		clickArea:[0,0,10,10],
+		
+		fallAnimaIndex:0,
+		animaFrames:null,
+		startBreak:false,
+		interval:0,
 		constructor: function(properties) {
 			FallObject.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -37,9 +43,26 @@
 					this.y += this.fallspeed;
 				}else{
 					this.isFall = false;
-					this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.brokenState,'object'));
+					this.startBreak = true;
 					this.fallspeed = 4;
 					this.onDanger = false;
+            		console.log('break');
+				}
+			}
+			if(this.startBreak){
+				console.log('index:%d',this.fallAnimaIndex);
+				console.log('interval:%d',this.interval);
+				
+				if(this.interval > 2){
+					this.img.setImage(game.getImg('fallobjs'),this.animaFrames[this.fallAnimaIndex]);
+					this.interval = 0;
+					if(this.fallAnimaIndex < this.animaFrames.length-1){
+						this.fallAnimaIndex++;
+					}else{
+						this.startBreak = false;
+					}
+				}else{
+					this.interval++;
 				}
 			}
 			if(this.isRun){
@@ -204,7 +227,7 @@
 				new Hilo.Bitmap({
 					image: img,
 					rect: game.configdata.getPngRect(this.healthIconBlack,'uimap'),
-					x: i * 50 ,
+					x: i * 70,
 					y:2
 				}).addTo(this.hpContainer);
 			}
@@ -212,7 +235,7 @@
 				new Hilo.Bitmap({
 					image: img,
 					rect: game.configdata.getPngRect(this.healthIcon,'uimap'),
-					x: i * 50 ,
+					x: i * 70 ,
 					y:2
 				}).addTo(this.hpContainer);
 			}

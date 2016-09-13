@@ -11,26 +11,26 @@
 		shakeLevel:4,
 		initx:0,
 		inity:0,
-		toFallTime:0,
+		
 		
 		notepanel:null,
-		
 		blocks:null,
-		activeObjects:null,
 		
 		//---run away
 		defaultBgspeed:4,
 		bgspeed:0,
 		bg1:null,
 		bg2:null,
-		bglayer1:null,
+		blockLayer:null,
 		bglayer2:null,
-		blockline:370,
+		blockline:390,
 		fallblockLayer:null,
 		isProtect:false,
 		protectTime:0,
-		
+		iswin:false,
+		startRun:false,
 		passstep:0,
+		basefloor:420,
 		constructor: function(properties) {
 			RunawayScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -44,8 +44,7 @@
 			this.background = '#1A0A04';
 			this.initx = this.x;
 			this.inity = this.y;
-			this.activeObjects = new Array();
-			this.bgspeed = this.defaultBgspeed;
+			
 		},
 		active: function(doorIndex) {
 			console.log('%s active:', this.name);
@@ -57,12 +56,25 @@
 			this.layoutBgMap();
 			this.addHero();
 			this.headPanel.setHealth(this.hero.currentHealth);
-			//this.layoutBottomUI();
-			//this.initTouchAttack();
-			//this.initData();
-			//this.hideFlashHand();
 			this.initkeyevent();
 			this.initTouchEvent();
+			this.ignoreTouch = true;
+			this.bgspeed = this.defaultBgspeed;
+			this.iswin = false;
+			this.startRun = false;
+			this.fallblockLayer.visible= true;
+			this.readyShakeTime = 0;
+			this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway,200);
+			
+			Hilo.Tween.to(this, {
+				alpha: 1
+			}, {
+				duration: 2800,
+				onComplete: function() {
+				   scene.startRun = true;
+				   scene.hero.switchState('run',6);
+				}
+			});
 		},
 		initkeyevent:function(){
 			var scene = this;
@@ -127,7 +139,7 @@
 			return isIn;
 		},
 		checkBlocks:function(){
-			var objs = this.bglayer1.children;
+			var objs = this.blockLayer.children;
 			for(var i=0;i<objs.length;i++){
 				var item = objs[i];
 				var rect = item.clickArea;
@@ -136,14 +148,26 @@
 					var y = rect[1]+item.y;
 					var w = rect[2];
 					var h = rect[3];
-					if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h)){
+					if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h) && this.hero.currentHealth > 0){
 						this.hero.switchState('fallhit');
+						this.hero.posy = this.basefloor;
 						if(!this.isProtect){
 							this.isProtect = true;
 							this.hero.currentHealth--;
 							if(this.hero.currentHealth <= 0){
 								this.hero.currentHealth = 0;
-								this.showFailNote();
+								this.bgspeed = 0;
+								this.fallblockLayer.visible= false;
+								var scene = this;
+								Hilo.Tween.to(this.hero, {
+									alpha: 0
+									}, {
+									duration: 2800,
+									ease: Hilo.Ease.Bounce.EaseOut,
+									onComplete: function() {
+										scene.showEndNote(game.configdata.GAMETXTS.pass05_fail);
+									}
+								});
 							}
 							this.headPanel.setHealth(this.hero.currentHealth);
 						}
@@ -166,6 +190,7 @@
 					var h1 = 200;
 					if(game.checkTwoBox(x,y,w,h,x1,y1,w1,h1)){
 						this.hero.switchState('fallhit');
+						this.hero.posy = this.basefloor;
 						this.headPanel.setHealth(this.hero.currentHealth);
 					}
 				}
@@ -183,12 +208,11 @@
 					console.log('hero squat');
 					this.hero.speedx = this.hero.speedy = 0;
 					this.hero.switchState('squat');
-					this.changeBg();
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
 					if(this.hero.framename != 'jump'){
-						this.hero.jumpspeed = this.hero.jumpPower*1.5;
 						this.hero.floory = this.hero.posy;
+						this.hero.jumpspeed = this.hero.jumpPower*1.5;
 						this.hero.switchState('jump');
 					}
 					break;
@@ -227,7 +251,6 @@
 		},
 		layoutBgMap:function(){
 			var scene = this;
-			
 			this.bg1 = new Hilo.Container({
 				width:850*6,
 			}).addTo(this);
@@ -238,7 +261,7 @@
 				}).addTo(this.bg1);
 			}
 			
-			this.bglayer1 = new Hilo.Container({
+			this.blockLayer = new Hilo.Container({
 			}).addTo(this.bg1);
 			this.addBlock();
 			
@@ -264,21 +287,21 @@
 				name: 'Hero',
 				framename: 'idle',
 				posx: 443,
-				posy: 420,
+				posy: this.basefloor,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
 				alpha:1,
 				isRunaway:true,
 			}).addTo(this);
-			this.hero.switchState('run',6);
+			//this.hero.switchState('run',6);
 		},
 		deactive: function() {
 			this.destory();
 		},
 		destory: function() {
 			console.log('%s destory',this.name);
-			this.hero.removeFromParent();
+			//this.hero.removeFromParent();
 			this.removeAllChildren();
 			this.removeFromParent();
 			game.stage.off();
@@ -295,11 +318,7 @@
 				var targetx = stagex - scene.x;
 				var targety = stagey - scene.y;
 				if(!scene.checkInBlocks(targetx,targety)){
-					if(scene.hero.ispillow){
-						scene.hero.switchState('pillowup',5);
-					}else{
-						scene.hero.switchState('walk',5);
-					}
+					scene.hero.switchState('walk',5);
 					
 					var disX = targetx - scene.hero.posx;
 					var disY = targety - scene.hero.posy;
@@ -316,19 +335,20 @@
 			});
 		},
 		addBlock:function(){
-			for(var i=0;i< 8;i++){
-				var radX = Math.random() * 200 + i * 450;
+			var objPoses =[800,1200,1500,1900,2300,2850,3100,3500];
+			for(var i=0;i< objPoses.length;i++){
+				var radX = objPoses[i];
 				var block = new game.RunblockObj({
 			 		img:'block02',
-			 		clickArea:[40,0,100,90],
+			 		clickArea:[40,0,70,90],
 			 		x:radX,
 			 		y:this.blockline
-			 	}).addTo(this.bglayer1);
+			 	}).addTo(this.blockLayer);
 			}
 		},
 		addFallBlock:function(){
 			if(Math.random() < 0.5){
-				return;
+				//return;
 			}
 			var runspeed = this.bgspeed;
 			 var radX2 = Math.random() * 700+100;
@@ -348,27 +368,37 @@
 			}).addTo(this.fallblockLayer);
 		},
 		onUpdate:function(){
+			if(!this.startRun){
+				return;
+			}
 			if(this.readyShakeTime == 100){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway);
+				//this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway,200);
 			}
 			
 			if(this.readyShakeTime == 400){
 				this.shakeRoom();
 			}
-			if(this.readyShakeTime == 530){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway_tile);
-			}
+			
 			
 			this.readyShakeTime++;
 			this.shakeScene();
 			
-			this.toFallTime++;
+			
 			
 			if(this.bg1.x >= -850*4){
 				this.bg1.x -= this.bgspeed;
-			}else{
+			}else if(!this.iswin){
+				this.hero.posx += 5;
+				
+			}
+			
+			if(this.hero.posx >880 && !this.iswin){
+				this.iswin = true;
 				this.hero.isRunaway = false;
 				this.hero.switchState('idle',7);
+				this.showEndNote(game.configdata.GAMETXTS.pass05_success);
+				this.hero.visible =false;
+				console.log('game win end');
 			}
 			
 			if(this.readyShakeTime % 100 == 0 && this.readyShakeTime < 500){
@@ -377,23 +407,20 @@
 			this.checkBlocks();
 			this.heroProtect();
 		},
-		showFailNote:function(){
-			this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
+		showEndNote:function(txt){
+			this.notepanel.show(true,txt,300);
 			var btnpass01 = new Hilo.Bitmap({
 					image:game.getImg('uimap'),
 					rect:game.configdata.getPngRect('backbtn','uimap'),
-					x:500,
-					y:100
+					x:680,
+					y:400
 				}).addTo(this);
  			btnpass01.on(Hilo.event.POINTER_START, function(e) {
 					game.switchScene(game.configdata.SCENE_NAMES.main);
 				});
-			this.bgspeed = 0;
 			this.fallblockLayer.removeFromParent();
-			this.bglayer1.removeFromParent();
-			this.hero.isRunaway = false;
-			this.hero.switchState('idle',7);
-			this.hero.visible = false;
+			this.blockLayer.removeFromParent();
+			
 			new Hilo.Bitmap({
 					image:game.getImg('uimap'),
 					rect:game.configdata.getPngRect('boy','uimap'),
