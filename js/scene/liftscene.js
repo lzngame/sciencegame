@@ -75,8 +75,8 @@
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
+				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				//g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){

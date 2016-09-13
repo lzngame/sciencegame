@@ -385,7 +385,9 @@
 			var scene = this;
 			this.alpha = 1;
 			new Hilo.Bitmap({
-				image:game.getImg('mainbg')
+				image:game.getImg('mainbg'),
+				width:1202,
+				height:686
 			}).addTo(this);
 			
 			var img = game.getImg('uimap');

@@ -90,15 +90,15 @@
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[0,0,850,280],[505,275,345,40],[586,315,264,43],[708,358,139,127]];
+			this.blocks = [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
+				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				//g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){
@@ -228,19 +228,21 @@
 			}).addTo(this);
 			
 			this.initBlocks();
-			
+			//lift
 			this.annihilator  = new game.ActiveObject({
-				x:684,
-				y:250,
+				x:1173,
+				y:380,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[12,10,70,50],
-				status:1
+				clickArea:[0,0,70,50],
+				status:1,
+				visible:false,
 			}).addTo(this);
+			
 
 			this.doorhandler  = new game.ActiveObject({
-				x:260,
-				y:180,
+				x:725,
+				y:219,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
@@ -253,13 +255,15 @@
 			}).addTo(this);
 			
 			new game.FingerPoint({
-				x:180,
-				y:190,
+				x:664,
+				y:228,
+				
 			}).addTo(this);
 			
 			new game.FingerPoint({
-				x:642,
-				y:272,
+				x:1102,
+				y:394,
+				visible:false,
 			}).addTo(this);
 			
 			this.notepanel = new game.DrNote({

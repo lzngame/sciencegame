@@ -57,6 +57,7 @@
 			this.initkeyevent();
 			this.initTouchEvent();
 			this.headPanel.setHealth(this.hero.currentHealth);
+			game.sounds.play(0,false);
 		},
 		
 		initkeyevent:function(){
@@ -96,8 +97,8 @@
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#00f").drawRect(0,0,w,h).endFill().addTo(this);
+				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				//g.lineStyle(1,"#00f").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){
@@ -142,7 +143,7 @@
 				this.safeArea.status = 1;
 				this.hero.ispillow = true;
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_hide);
-				this.finger.setpos(500,300);
+				this.finger.setpos(752,462);
 				this.passstep = 1;
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
@@ -152,7 +153,7 @@
 				this.doorhandler.status = 1;
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
 				this.finger.visible = true;
-				this.finger.setpos(720,310);
+				this.finger.setpos(1103,437);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.safeArea)){
 				
@@ -199,7 +200,12 @@
 				case game.configdata.MSAGE_TYPE.herosquat:
 					console.log('hero squat');
 					this.hero.speedx = this.hero.speedy = 0;
-					this.hero.switchState('squat');
+					if(this.hero.ispillow){
+						this.hero.switchState('pillowsquat');
+					}else{
+						this.hero.switchState('squat');
+					}
+					
 					var x = this.hero.posx;
 					var y = this.hero.posy;
 					var x1 = this.safeArea.clickArea[0] + this.safeArea.x;
@@ -233,6 +239,7 @@
 		},
 		changeBg:function(){
 			var scene = this;
+			this.finger.setpos(853,273);
 			Hilo.Tween.to(this, {
 				alpha:0
 			}, {
@@ -379,8 +386,8 @@
             });
 			this.tvflash = new Hilo.Sprite({
 				frames: atlas.getSprite('tv'),
-				x:680,
-				y:235,
+				x:880+93,
+				y:285+55,
 				interval:8,
 				visible:false,
 			}).addTo(this);
@@ -442,13 +449,13 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart,200);
 			}
 			
 			if(this.readyShakeTime == 300){
 				this.shakeRoom();
 			}
-			if(this.readyShakeTime == 530){
+			if(this.readyShakeTime == 430){
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_pillow);
 				this.finger.visible = true;
 				this.pillow.status = 1;
@@ -478,7 +485,7 @@
 				this.y = this.inity;
 			}
 			this.toFallTime++;
-			if(this.toFallTime == 400){
+			if(this.toFallTime == 520){
 				this.fallfan.isFall = true;
 			}
 			if(this.toFallTime == 500){
@@ -488,7 +495,7 @@
 				console.log('once check:'+this.fallfan.name);
 				this.fallfanShader.removeFromParent();
 				this.fallfan.onDanger = false;
-				
+				game.sounds.play(4,false);
 				if(game.checkInRect(this.hero.posx,this.hero.posy,256,598,200,50)){
 					this.hero.switchState('fallhit',6);
 					this.hero.currentHealth--;
@@ -499,7 +506,7 @@
 			if(this.passstep ==1){
 				if(this.checkActiveItem(this.hero.posx,this.hero.posy,this.safeArea)){
 					this.notepanel.show(true,game.configdata.GAMETXTS.pass01_squat);
-					this.finger.visible = false;
+					//this.finger.visible = false;
 					
 					//this.safeArea.visible = false;
 					this.passstep = 2;

@@ -92,15 +92,15 @@
          	}; 
 		},
 		initBlocks:function(){
-			this.blocks = [[0,0,850,380],[0,350,155,60],[0,370,80,120],[810,310,40,175],[665,310,145,100]];
+			this.blocks = [[0,0,1202,530],[0,526,172,73],[1033,520,173,84],[0,600,53,85],[1154,605,53,85]];
 			for(var i=0;i<this.blocks.length;i++){
 				var rect = this.blocks[i];
 				var w = rect[2];
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
+				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				//g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){
@@ -146,7 +146,7 @@
 				this.annihilator.visible = false;
 				this.annihilatorEffect.visible = true;
 				this.annihilatorEffect.x = this.hero.posx + 80;
-				this.annihilatorEffect.y = this.hero.posy - 120;
+				this.annihilatorEffect.y = this.hero.posy - 90;
 				this.ignoreTouch = true;
 				
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
@@ -248,8 +248,8 @@
 			this.initBlocks();
 			
 			this.annihilator  = new game.ActiveObject({
-				x:564,
-				y:270,
+				x:835,
+				y:407,
 				readyImgUrl:'annihilator',
 				finishedImgUrl:'annihilator',
 				clickArea:[12,10,25,100],
@@ -257,8 +257,8 @@
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
-				x:150,
-				y:240,
+				x:210,
+				y:350,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
@@ -270,8 +270,8 @@
 			}).addTo(this);
 			
 			this.finger = new game.FingerPoint({
-				x:180,
-				y:240,
+				x:240,
+				y:350,
 				visible:false,
 			}).addTo(this);
 			this.finger.turnleft();
@@ -307,15 +307,15 @@
             });
 			this.tvflash = new Hilo.Sprite({
 				frames: atlas.getSprite('tv'),
-				x:620,
-				y:295,
+				x:980,
+				y:530,
 				interval:8,
 			}).addTo(this);
 			
 			this.annihilatorEffect = new Hilo.Sprite({
 				frames: atlas.getSprite('effect'),
 				x:520,
-				y:195,
+				y:205,
 				interval:8,
 				visible:false,
 			}).addTo(this);
@@ -328,8 +328,8 @@
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 183,
-				posy: 400,
+				posx: 260,
+				posy: 590,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,

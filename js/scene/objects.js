@@ -33,8 +33,8 @@
 			var y = this.clickArea[1];
 			var w = this.clickArea[2];
 			var h = this.clickArea[3];
-			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
+			//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			//g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
 		},
 		onUpdate:function(){
 			if(this.isFall){
@@ -172,8 +172,8 @@
 			var y = this.clickArea[1];
 			var w = this.clickArea[2];
 			var h = this.clickArea[3];
-			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
+			//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			//g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
 		},
 		onUpdate:function(){
 			

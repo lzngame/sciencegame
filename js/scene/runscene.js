@@ -30,7 +30,7 @@
 		iswin:false,
 		startRun:false,
 		passstep:0,
-		basefloor:420,
+		basefloor:520,
 		constructor: function(properties) {
 			RunawayScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -119,8 +119,8 @@
 				var h = rect[3];
 				var x = rect[0];
 				var y = rect[1];
-				var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
+				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+				//g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
 			}
 		},
 		checkInBlocks:function(mousex,mousey){
@@ -338,11 +338,15 @@
 			var objPoses =[800,1200,1500,1900,2300,2850,3100,3500];
 			for(var i=0;i< objPoses.length;i++){
 				var radX = objPoses[i];
+				var t = Math.random();
+				var blockname = 'block3';
+				if(t > 0.4)
+					blockname = 'block4';
 				var block = new game.RunblockObj({
-			 		img:'block02',
+			 		img:blockname,
 			 		clickArea:[40,0,70,90],
 			 		x:radX,
-			 		y:this.blockline
+			 		y:this.blockline+100,
 			 	}).addTo(this.blockLayer);
 			}
 		},
@@ -350,6 +354,18 @@
 			if(Math.random() < 0.5){
 				//return;
 			}
+			
+			
+			
+			 var frames = [
+                    //[357,1267,292,171],
+					//[0,1474,357,207],
+					[357,1060,357,207],
+					[0,1681,357,207],
+					[0,1060,357,207],
+					[0,1267,357,207], //0-5
+                ];
+			
 			var runspeed = this.bgspeed;
 			 var radX2 = Math.random() * 700+100;
 			 new game.FallObject({
@@ -357,12 +373,13 @@
 				y:0,
 				isFall:true,
 				isRun:true,
+				animaFrames:frames,
 				runspeed:runspeed,
-				fallspeed:1,
+				fallspeed:0.5,
 				name:'fallfan',
 				imgInity:0,
-				floorline:400,
-				wholeState:'ceilingfan',
+				floorline:450,
+				wholeState:'ceilingfan1',
 				brokenState:'ceilingfan_piece',
 				clickArea:[10,10,100,40],
 			}).addTo(this.fallblockLayer);
