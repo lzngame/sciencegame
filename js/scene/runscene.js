@@ -17,7 +17,7 @@
 		blocks:null,
 		
 		//---run away
-		defaultBgspeed:4,
+		defaultBgspeed:5,
 		bgspeed:0,
 		bg1:null,
 		bg2:null,
@@ -31,6 +31,8 @@
 		startRun:false,
 		passstep:0,
 		basefloor:520,
+		runlength:6,
+		
 		constructor: function(properties) {
 			RunawayScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -57,7 +59,6 @@
 			this.addHero();
 			this.headPanel.setHealth(this.hero.currentHealth);
 			this.initkeyevent();
-			this.initTouchEvent();
 			this.ignoreTouch = true;
 			this.bgspeed = this.defaultBgspeed;
 			this.iswin = false;
@@ -78,65 +79,31 @@
 		},
 		initkeyevent:function(){
 			var scene = this;
+			if(!this.hero)
+			{
+				console.log('hero gua le');
+				return;
+			}
 			document.onkeydown=function(event){
-             var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // ctrl
+            	 var e = event || window.event || arguments.callee.caller.arguments[0];
+             	if(e && e.keyCode===game.configdata.JumpKey){  
  					console.log('Jum');
  					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herojump});
-                }
-              if(e && e.keyCode==18){ // alt 
- 					console.log('squat');
- 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
- 					//scene.shakeRoom();
- 					//scene.fallfan.isFall = true;
-                }            
-              if(e && e.keyCode==16){ // shift 键
+               	 }
+              	if(e && e.keyCode===game.configdata.StopKey){  
               	   scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herorunstop});
-               }
+              	 }
          	}; 
          	document.onkeyup=function(event){
-             var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // 松开 ctrl 
+             	var e = event || window.event || arguments.callee.caller.arguments[0];
+             	if(e && e.keyCode===game.configdata.JumpKey){  
                   //要做的事情
- 					console.log('Jum');
                 }
-              if(e && e.keyCode==18){ // 松开 alt 
-                  //要做的事情
- 					console.log('squat to idle');
- 					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat2idle});
-                }            
-              if(e && e.keyCode==16){ // shift 键
+              	if(e && e.keyCode===game.configdata.StopKey){  
                   //要做的事情
                   scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.runstop2run});
              	}
          	}; 
-		},
-		initBlocks:function(){
-			this.blocks = [[0,0,850,280]];
-			for(var i=0;i<this.blocks.length;i++){
-				var rect = this.blocks[i];
-				var w = rect[2];
-				var h = rect[3];
-				var x = rect[0];
-				var y = rect[1];
-				//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-				//g.lineStyle(1,"#998877").drawRect(0,0,w,h).endFill().addTo(this);
-			}
-		},
-		checkInBlocks:function(mousex,mousey){
-			var isIn = false;
-			for(var i=0;i<this.blocks.length;i++){
-				var rect = this.blocks[i];
-				var w = rect[2];
-				var h = rect[3];
-				var x = rect[0];
-				var y = rect[1];
-				if(mousex > x && mousex < x+w && mousey > y && mousey < y+h){
-					isIn = true;
-					break;
-				}
-			}
-			return isIn;
 		},
 		checkBlocks:function(){
 			var objs = this.blockLayer.children;
@@ -151,7 +118,6 @@
 					if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h) && this.hero.currentHealth > 0){
 						this.hero.switchState('fallhit');
 						game.sounds.play(6,false);
-						this.hero.posy = this.basefloor;
 						if(!this.isProtect){
 							this.isProtect = true;
 							this.hero.currentHealth--;
@@ -180,7 +146,7 @@
 				var item = fallobjs[i];
 				var rect = item.clickArea;
 				if(rect && item.onDanger){
-					var x = rect[0]+item.x;
+					var x = rect[0]+item.x+this.bg1.x;
 					var y = rect[1]+item.y;
 					var w = rect[2];
 					var h = rect[3];
@@ -206,15 +172,10 @@
 		},
 		receiveMsg: function(msg) {
 			switch (msg.msgtype) {
-				case game.configdata.MSAGE_TYPE.herosquat:
-					console.log('hero squat');
-					this.hero.speedx = this.hero.speedy = 0;
-					this.hero.switchState('squat');
-					break;
 				case game.configdata.MSAGE_TYPE.herojump:
 					if(this.hero.framename != 'jump'){
 						this.hero.floory = this.hero.posy;
-						this.hero.jumpspeed = this.hero.jumpPower*1.8;
+						this.hero.jumpspeed = this.hero.jumpPower*1.4;
 						this.hero.switchState('jump');
 					}
 					break;
@@ -230,22 +191,6 @@
 						this.bgspeed = this.defaultBgspeed;
 					}
 					break;
-				case game.configdata.MSAGE_TYPE.herosquat2idle:
-					console.log('hero squat');
-					this.hero.switchState('idle',5);
-					break;
-				case game.configdata.MSAGE_TYPE.herodead:
-					game.stage.off();
-					this.currentMonster.iswin = true;
-					this.addFinialScore();
-					break;
-				case game.configdata.MSAGE_TYPE.changeHerohp:
-					var n = msg.msgdata;
-					if(n <= 0){
-						game.stage.off();
-					}
-					this.topHeadPanel.setHealth(n);
-					break;
 			}
 		},
 		shakeRoom:function(){
@@ -254,12 +199,12 @@
 		layoutBgMap:function(){
 			var scene = this;
 			this.bg1 = new Hilo.Container({
-				width:850*6,
+				width:1202*this.runlength,
 			}).addTo(this);
 			for(var i=0;i<5;i++){
 				new Hilo.Bitmap({
 					image: game.getImg('corridorrbg'),
-					x:i*850
+					x:i*1202
 				}).addTo(this.bg1);
 			}
 			
@@ -268,9 +213,8 @@
 			this.addBlock();
 			
 			this.fallblockLayer = new Hilo.Container({
-			}).addTo(this);
+			}).addTo(this.bg1);
 			
-			this.initBlocks();
 			
 			this.headPanel = new game.TopHeadPanel({
 				healthValue:game.configdata.DEFAULTHEROHP,
@@ -309,35 +253,8 @@
 			game.stage.off();
 			this.hero = null;
 		},
-		initTouchEvent:function(){
-			var scene = this;
-			game.stage.off();
-			game.stage.on(Hilo.event.POINTER_START, function(e) {
-				if(scene.ignoreTouch)
-					return;
-				var stagex = e.stageX;
-				var stagey = e.stageY;
-				var targetx = stagex - scene.x;
-				var targety = stagey - scene.y;
-				if(!scene.checkInBlocks(targetx,targety)){
-					scene.hero.switchState('walk',5);
-					
-					var disX = targetx - scene.hero.posx;
-					var disY = targety - scene.hero.posy;
-					var angle = Math.atan2(disY,disX);
-					scene.hero.speedx = Math.cos(angle) *  scene.hero.speed ;
-					scene.hero.speedy = Math.sin(angle) *  scene.hero.speed ;
-					scene.hero.targetx = targetx;
-					scene.hero.targety = targety;
-					if(disX < 0)
-						scene.hero.turnleft();
-					else
-						scene.hero.turnright();
-				}
-			});
-		},
 		addBlock:function(){
-			var objPoses =[800,1200,1500,1900,2300,2850,3100,3500];
+			var objPoses =[800,1500,1900,2100,2700,2950,3500,3800,4200,4800,5500,5800,6500];
 			for(var i=0;i< objPoses.length;i++){
 				var radX = objPoses[i];
 				var t = Math.random();
@@ -354,11 +271,8 @@
 		},
 		addFallBlock:function(){
 			if(Math.random() < 0.5){
-				//return;
+				return;
 			}
-			
-			
-			
 			 var frames = [
                     //[357,1267,292,171],
 					//[0,1474,357,207],
@@ -369,14 +283,14 @@
                 ];
 			
 			var runspeed = this.bgspeed;
-			 var radX2 = Math.random() * 700+100;
+			 var radX2 = Math.random() * 500+400 - this.bg1.x;
 			 new game.FallObject({
 				x:radX2,
 				y:0,
 				isFall:true,
-				isRun:true,
+				isRun:false,
 				animaFrames:frames,
-				runspeed:runspeed,
+				runspeed:0,
 				fallspeed:0.5,
 				name:'fallfan',
 				imgInity:0,
@@ -390,28 +304,22 @@
 			if(!this.startRun){
 				return;
 			}
-			if(this.readyShakeTime == 100){
-				//this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway,200);
-			}
 			
 			if(this.readyShakeTime == 400){
 				this.shakeRoom();
 			}
 			
-			
 			this.readyShakeTime++;
 			this.shakeScene();
 			
 			
-			
-			if(this.bg1.x >= -850*4){
+			if(this.bg1.x >= -1202*(this.runlength-2)){
 				this.bg1.x -= this.bgspeed;
 			}else if(!this.iswin){
 				this.hero.posx += 5;
-				
 			}
 			
-			if(this.hero.posx >880 && !this.iswin){
+			if(this.hero.posx >900 && !this.iswin){
 				this.iswin = true;
 				this.hero.isRunaway = false;
 				this.hero.switchState('idle',7);
@@ -420,7 +328,7 @@
 				console.log('game win end');
 			}
 			
-			if(this.readyShakeTime % 100 == 0 && this.readyShakeTime < 500){
+			if(this.bg1.x % 1000 == 0 && this.bg1.x > -6000){
 				this.addFallBlock();
 			}
 			this.checkBlocks();

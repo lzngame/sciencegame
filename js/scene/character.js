@@ -31,6 +31,7 @@
 		targety:0,
 		ispillow:false,
 		isRunaway:false,
+		gravity:1.5,
 		
 		currentHealth:5,
 		
@@ -73,7 +74,9 @@
 		onUpdate: function() {
 			this.atLastFrame();
 			if(this.framename =='jump'){
-				if(Math.abs(this.posy - this.floory) < 10 && this.jumpspeed > 0){
+				this.posy += this.jumpspeed;
+				if(this.posy >= this.floory){
+					this.posy = this.floory;
 					this.speedx = 0;
 					this.speedy = 0;
 					this.targetx = this.posx;
@@ -85,10 +88,8 @@
 					}
 					this.jumpspeed = 0;
 				}else{
-					this.jumpspeed += 1.5;
+					this.jumpspeed += this.gravity;
 				}
-				this.posy += this.jumpspeed;
-				
 			}
 			
 			if(Math.abs(this.posx -this.targetx) <5 && Math.abs(this.posy-this.targety) <5 && (this.speedx != 0 || this.speedy != 0)){

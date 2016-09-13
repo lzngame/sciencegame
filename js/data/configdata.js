@@ -26,13 +26,17 @@ game.configdata = new function(){
 	
 	self.DEFAULTHEROHP = 5;
 	
+	self.JumpKey = 87;// W
+	self.StopKey = 65;// A
+	self.SquatKey= 68;// D
+	
 	self.GAMETXTS ={
 		note01:'地震是一种自然现象，目前人列尚不能阻止地震的发生。但是，我们可以采取有效措施，最大限度地减轻地震灾害。由于地球不断运动，逐渐积累了巨大能量，在地壳某些脆弱地带造成岩层突然发生破裂或错动，这就是地震。 地震前兆指地震发生前出现的异常现象，如地震活动、地表的明显变化以及地磁、地电、重力等地球物理异常，地下水位、水化学、动物的异常行为等。',
 		
-		pass01_notestart:'地震避险自救：鼠标点击走动，alt键 蹲下',
+		pass01_notestart:'地震避险自救：鼠标点击走动，D 键 蹲下',
 		pass01_pillow:'拿起枕头顶在头上防止掉落物砸伤',
 		pass01_hide:'做的很好，迅速躲到坚固的墙体',
-		pass01_squat:'Alt 键 蹲下，等强震过后',
+		pass01_squat:'按住D 键不要松手，等强震过后',
 		pass01_tvflash:'地震过后，防止电器着火，拔下插座',
 		pass01_okend:'做的很好，请离开房间去下一关卡',
 		
@@ -46,7 +50,7 @@ game.configdata = new function(){
 		pass04_warn:'你最好马上出去',
 		pass04_fall:'地震时，乘坐电梯会发生坠落的危险', 
 		
-		pass05_runaway:'Alt 键减速 Ctrl跳跃 ,奔跑逃离险境！',
+		pass05_runaway:'A 键减速    W键 跳跃 ,奔跑逃离险境！',
 		pass05_runaway_tile:'地震中行走要小心掉落物和地上的障碍',
 		pass05_fail:'地震中行走要小心掉落物和地上的障碍',
 		pass05_success:'干的不错，逃离险境！',

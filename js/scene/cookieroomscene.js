@@ -62,33 +62,28 @@
 			var scene = this;
 			document.onkeydown=function(event){
              var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // ctrl
+             if(e && e.keyCode===game.configdata.JumpKey){ // ctrl
  					//console.log('Jum');
  					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herojump});
                 }
-              if(e && e.keyCode==18){ // alt 
+              if(e && e.keyCode==game.configdata.SquatKey){ // alt 
  					console.log('squat');
  					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
  					//scene.shakeRoom();
  					//scene.fallfan.isFall = true;
                 }            
-              if(e && e.keyCode==13){ // enter 键
-             }
          	}; 
          	document.onkeyup=function(event){
              var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // 松开 ctrl 
+             if(e && e.keyCode===game.configdata.JumpKey){ // 松开 ctrl 
                   //要做的事情
  					//console.log('Jum');
                 }
-              if(e && e.keyCode==18){ // 松开 alt 
+              if(e && e.keyCode===game.configdata.SquatKey){ // 松开 alt 
                   //要做的事情
  					//console.log('squat to idle');
  					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat2idle});
                 }            
-              if(e && e.keyCode==13){ // enter 键
-                  //要做的事情
-             }
          	}; 
 		},
 		initBlocks:function(){

@@ -71,29 +71,24 @@
 			var scene = this;
 			document.onkeydown=function(event){
              var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // ctrl
+             if(e && e.keyCode===game.configdata.JumpKey){ 
  					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herojump});
                 }
-              if(e && e.keyCode==18){ // alt 
+              if(e && e.keyCode===game.configdata.SquatKey){ 
  					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
                 }            
-              if(e && e.keyCode==13){ // enter 键
-              }
          	}; 
          	document.onkeyup=function(event){
              var e = event || window.event || arguments.callee.caller.arguments[0];
-             if(e && e.keyCode==17){ // 松开 ctrl 
+             if(e && e.keyCode===game.configdata.JumpKey){ 
                   //要做的事情
  					console.log('Jum');
                 }
-              if(e && e.keyCode==18){ // 松开 alt 
+              if(e && e.keyCode==game.configdata.SquatKey){ 
                   //要做的事情
  					console.log('squat to idle');
  					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat2idle});
                 }            
-              if(e && e.keyCode==13){ // enter 键
-                  //要做的事情
-             }
          	}; 
 		},
 		initBlocks:function(){
@@ -184,8 +179,10 @@
 			}
 		},
 		checkStar:function(star){
-			if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
-				star.hide();
+			if(star){
+				if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
+					star.hide();
+				}
 			}
 		},
 		
