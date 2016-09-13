@@ -24,12 +24,19 @@
 		doorhandler:null,
 		finger:null,
 		notepanel:null,
+		toolippanel:null,
 		tvflash:null,
 		aftershake:false,
 		
 		blocks:null,
 		
 		passstep:0,
+		
+		testStart:null,
+		
+		star01:null,
+		star02:null,
+		star03:null,
 		constructor: function(properties) {
 			AttackScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -145,6 +152,11 @@
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_hide);
 				this.finger.setpos(752,462);
 				this.passstep = 1;
+				this.star01 = new game.FlashStar({
+					x:760,
+					y:560
+				}).addTo(this);
+				this.toolippanel.show(true,'Alt键 蹲下拾取星星',200);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
 				this.hero.switchState('handon',10);
@@ -169,6 +181,11 @@
 						game.switchScene(game.configdata.SCENE_NAMES.cookieroom);
 					}
 				});
+			}
+		},
+		checkStar:function(star){
+			if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
+				star.hide();
 			}
 		},
 		
@@ -199,6 +216,7 @@
 			switch (msg.msgtype) {
 				case game.configdata.MSAGE_TYPE.herosquat:
 					console.log('hero squat');
+					this.checkStar(this.star01);
 					this.hero.speedx = this.hero.speedy = 0;
 					if(this.hero.ispillow){
 						this.hero.switchState('pillowsquat');
@@ -219,7 +237,7 @@
 					}
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
-					if(!this.hero.ispillow){
+					if(!this.hero.ispillow && this.hero.framename != 'jump'){
 						this.hero.jumpspeed = -18;
 						this.hero.floory = this.hero.posy;
 						this.hero.switchState('jump');
@@ -358,14 +376,19 @@
 			}).addTo(this);
 			
 			this.finger = new game.FingerPoint({
-				x:408,
-				y:428,
+				x:328,
+				y:408,
 				visible:false,
 			}).addTo(this);
 			
 			this.notepanel = new game.DrNote({
 				txt:game.configdata.GAMETXTS.pass01_notestart,
 				x:-700,
+			}).addTo(this);
+			
+			this.toolippanel = new game.ToolipNote({
+				x:1230,
+				y:100,
 			}).addTo(this);
 			
 			var atlas = new Hilo.TextureAtlas({
@@ -390,6 +413,11 @@
 				y:285+55,
 				interval:8,
 				visible:false,
+			}).addTo(this);
+			
+			new game.FlashStar({
+				x:200,
+				y:150,
 			}).addTo(this);
 		},
 		addHero:function(){
@@ -513,6 +541,16 @@
 				}
 			}
 			this.checkBlocks();
+			
+			if(this.readyShakeTime == 100){
+				this.testStart = new game.FlashStar({
+					x:300,
+					y:200
+				}).addTo(this);
+			}
+			if(this.readyShakeTime == 200){
+				this.testStart.hide();
+			}
 		},
 	});
 })(window.game);

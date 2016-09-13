@@ -65,7 +65,7 @@
 			this.fallblockLayer.visible= true;
 			this.readyShakeTime = 0;
 			this.notepanel.show(true,game.configdata.GAMETXTS.pass05_runaway,200);
-			
+			game.sounds.play(0,false);
 			Hilo.Tween.to(this, {
 				alpha: 1
 			}, {
@@ -86,8 +86,8 @@
                 }
               if(e && e.keyCode==18){ // alt 
  					console.log('squat');
- 					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
- 					scene.shakeRoom();
+ 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
+ 					//scene.shakeRoom();
  					//scene.fallfan.isFall = true;
                 }            
               if(e && e.keyCode==16){ // shift 键
@@ -150,6 +150,7 @@
 					var h = rect[3];
 					if(game.checkInRect(this.hero.posx,this.hero.posy,x,y,w,h) && this.hero.currentHealth > 0){
 						this.hero.switchState('fallhit');
+						game.sounds.play(6,false);
 						this.hero.posy = this.basefloor;
 						if(!this.isProtect){
 							this.isProtect = true;
@@ -190,6 +191,7 @@
 					var h1 = 200;
 					if(game.checkTwoBox(x,y,w,h,x1,y1,w1,h1)){
 						this.hero.switchState('fallhit');
+						game.sounds.play(6,false);
 						this.hero.posy = this.basefloor;
 						this.headPanel.setHealth(this.hero.currentHealth);
 					}
@@ -212,7 +214,7 @@
 				case game.configdata.MSAGE_TYPE.herojump:
 					if(this.hero.framename != 'jump'){
 						this.hero.floory = this.hero.posy;
-						this.hero.jumpspeed = this.hero.jumpPower*1.5;
+						this.hero.jumpspeed = this.hero.jumpPower*1.8;
 						this.hero.switchState('jump');
 					}
 					break;
@@ -346,7 +348,7 @@
 			 		img:blockname,
 			 		clickArea:[40,0,70,90],
 			 		x:radX,
-			 		y:this.blockline+100,
+			 		y:this.blockline+120,
 			 	}).addTo(this.blockLayer);
 			}
 		},

@@ -236,7 +236,7 @@
 				finishedImgUrl:'empty',
 				clickArea:[0,0,70,50],
 				status:1,
-				visible:false,
+				//visible:false,
 			}).addTo(this);
 			
 
@@ -263,7 +263,7 @@
 			new game.FingerPoint({
 				x:1102,
 				y:394,
-				visible:false,
+				//visible:false,
 			}).addTo(this);
 			
 			this.notepanel = new game.DrNote({

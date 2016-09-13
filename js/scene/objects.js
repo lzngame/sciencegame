@@ -74,6 +74,7 @@
 		},
 	});
 	
+	
 	var FingerPoint = ns.FingerPoint = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'finger point',
@@ -138,8 +139,8 @@
 			var y = this.clickArea[1];
 			var w = this.clickArea[2];
 			var h = this.clickArea[3];
-			var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
-			g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
+			//var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
+			//g.lineStyle(1,"#f00").drawRect(0,0,w,h).endFill().addTo(this);
 		},
 		setEndImg:function(x,y){
 			console.log(this.name+':ACTIVE');
@@ -242,6 +243,86 @@
 		},
 	});
 	
+	var ToolipNote = ns.ToolipNote = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'doctor note txt',
+		noteimg:'tilebg',
+		txt:'............',
+		text1:null,
+		text2:null,
+		showtime:100,
+		sumtime:0,
+		hideX:1230,
+		showX:900,
+		constructor: function(properties) {
+			ToolipNote.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.noteimg,'uimap'),
+			}).addTo(this);
+			
+			var font = "18px arial";
+			this.text1 = new Hilo.Text({
+                	font: font,
+                	color:'black',
+                	text: this.txt,
+               		lineSpacing: 10,
+                	width:400,
+                	height:30,
+                	textAlign:'center',
+               		textVAlign:'middle',
+                	y: 30,
+                	x:-25,
+           		 }).addTo(this);
+           	this.text2 = new Hilo.Text({
+                	font: font,
+                	color:'#ff9966',
+                	text: this.txt,
+               		lineSpacing: 10,
+                	width:400,
+                	height:30,
+                	textAlign:'center',
+               		textVAlign:'middle',
+                	y: 31,
+                	x:-26,
+           		 }).addTo(this);
+		},
+		show:function(hide,txt,showtime){
+			var targetx = this.hideX;
+			if(hide){
+				targetx = this.showX;
+				this.txt = txt;
+				this.text1.text = this.txt;
+				this.text2.text = this.txt;
+				this.sumtime = 0;
+				if(showtime){
+					this.showtime = showtime;
+				}
+			}
+			
+			new Hilo.Tween.to(this,{
+					x:targetx
+				},{
+					duration:300,
+					onComplete:function(){
+						
+					}
+				});
+		},
+		onUpdate:function(){
+			if(this.x == this.showX){
+				this.sumtime++;
+			}
+			if(this.sumtime >= this.showtime){
+				this.show(false);
+				this.sumtime = 0;
+			}
+		},
+	});
+	
 	
 	var DrNote = ns.DrNote = Hilo.Class.create({
 		Extends: Hilo.Container,
@@ -269,7 +350,7 @@
 				rect:game.configdata.getPngRect(this.headimg,'uimap'),
 			}).addTo(this);
 			
-			var font = "14px arial";
+			var font = "18px arial";
 			this.text1 = new Hilo.Text({
                 	font: font,
                 	color:'black',
@@ -284,7 +365,7 @@
            		 }).addTo(this);
            	this.text2 = new Hilo.Text({
                 	font: font,
-                	color:'white',
+                	color:'#ff9966',
                 	text: this.txt,
                		lineSpacing: 10,
                 	width:400,
@@ -324,6 +405,102 @@
 			if(this.sumtime >= this.showtime){
 				this.show(false);
 				this.sumtime = 0;
+			}
+		},
+	});
+	
+	
+	var FlashStar = ns.FlashStar = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'flash start',
+		interval:0,
+		img:null,
+		flash01:'start01',
+		flash02:'start02',
+		index:0,
+		constructor: function(properties) {
+			FlashStar.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.flash01,'uimap'),
+			}).addTo(this);
+		},
+		setpos:function(x,y){
+			this.x = x;
+			this.y = y;
+		},
+		hide:function(){
+			var x = this.x;
+			var y = this.y;
+			new game.FlashStarEffect({
+				x:x-30,
+				y:y-30
+			}).addTo(this.parent);
+			this.removeFromParent();
+		},
+		onUpdate:function(){
+			if(this.interval > 10){
+				this.interval = 0;
+				this.index++;
+				if(this.index % 2 ==0){
+					this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.flash01,'uimap'));
+				}else{
+					this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.flash02,'uimap'));
+				}
+			}else{
+				this.interval++;
+			}
+		},
+	});
+	
+	var FlashStarEffect = ns.FlashStarEffect = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'flash start effect',
+		interval:0,
+		img:null,
+		frames:null,
+		index:0,
+		constructor: function(properties) {
+			FlashStarEffect.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			var data = [[380,417,146,139],
+						[380,278,146,139],
+						[380,139,146,139],
+						[234,556,146,139],
+						[234,0,146,139],
+						[234,139,146,139],
+						[234,417,146,139],
+						[234,278,146,139],
+						[380,695,146,139],
+						[380,556,146,139],
+						[234,695,146,139],
+						[234,834,146,139]];
+			this.frames = data;
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('effects'),
+				rect:data[0],
+			}).addTo(this);
+		},
+		setpos:function(x,y){
+			this.x = x;
+			this.y = y;
+		},
+		onUpdate:function(){
+			if(this.interval > 3){
+				this.interval = 0;
+				this.index++;
+				if(this.index > this.frames.length-1){
+					this.index = 0;
+					this.removeFromParent();
+				}
+				this.img.setImage(game.getImg('effects'),this.frames[this.index]);
+			}else{
+				this.interval++;
 			}
 		},
 	});

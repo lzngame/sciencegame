@@ -198,35 +198,35 @@
 			var boy = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('boy','uimap'),
-				x:70,
+				x:170,
 				y:70
 			}).addTo(this);
 			
 			var btn01 = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('pass01','uimap'),
-				x:300,
+				x:400,
 				y:100
 			}).addTo(this);
 			var btnpass01 = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('pass02','uimap'),
-				x:550,
+				x:700,
 				y:100
 			}).addTo(this);
  			var btnExit = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('quitbt','uimap'),
 				x:700,
-				y:400
+				y:450
 			}).addTo(this);
 			
-			var lockpass = new Hilo.Bitmap({
+			/*var lockpass = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('lockicon','uimap'),
 				x:300,
 				y:100
-			}).addTo(this);
+			}).addTo(this);*/
 			
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
@@ -394,40 +394,40 @@
 			new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('pass01btn','uimap'),
-				x:360,
+				x:460,
 				y:10
 			}).addTo(this);
 			
 			var bedroom = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('bedroompass','uimap'),
-				x:330,
+				x:430,
 				y:100
 			}).addTo(this);
 			var cookieroom = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('cookiepass','uimap'),
-				x:600,
+				x:750,
 				y:100
 			}).addTo(this);
 			var liftroom = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('liftpass','uimap'),
-				x:330,
+				x:430,
 				y:300
 			}).addTo(this);
 			var corridor = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('corridorpass','uimap'),
-				x:600,
+				x:750,
 				y:300
 			}).addTo(this);
 			
 			var btnback = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('backbtn','uimap'),
-				x:760,
-				y:20
+				x:940,
+				y:480
 			}).addTo(this);
 			
 			
@@ -441,7 +441,7 @@
                 lineSpacing: 10,
                 width: 250,
                 height: 100,
-                x: 40,
+                x: 140,
                 y: 100
             }).addTo(this);
             

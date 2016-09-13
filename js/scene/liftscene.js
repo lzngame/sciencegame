@@ -13,8 +13,6 @@
 		inity:0,
 		toFallTime:0,
 		
-		
-		
 		annihilator:null,
 		doorhandler:null,
 		finger:null,
@@ -30,6 +28,7 @@
 		starttime:true,
 		showTimeImg:null,
 		showIndex:0,
+		isfall:false,
 		constructor: function(properties) {
 			LifeScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -189,12 +188,14 @@
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
 				image: game.getImg('liftbg'),
+				width:1202,
+				height:686,
 			}).addTo(this);
 			
 			this.liftbody = new Hilo.Bitmap({
 				image: game.getImg('lift'),
-				x:25,
-				y:-600,
+				x:12,
+				y:-950,
 			}).addTo(this);
 			
 			this.initBlocks();
@@ -239,8 +240,8 @@
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 223,
-				posy: 450,
+				posx: 283,
+				posy: 480,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
@@ -308,15 +309,20 @@
 				//this.ignoreTouch = true;
 				
 			}
-			if(this.showIndex == 9){
+			if(this.showIndex == 9 && !this.isfall){
 				this.fallspeed++;
 				this.liftbody.y+=this.fallspeed;
 				this.hero.posy+=this.fallspeed;
 				this.finger.visible = false;
 				this.doorhandler.visible = false;
 			}
+			if(this.liftbody.y > 800 && !this.isfall){
+				this.isfall = true;
+				this.liftbody.y = -950,
+				this.liftbody.alpha = 0.2;
+			}
 			if(this.readyShakeTime ==510){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,1300);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass04_fall,5300);
 				var btnpass01 = new Hilo.Bitmap({
 					image:game.getImg('uimap'),
 					rect:game.configdata.getPngRect('backbtn','uimap'),
