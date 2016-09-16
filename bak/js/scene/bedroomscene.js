@@ -169,6 +169,14 @@
 		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
+			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
+				//this.phone.removeFromParent();
+				//this.phone.status = 2;
+				this.toolippanel.show(true,'准备好通讯工具非常重要',200);
+				this.toolspanel.show(true,500);
+				this.toolspanel.addIcon();
+			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
 				//this.hero.switchState('handup',10);
 				//this.hero.ispillow = true;
@@ -189,10 +197,7 @@
 				}).addTo(this);
 				this.toolippanel.show(true,'D 键 蹲下拾取星星',200);
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
-				this.phone.removeFromParent();
-				this.toolippanel.show(true,'准备好通讯工具非常重要',200);
-			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
 				this.hero.switchState('handon',10);
 				this.tvflash.visible = false;
@@ -356,6 +361,7 @@
 			this.phone  = new game.ActiveObject({
 				x:434,
 				y:410,
+				status:0,
 				readyImgUrl:'iphone',
 				finishedImgUrl:'iphone',
 				clickArea:[9,0,40,40],
@@ -444,7 +450,7 @@
 			
 			this.toolippanel = new game.ToolipNote({
 				x:1230,
-				y:100,
+				y:300,
 			}).addTo(this);
 			
 			var atlas = new Hilo.TextureAtlas({
@@ -469,11 +475,6 @@
 				y:285+55,
 				interval:8,
 				visible:false,
-			}).addTo(this);
-			
-			new game.FlashStar({
-				x:200,
-				y:150,
 			}).addTo(this);
 		},
 		addHero:function(){
@@ -553,6 +554,7 @@
 			
 			if(this.readyShakeTime == 300){
 				this.shakeRoom();
+				this.changeBg();
 			}
 			if(this.readyShakeTime == 430){
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_pillow);

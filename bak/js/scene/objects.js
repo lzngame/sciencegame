@@ -511,6 +511,7 @@
 		},
 	});
 	
+	
 	var ToolsIconPanel = ns.ToolsIconPanel = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'ToolsIconPanel',
@@ -520,7 +521,10 @@
 		initx:0,
 		inity:0,
 		showtime:0,
-		sumtime:0;
+		sumtime:0,
+		firstPosX:10,
+		firstPosY:10,
+		spaceLine:10,
 		constructor: function(properties) {
 			ToolsIconPanel.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -536,6 +540,17 @@
 		setpos:function(x,y){
 			this.x = x;
 			this.y = y;
+		},
+		addIcon:function(){
+			this.count++;
+			var x = (this.count-1) % 6;
+			var y = Math.floor((this.count-1) / 6);
+			var icon = new Hilo.Bitmap({
+				x:this.firstPosX + x * 50,
+				y:this.firstPosY + y * 50,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('proc_icon_088','uimap'),
+			}).addTo(this);
 		},
 		show:function(isshow,time){
 			var panel = this;
@@ -560,7 +575,7 @@
 			if(this.sumtime > this.showtime){
 				this.sumtime = 0;
 				this.showtime = 0;
-				this.show(false);
+				this.show(false,0);
 			}
 		},
 	});
