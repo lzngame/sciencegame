@@ -23,6 +23,7 @@
 		gamestart: false,
 		winWidth:0,
 		winHeight:0,
+
 		init: function() {
 			var browserInfo = Hilo.browser;
 			var winWidth = window.innerWidth || document.documentElement.clientWidth;

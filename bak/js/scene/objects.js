@@ -511,4 +511,58 @@
 		},
 	});
 	
+	var ToolsIconPanel = ns.ToolsIconPanel = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'ToolsIconPanel',
+		bg:null,
+		count:0,
+		index:0,
+		initx:0,
+		inity:0,
+		showtime:0,
+		sumtime:0;
+		constructor: function(properties) {
+			ToolsIconPanel.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.bg = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('toolsbg','uimap'),
+			}).addTo(this);
+			this.x = this.initx;
+			this.y = this.inity;
+		},
+		setpos:function(x,y){
+			this.x = x;
+			this.y = y;
+		},
+		show:function(isshow,time){
+			var panel = this;
+			var targety = this.inity;
+			var h = this.bg.height-43;
+			if(isshow){
+				targety = targety + h;
+			}
+			new Hilo.Tween.to(panel,{
+				 y:targety
+			},{
+				duration:500,
+				onComplete:function(){
+				}
+			});
+			panel.showtime = time;
+		},
+		onUpdate:function(){
+			if(this.showtime > 0){
+				this.sumtime++;
+			}
+			if(this.sumtime > this.showtime){
+				this.sumtime = 0;
+				this.showtime = 0;
+				this.show(false);
+			}
+		},
+	});
+	
 })(window.game);

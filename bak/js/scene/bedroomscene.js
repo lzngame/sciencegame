@@ -20,6 +20,7 @@
 		fallfanShader:null,
 		plug:null,
 		pillow:null,
+		phone:null,
 		safeArea:null,
 		doorhandler:null,
 		finger:null,
@@ -37,6 +38,10 @@
 		star01:null,
 		star02:null,
 		star03:null,
+		
+		finerMouse:null,
+		toolspanel:null,
+		
 		constructor: function(properties) {
 			AttackScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -65,6 +70,17 @@
 			this.initTouchEvent();
 			this.headPanel.setHealth(this.hero.currentHealth);
 			game.sounds.play(0,false);
+			
+			
+			this.fingerMouse = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				visible:false,
+				rect:game.configdata.getPngRect('hand_001','uimap')
+			}).addTo(this);
+			this.toolspanel = new game.ToolsIconPanel({
+				initx:724,
+				inity:-247,
+			}).addTo(this);
 		},
 		
 		initkeyevent:function(){
@@ -138,14 +154,32 @@
 				}
 			}
 		},
+		checkShowFingerObjects:function(mouseX,mouseY){
+			if(
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.pillow)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.plug)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.safeArea)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.phone)
+			){
+				return true;
+			}else{
+				return false;
+			}
+		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
-				this.hero.switchState('handup',10);
-				this.pillow.removeFromParent();
+				//this.hero.switchState('handup',10);
+				//this.hero.ispillow = true;
+				this.pillow.x = 300;
+				this.pillow.status = 0;
+				this.phone.status = 1;
+				this.phone.visible = true;
 				this.safeArea.visible = true;
 				this.safeArea.status = 1;
-				this.hero.ispillow = true;
+				
+				new game.FlashStarEffect({x:mouseX-100,y:mouseY-100}).addTo(this);
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_hide);
 				this.finger.setpos(752,462);
 				this.passstep = 1;
@@ -154,6 +188,10 @@
 					y:560
 				}).addTo(this);
 				this.toolippanel.show(true,'D 键 蹲下拾取星星',200);
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
+				this.phone.removeFromParent();
+				this.toolippanel.show(true,'准备好通讯工具非常重要',200);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
 				this.hero.switchState('handon',10);
@@ -187,6 +225,17 @@
 				}
 			}
 		},
+		checkActiveItemWithoutPos:function(mouseX,mouseY,obj){
+			var isClickIn = false;
+			var x = obj.clickArea[0]+obj.x;
+			var y = obj.clickArea[1]+obj.y;
+			var w = obj.clickArea[2];
+			var h = obj.clickArea[3];
+			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
+				isClickIn = true;
+			}
+			return isClickIn;
+		},
 		
 		checkActiveItem:function(mouseX,mouseY,obj){
 			var isClickIn = false;
@@ -195,11 +244,11 @@
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
-				if(x - this.hero.posx <100 && y - this.hero.posy <250){
+				if(Math.abs(x+w/2 - this.hero.posx) <100 && Math.abs(y+h/2 - this.hero.posy) <200){
 					isClickIn = true;
 				}else{
 					isClickIn = false;
-					console.log('pls close');						
+					this.notepanel.show(true,'走近点...',50);					
 				}
 			}
 			return isClickIn;
@@ -302,6 +351,14 @@
 				readyImgUrl:'plug1',
 				finishedImgUrl:'plug2',
 				clickArea:[19,0,40,40],
+			}).addTo(this);
+			
+			this.phone  = new game.ActiveObject({
+				x:434,
+				y:410,
+				readyImgUrl:'iphone',
+				finishedImgUrl:'iphone',
+				clickArea:[9,0,40,40],
 			}).addTo(this);
 			
 			this.pillow  = new game.ActiveObject({
@@ -444,6 +501,21 @@
 		initTouchEvent:function(){
 			var scene = this;
 			game.stage.off();
+			game.stage.on(Hilo.event.POINTER_MOVE, function(e) {
+				if(scene.ignoreTouch)
+					return;
+				var stagex = e.stageX;
+				var stagey = e.stageY;
+				var targetx = stagex - scene.x;
+				var targety = stagey - scene.y;
+				if(scene.checkShowFingerObjects(targetx,targety)){
+					scene.fingerMouse.visible = true;
+					scene.fingerMouse.x = targetx;
+					scene.fingerMouse.y = targety;
+				}else{
+					scene.fingerMouse.visible = false;
+				}
+			});
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.ignoreTouch)
 					return;
@@ -476,7 +548,7 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart,200);
+				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart,300);
 			}
 			
 			if(this.readyShakeTime == 300){

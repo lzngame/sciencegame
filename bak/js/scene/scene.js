@@ -104,6 +104,8 @@
 				loop: true,
 			}).addTo(this);
 			this.addLoadCoinbg();
+			
+			
 		},
 		deactive: function() {
 			this.destory();
