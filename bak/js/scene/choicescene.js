@@ -3,7 +3,6 @@
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.choice,
 		hero:null,
-		headPanel:null,
 		
 		readyShakeTime:0,
 		bgImg:null,
@@ -18,11 +17,13 @@
 		annihilator:null,
 		doorhandler:null,
 		finger:null,
-		notepanel:null,
 		
 		blocks:null,
 		
 		passstep:0,
+		
+		warnpaper:null,
+		tasktxt:null,
 		constructor: function(properties) {
 			ChoiceScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -44,6 +45,7 @@
 			
 			this.addTo(game.stage);
 			this.alpha = 1;
+			game.stage.swapChildren(this, game.uiscene);
 			this.currentIndex = 0;
 			
 			this.layoutBgMap();
@@ -54,6 +56,7 @@
 			//this.initData();
 			//this.hideFlashHand();
 			this.initTouchEvent();
+			
 		},
 		initBlocks:function(){
 			this.blocks = [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
@@ -107,7 +110,7 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
 				this.hero.switchState('handon',10);
 				var scene = this;
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass03_wrong,200);
+				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_wrong,200);
 				new Hilo.Tween.to(this,{
 					alpha:0.99
 				},{
@@ -121,7 +124,7 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
 				var scene = this;
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass03_right,200);
+				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_right,200);
 				new Hilo.Tween.to(this,{
 					alpha:0.99
 				},{
@@ -184,7 +187,6 @@
 					if(n <= 0){
 						game.stage.off();
 					}
-					this.topHeadPanel.setHealth(n);
 					break;
 			}
 		},
@@ -217,29 +219,18 @@
 				status:1,
 			}).addTo(this);
 			
-			this.headPanel = new game.TopHeadPanel({
-				headImgUrl:'headicon2',
-				healthIcon:'heart02',
+			this.warnpaper = new Hilo.Bitmap({
+				x:952,
+				y:557,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('warnpaper02','uimap')
 			}).addTo(this);
 			
-			new game.FingerPoint({
-				x:664,
-				y:228,
-				
+			this.tasktxt = new game.TaskLine({
+				txt:'给标志牌钉钉子',
+				x:932,
+				y:112,
 			}).addTo(this);
-			
-			new game.FingerPoint({
-				x:1102,
-				y:394,
-				//visible:false,
-			}).addTo(this);
-			
-			this.notepanel = new game.DrNote({
-				txt:game.configdata.GAMETXTS.pass01_notestart,
-				x:-700,
-			}).addTo(this);
-			
-			
 		},
 		addHero:function(){
 			this.hero = new game.Hero({
@@ -252,6 +243,22 @@
 				interval: 5,
 				alpha:1,
 			}).addTo(this);
+		},
+		excuteIcon:function(index){
+			if(index == 2){
+				console.log('使用物品：%d',index);
+				if(this.warnpaper.x != 1042){
+					if(game.checkInRect(this.hero.posx,this.hero.posy,this.warnpaper.x,this.warnpaper.y,120,60)){
+						game.toolspanel.show(false,0);
+						this.warnpaper.x = 1042;
+						this.warnpaper.y = 204;
+						this.tasktxt.hide();
+						this.warnpaper.setImage(game.getImg('uimap'),game.configdata.getPngRect('warnpaper01','uimap'));
+					}else{
+						game.notepanel.show(true,'请站在合适的位置',200);
+					}
+				}
+			}
 		},
 		deactive: function() {
 			this.destory();
@@ -299,7 +306,7 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 50){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass03_ask,200);
+				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_ask,200);
 			}
 			
 			

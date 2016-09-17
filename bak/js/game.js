@@ -23,7 +23,13 @@
 		gamestart: false,
 		winWidth:0,
 		winHeight:0,
-
+		
+		uiscene:null,
+		headPanel:null,
+		starscore:null,
+		notepanel:null,
+		toolippanel:null,
+		toolspanel:null,
 		init: function() {
 			var browserInfo = Hilo.browser;
 			var winWidth = window.innerWidth || document.documentElement.clientWidth;

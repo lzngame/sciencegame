@@ -3,7 +3,6 @@
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.cookieroom,
 		hero:null,
-		headPanel:null,
 		
 		readyShakeTime:0,
 		bgImg:null,
@@ -19,11 +18,11 @@
 		annihilatorEffect:null,
 		doorhandler:null,
 		finger:null,
-		notepanel:null,
 		tvflash:null,
-		
 		blocks:null,
 		
+		spanner:null,
+		finerMouse:null,
 		passstep:0,
 		constructor: function(properties) {
 			CookieroomScene.superclass.constructor.call(this, properties);
@@ -45,6 +44,7 @@
 			var scene = this;
 			
 			this.addTo(game.stage);
+			game.stage.swapChildren(this, game.uiscene);
 			this.alpha = 1;
 			this.currentIndex = 0;
 			
@@ -57,6 +57,11 @@
 			//this.hideFlashHand();
 			this.initkeyevent();
 			this.initTouchEvent();
+			this.fingerMouse = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				visible:false,
+				rect:game.configdata.getPngRect('hand_001','uimap')
+			}).addTo(this);
 		},
 		initkeyevent:function(){
 			var scene = this;
@@ -68,7 +73,7 @@
                 }
               if(e && e.keyCode==game.configdata.SquatKey){ // alt 
  					console.log('squat');
- 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
+ 					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat});
  					//scene.shakeRoom();
  					//scene.fallfan.isFall = true;
                 }            
@@ -82,7 +87,7 @@
               if(e && e.keyCode===game.configdata.SquatKey){ // 松开 alt 
                   //要做的事情
  					//console.log('squat to idle');
- 					//scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat2idle});
+ 					scene.receiveMsg({msgtype:game.configdata.MSAGE_TYPE.herosquat2idle});
                 }            
          	}; 
 		},
@@ -133,7 +138,16 @@
 				}
 			}
 		},
-		
+		addSpanner:function(){
+			this.spanner  = new game.ActiveObject({
+				x:954,
+				y:574,
+				status:1,
+				readyImgUrl:'spanner',
+				finishedImgUrl:'spanner',
+				clickArea:[0,0,85,52],
+			}).addTo(this);
+		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
 				if(this.hero.scaleX == -1 || this.hero.framename != 'idle')
@@ -146,7 +160,7 @@
 				this.annihilatorEffect.y = this.hero.posy - 90;
 				this.ignoreTouch = true;
 				
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
+				game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 				this.passstep = 1;
 				var scene = this;
 				new Hilo.Tween.to(scene.tvflash,{
@@ -159,9 +173,10 @@
 						scene.annihilatorEffect.removeFromParent();
 						scene.hero.switchState('idle',6);
 						scene.annihilator.status = 2;
-						scene.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
+						game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 						scene.finger.visible = true;
 						scene.doorhandler.status = 1;
+						scene.addSpanner();
 					}
 				});
 			}
@@ -178,21 +193,69 @@
 					}
 				});
 			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.spanner)){
+				this.spanner.removeFromParent();
+				this.spanner.status = 2;
+				game.toolippanel.show(true,'这个工具会有用的',200);
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(2);
+				this.star01 = new game.FlashStar({
+					x:560,
+					y:560
+				}).addTo(this);
+			}
 		},
 		
-		checkActiveItem:function(mouseX,mouseY,obj){
+		checkShowFingerObjects:function(mouseX,mouseY){
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.spanner)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.annihilator)
+			){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		
+		
+		checkStar:function(star){
+			if(star && star.parent){
+				if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
+					star.hide();
+					game.starscore.addScore();
+				}
+			}
+		},
+		checkActiveItemWithoutPos:function(mouseX,mouseY,obj){
 			var isClickIn = false;
+			if(!obj){
+				return false;
+			}
 			var x = obj.clickArea[0]+obj.x;
 			var y = obj.clickArea[1]+obj.y;
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
-				if(x - this.hero.posx <100 && y - this.hero.posy <250){
+				isClickIn = true;
+			}
+			return isClickIn;
+		},
+		
+		checkActiveItem:function(mouseX,mouseY,obj){
+			var isClickIn = false;
+			if(!obj)
+				return false;
+			var x = obj.clickArea[0]+obj.x;
+			var y = obj.clickArea[1]+obj.y;
+			var w = obj.clickArea[2];
+			var h = obj.clickArea[3];
+			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
+				if(Math.abs(x+w/2 - this.hero.posx) <100 && Math.abs(y+h/2 - this.hero.posy) <200){
 					isClickIn = true;
-					
 				}else{
 					isClickIn = false;
-					console.log('pls close');						
+					game.notepanel.show(true,'走近点...',50);					
 				}
 			}
 			return isClickIn;
@@ -210,7 +273,7 @@
 					console.log('hero squat');
 					this.hero.speedx = this.hero.speedy = 0;
 					this.hero.switchState('squat');
-					this.changeBg();
+					this.checkStar(this.star01);
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
 					this.hero.jumpspeed = -18;
@@ -261,10 +324,6 @@
 				clickArea:[9,0,40,40],
 			}).addTo(this);
 			
-			this.headPanel = new game.TopHeadPanel({
-				headImgUrl:'headicon2',
-				healthIcon:'heart02',
-			}).addTo(this);
 			
 			this.finger = new game.FingerPoint({
 				x:240,
@@ -273,10 +332,7 @@
 			}).addTo(this);
 			this.finger.turnleft();
 			
-			this.notepanel = new game.DrNote({
-				txt:game.configdata.GAMETXTS.pass01_notestart,
-				x:-700,
-			}).addTo(this);
+			
 			
 			var atlas = new Hilo.TextureAtlas({
                 image:game.getImg('effects'),
@@ -316,10 +372,6 @@
 				interval:8,
 				visible:false,
 			}).addTo(this);
-			
-			
-			
-			
 		},
 		addHero:function(){
 			this.hero = new game.Hero({
@@ -347,6 +399,21 @@
 		initTouchEvent:function(){
 			var scene = this;
 			game.stage.off();
+			game.stage.on(Hilo.event.POINTER_MOVE, function(e) {
+				if(scene.ignoreTouch)
+					return;
+				var stagex = e.stageX;
+				var stagey = e.stageY;
+				var targetx = stagex - scene.x;
+				var targety = stagey - scene.y;
+				if(scene.checkShowFingerObjects(targetx,targety)){
+					scene.fingerMouse.visible = true;
+					scene.fingerMouse.x = targetx;
+					scene.fingerMouse.y = targety;
+				}else{
+					scene.fingerMouse.visible = false;
+				}
+			});
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.ignoreTouch)
 					return;
@@ -379,7 +446,7 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass02_annihilator);
+				game.notepanel.show(true,'找到有用的物品');//game.configdata.GAMETXTS.pass02_annihilator);
 			}
 			
 			

@@ -540,7 +540,8 @@
 			this.x = this.initx;
 			this.y = this.inity;
 			this.btnImg = new Hilo.Bitmap({
-				image: game.getImg('storebtn1'),
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('storebtn1','uimap'),
 				x:230,
 				y:250
 			}).addTo(this);
@@ -548,10 +549,10 @@
 			this.btnImg.on(Hilo.event.POINTER_START, function(e) {
 				if(panel.y == panel.inity){
 					panel.show(true,2000);
-					this.setImage(game.getImg('storebtn1'));
+					this.setImage(game.getImg('uimap'),game.configdata.getPngRect('storebtn1','uimap'));
 				}else{
 					panel.show(false,0);
-					this.setImage(game.getImg('storebtn2'));
+					this.setImage(game.getImg('uimap'),game.configdata.getPngRect('storebtn2','uimap'));
 				}
 			});
 		},
@@ -564,13 +565,21 @@
 			var x = (this.count-1) % 6;
 			var y = Math.floor((this.count-1) / 6);
 			var item = game.configdata.TOOLSICONS[index];
-			var icon = new Hilo.Bitmap({
+			var icon = new game.IconTool({
 				x:this.firstPosX + x * this.spaceLine,
 				y:this.firstPosY + y * this.spaceLine,
 				index:item.index,
-				image:game.getImg('uimap'),
-				rect:game.configdata.getPngRect(item.icon,'uimap'),
+				iconname:item.icon,
 			}).addTo(this);
+			icon.on(Hilo.event.POINTER_START, function(e) {
+				console.log('Icon Index:%d',this.index);
+				if(game.currentScene.excuteIcon){
+					game.currentScene.excuteIcon(this.index);
+					game.toolspanel
+				}else{
+					console.log('此场景不能使用该物品');
+				}
+			});
 		},
 		show:function(isshow,time){
 			var panel = this;
@@ -702,6 +711,24 @@
 			}else{
 				this.interval++;
 			}
+		},
+	});
+	
+	var IconTool = ns.IconTool = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'',
+		index:-1,
+		iconname:'',
+		img:null,
+		constructor: function(properties) {
+			IconTool.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.iconname,'uimap'),
+			}).addTo(this);
 		},
 	});
 	

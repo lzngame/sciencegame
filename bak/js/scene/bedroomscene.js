@@ -3,7 +3,6 @@
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.attack,
 		hero:null,
-		headPanel:null,
 		
 		readyShakeTime:0,
 		bgImg:null,
@@ -26,11 +25,9 @@
 		medicalkit:null,
 		glim:null,
 		objCount:0,
-		safeArea:null,
 		doorhandler:null,
 		finger:null,
-		notepanel:null,
-		toolippanel:null,
+		
 		tvflash:null,
 		aftershake:false,
 		
@@ -46,8 +43,7 @@
 		star03:null,
 		
 		finerMouse:null,
-		toolspanel:null,
-		starscore:null,
+		
 		tasktxt:null,
 		tasktxt1:null,
 		constructor: function(properties) {
@@ -76,7 +72,7 @@
 			this.addHero();
 			this.initkeyevent();
 			this.initTouchEvent();
-			this.headPanel.setHealth(this.hero.currentHealth);
+			game.headPanel.setHealth(this.hero.currentHealth);
 			game.sounds.play(0,false);
 			
 			
@@ -85,10 +81,7 @@
 				visible:false,
 				rect:game.configdata.getPngRect('hand_001','uimap')
 			}).addTo(this);
-			this.toolspanel = new game.ToolsIconPanel({
-				initx:724,
-				inity:-247,
-			}).addTo(this);
+			
 		},
 		
 		initkeyevent:function(){
@@ -167,7 +160,6 @@
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.pillow)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.phone)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.plug)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.safeArea)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.drink)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.glim)||
@@ -183,37 +175,37 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
 				this.phone.removeFromParent();
 				this.phone.status = 2;
-				this.toolippanel.show(true,'准备好通讯工具非常重要',200);
-				this.toolspanel.show(true,200);
-				this.toolspanel.addIcon(1);
 				this.checkEnough();
+				game.toolippanel.show(true,'准备好通讯工具非常重要',200);
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(1);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.drink)){
 				this.drink.removeFromParent();
 				this.drink.status = 2;
-				this.toolippanel.show(true,'灾害中储备饮水',200);
-				this.toolspanel.show(true,200);
-				this.toolspanel.addIcon(3);
 				this.checkEnough();
+				game.toolippanel.show(true,'灾害中储备饮水',200);
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(3);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.glim)){
 				this.glim.removeFromParent();
 				this.glim.status = 2;
-				this.toolippanel.show(true,'拿到手电筒',200);
-				this.toolspanel.show(true,200);
-				this.toolspanel.addIcon(0);
 				this.checkEnough();
+				game.toolippanel.show(true,'拿到手电筒',200);
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(0);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.medicalkit)){
 				this.medicalkit.removeFromParent();
 				this.medicalkit.status = 2;
-				this.toolippanel.show(true,'拿到医疗箱',200);
-				this.toolspanel.show(true,200);
-				this.toolspanel.addIcon(4);
 				this.checkEnough();
+				game.toolippanel.show(true,'拿到医疗箱',200);
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(4);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
@@ -221,18 +213,16 @@
 				this.pillow.status = 0;
 				this.phone.status = 1;
 				this.phone.visible = true;
-				this.safeArea.visible = true;
-				this.safeArea.status = 1;
 				
 				new game.FlashStarEffect({x:mouseX-100,y:mouseY-100}).addTo(this);
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_hide);
+				game.notepanel.show(true,'找到手机');
 				this.finger.setpos(752,462);
 				this.passstep = 1;
 				this.star01 = new game.FlashStar({
 					x:560,
 					y:560
 				}).addTo(this);
-				this.toolippanel.show(true,'D 键 蹲下拾取星星',300);
+				game.toolippanel.show(true,'D 键 蹲下拾取星星',350);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
@@ -241,16 +231,14 @@
 				this.plug.setEndImg(10,80);
 				this.tasktxt.hide();
 				this.doorhandler.status = 1;
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
+				game.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
 				this.finger.visible = true;
 				this.finger.setpos(1103,437);
 				this.star02 = new game.FlashStar({
 					x:760,
 					y:540
 				}).addTo(this);
-			}
-			if(this.checkActiveItem(mouseX,mouseY,this.safeArea)){
-				
+				game.toolippanel.show(true,'D 键 蹲下拾取星星',350);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
@@ -269,12 +257,14 @@
 			if(star && star.parent){
 				if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
 					star.hide();
-					this.starscore.addScore();
+					game.starscore.addScore();
 				}
 			}
 		},
 		checkActiveItemWithoutPos:function(mouseX,mouseY,obj){
 			var isClickIn = false;
+			if(!obj)
+				return false;
 			var x = obj.clickArea[0]+obj.x;
 			var y = obj.clickArea[1]+obj.y;
 			var w = obj.clickArea[2];
@@ -287,6 +277,8 @@
 		
 		checkActiveItem:function(mouseX,mouseY,obj){
 			var isClickIn = false;
+			if(!obj)
+				return false;
 			var x = obj.clickArea[0]+obj.x;
 			var y = obj.clickArea[1]+obj.y;
 			var w = obj.clickArea[2];
@@ -296,7 +288,7 @@
 					isClickIn = true;
 				}else{
 					isClickIn = false;
-					this.notepanel.show(true,'走近点...',50);					
+					game.notepanel.show(true,'走近点...',50);					
 				}
 			}
 			return isClickIn;
@@ -319,18 +311,6 @@
 						this.hero.switchState('pillowsquat');
 					}else{
 						this.hero.switchState('squat');
-					}
-					
-					var x = this.hero.posx;
-					var y = this.hero.posy;
-					var x1 = this.safeArea.clickArea[0] + this.safeArea.x;
-					var y1 = this.safeArea.clickArea[1] + this.safeArea.y;
-					var w1 = this.safeArea.clickArea[2];
-					var h1 = this.safeArea.clickArea[3];
-					if(game.checkInRect(x,y,x1,y1,w1,h1) && !this.aftershake && this.hero.ispillow){
-						this.shakeRoom();
-						this.changeBg();
-						this.aftershake = true;
 					}
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
@@ -370,8 +350,6 @@
 							scene.alpha = 1;
 							scene.bgImg.setImage(game.getImg('bedroomafter'));
 							scene.step = 3;
-							scene.safeArea.visible = false;
-							scene.notepanel.show(true,game.configdata.GAMETXTS.pass01_tvflash);
 							scene.tvflash.visible = true;
 							scene.plug.status = 1;
 							scene.hero.ispillow = false;
@@ -455,14 +433,6 @@
 				clickArea:[0,0,50,50],
 			}).addTo(this);
 			
-			this.safeArea  = new game.ActiveObject({
-				x:769,
-				y:425,
-				readyImgUrl:'safearea1',
-				finishedImgUrl:'safearea1',
-				clickArea:[29,5,100,60],
-			}).addTo(this);
-			this.safeArea.visible = true;
 			
 			            
             var frames = [
@@ -508,19 +478,31 @@
 				x:720
 			}).addTo(this);
 			
-			this.starscore = new game.StarScore({
-				x:500,
-				y:20,
-			}).addTo(this);
-			
-			this.headPanel = new game.TopHeadPanel({
+			game.uiscene = new Hilo.Container({}).addTo(game.stage);
+			game.headPanel = new game.TopHeadPanel({
 				healthValue:game.configdata.DEFAULTHEROHP,
 				headImgUrl:'headicon2',
 				healthIcon:'heart02',
 				healthIconBlack:'heart01',
 				x:20,
 				y:20,
-			}).addTo(this);
+			}).addTo(game.uiscene);
+			game.starscore = new game.StarScore({
+				x:500,
+				y:20,
+			}).addTo(game.uiscene);
+			game.notepanel = new game.DrNote({
+				txt:game.configdata.GAMETXTS.pass01_notestart,
+				x:-700,
+			}).addTo(game.uiscene);
+			game.toolippanel = new game.ToolipNote({
+				x:1230,
+				y:300,
+			}).addTo(game.uiscene);
+			game.toolspanel = new game.ToolsIconPanel({
+				initx:724,
+				inity:-247,
+			}).addTo(game.uiscene);
 			
 			this.finger = new game.FingerPoint({
 				x:328,
@@ -528,10 +510,7 @@
 				visible:false,
 			}).addTo(this);
 			
-			this.notepanel = new game.DrNote({
-				txt:game.configdata.GAMETXTS.pass01_notestart,
-				x:-700,
-			}).addTo(this);
+			
 			
 			
 			
@@ -572,17 +551,14 @@
 				visible:false,
 			}).addTo(this);
 			
-			this.toolippanel = new game.ToolipNote({
-				x:1230,
-				y:300,
-			}).addTo(this);
+			
 		},
 		addHero:function(){
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 256,
-				posy: 627,
+				posx: 306,
+				posy: 600,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
@@ -655,16 +631,16 @@
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart,300);
-				this.tasktxt1.visible = true;
+				game.notepanel.show(true,'灾难逃离解谜游戏，鼠标点击走动，D键蹲下（拾取物品）',350);
 			}
 			
-			if(this.readyShakeTime == 300){
+			if(this.readyShakeTime == 450){
 				this.shakeRoom();
 				this.changeBg();
+				this.tasktxt1.visible = true;
 			}
-			if(this.readyShakeTime == 430){
-				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_pillow);
+			if(this.readyShakeTime == 350){
+				game.notepanel.show(true,'地震中要小心头顶的掉落物，及时躲开',100);
 				this.finger.visible = true;
 				this.pillow.status = 1;
 			}
@@ -693,10 +669,10 @@
 				this.y = this.inity;
 			}
 			this.toFallTime++;
-			if(this.toFallTime == 445){
+			if(this.toFallTime == 545){
 				this.fallfan1.isFall = true;
 			}
-			if(this.toFallTime == 415){
+			if(this.toFallTime == 515){
 				this.fallfan2.isFall = true;
 			}
 			if(this.fallfan1.onDanger && this.fallfan1.y >= this.fallfan1.floorline){
@@ -707,7 +683,7 @@
 				if(game.checkInRect(this.hero.posx,this.hero.posy,256,578,200,90)){
 					this.hero.switchState('fallhit',6);
 					this.hero.currentHealth--;
-					this.headPanel.setHealth(this.hero.currentHealth);
+					game.headPanel.setHealth(this.hero.currentHealth);
 				}
 			}
 			if(this.fallfan2.onDanger && this.fallfan2.y >= this.fallfan2.floorline){
@@ -718,19 +694,10 @@
 				if(game.checkInRect(this.hero.posx,this.hero.posy,776,578,200,90)){
 					this.hero.switchState('fallhit',6);
 					this.hero.currentHealth--;
-					this.headPanel.setHealth(this.hero.currentHealth);
+					game.headPanel.setHealth(this.hero.currentHealth);
 				}
 			}
 			
-			if(this.passstep ==1){
-				if(this.checkActiveItem(this.hero.posx,this.hero.posy,this.safeArea)){
-					this.notepanel.show(true,game.configdata.GAMETXTS.pass01_squat);
-					//this.finger.visible = false;
-					
-					//this.safeArea.visible = false;
-					this.passstep = 2;
-				}
-			}
 			this.checkBlocks();
 			
 			if(this.readyShakeTime == 100){
