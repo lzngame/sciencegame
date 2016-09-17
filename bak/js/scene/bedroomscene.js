@@ -15,12 +15,17 @@
 		inity:0,
 		toFallTime:0,
 		
-		fallfan:null,
-		falllamp:null,
-		fallfanShader:null,
+		fallfan1:null,
+		fallfan2:null,
+		fallfanShader1:null,
+		fallfanShader2:null,
 		plug:null,
 		pillow:null,
 		phone:null,
+		drink:null,
+		medicalkit:null,
+		glim:null,
+		objCount:0,
 		safeArea:null,
 		doorhandler:null,
 		finger:null,
@@ -28,6 +33,7 @@
 		toolippanel:null,
 		tvflash:null,
 		aftershake:false,
+		
 		
 		blocks:null,
 		
@@ -41,7 +47,9 @@
 		
 		finerMouse:null,
 		toolspanel:null,
-		
+		starscore:null,
+		tasktxt:null,
+		tasktxt1:null,
 		constructor: function(properties) {
 			AttackScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -157,10 +165,13 @@
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.pillow)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.phone)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.plug)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.safeArea)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.phone)
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.drink)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.glim)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.medicalkit)
 			){
 				return true;
 			}else{
@@ -170,16 +181,42 @@
 		
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
-				//this.phone.removeFromParent();
-				//this.phone.status = 2;
+				this.phone.removeFromParent();
+				this.phone.status = 2;
 				this.toolippanel.show(true,'准备好通讯工具非常重要',200);
-				this.toolspanel.show(true,500);
-				this.toolspanel.addIcon();
+				this.toolspanel.show(true,200);
+				this.toolspanel.addIcon(1);
+				this.checkEnough();
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.drink)){
+				this.drink.removeFromParent();
+				this.drink.status = 2;
+				this.toolippanel.show(true,'灾害中储备饮水',200);
+				this.toolspanel.show(true,200);
+				this.toolspanel.addIcon(3);
+				this.checkEnough();
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.glim)){
+				this.glim.removeFromParent();
+				this.glim.status = 2;
+				this.toolippanel.show(true,'拿到手电筒',200);
+				this.toolspanel.show(true,200);
+				this.toolspanel.addIcon(0);
+				this.checkEnough();
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.medicalkit)){
+				this.medicalkit.removeFromParent();
+				this.medicalkit.status = 2;
+				this.toolippanel.show(true,'拿到医疗箱',200);
+				this.toolspanel.show(true,200);
+				this.toolspanel.addIcon(4);
+				this.checkEnough();
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
-				//this.hero.switchState('handup',10);
-				//this.hero.ispillow = true;
 				this.pillow.x = 300;
 				this.pillow.status = 0;
 				this.phone.status = 1;
@@ -192,20 +229,25 @@
 				this.finger.setpos(752,462);
 				this.passstep = 1;
 				this.star01 = new game.FlashStar({
-					x:760,
+					x:560,
 					y:560
 				}).addTo(this);
-				this.toolippanel.show(true,'D 键 蹲下拾取星星',200);
+				this.toolippanel.show(true,'D 键 蹲下拾取星星',300);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
 				this.hero.switchState('handon',10);
 				this.tvflash.visible = false;
 				this.plug.setEndImg(10,80);
+				this.tasktxt.hide();
 				this.doorhandler.status = 1;
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
 				this.finger.visible = true;
 				this.finger.setpos(1103,437);
+				this.star02 = new game.FlashStar({
+					x:760,
+					y:540
+				}).addTo(this);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.safeArea)){
 				
@@ -224,9 +266,10 @@
 			}
 		},
 		checkStar:function(star){
-			if(star){
+			if(star && star.parent){
 				if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
 					star.hide();
+					this.starscore.addScore();
 				}
 			}
 		},
@@ -270,6 +313,7 @@
 				case game.configdata.MSAGE_TYPE.herosquat:
 					console.log('hero squat');
 					this.checkStar(this.star01);
+					this.checkStar(this.star02);
 					this.hero.speedx = this.hero.speedy = 0;
 					if(this.hero.ispillow){
 						this.hero.switchState('pillowsquat');
@@ -331,6 +375,7 @@
 							scene.tvflash.visible = true;
 							scene.plug.status = 1;
 							scene.hero.ispillow = false;
+							scene.tasktxt.visible = true;
 						}
 					});
 				}
@@ -374,6 +419,33 @@
 				finishedImgUrl:'pillow',
 				clickArea:[9,0,130,50],
 			}).addTo(this);
+			
+			this.glim  = new game.ActiveObject({
+				x:994,
+				y:484,
+				status:1,
+				readyImgUrl:'glim',
+				finishedImgUrl:'glim',
+				clickArea:[0,0,43,35],
+			}).addTo(this);
+			
+			this.drink  = new game.ActiveObject({
+				x:166,
+				y:430,
+				status:1,
+				readyImgUrl:'waterdrink',
+				finishedImgUrl:'waterdrink',
+				clickArea:[0,0,28,56],
+			}).addTo(this);
+			
+			this.medicalkit  = new game.ActiveObject({
+				x:829,
+				y:414,
+				status:1,
+				readyImgUrl:'safebox',
+				finishedImgUrl:'safebox',
+				clickArea:[0,0,65,56],
+			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
 				x:1162,
@@ -402,7 +474,7 @@
 					[0,1267,357,207], //0-5
                 ];
 			
-			this.fallfan = new game.FallObject({
+			this.fallfan1 = new game.FallObject({
 				x:200,
 				y:-30,
 				name:'fallfan',
@@ -412,21 +484,34 @@
 				animaFrames:frames,
 			}).addTo(this);
 			
-			this.fallfanShader = new Hilo.Bitmap({
+			this.fallfanShader1 = new Hilo.Bitmap({
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect('fanshader','uimap'),
 				y:550,
 				x:200
 			}).addTo(this);
-			/*this.falllamp = new game.FallObject({
+			
+			this.fallfan2 = new game.FallObject({
+				x:720,
+				y:-30,
+				name:'fallfan',
+				imgInity:-30,
+				floorline:470,
+				wholeState:'ceilingfan1',
+				animaFrames:frames,
+			}).addTo(this);
+			
+			this.fallfanShader2 = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('fanshader','uimap'),
+				y:550,
+				x:720
+			}).addTo(this);
+			
+			this.starscore = new game.StarScore({
 				x:500,
-				y:0,
-				name:'falllamp',
-				imgInity:0,
-				floorline:400,
-				wholeState:'ceilinglamp1',
-				brokenState:'ceilinglamp_piece',
-			}).addTo(this);*/
+				y:20,
+			}).addTo(this);
 			
 			this.headPanel = new game.TopHeadPanel({
 				healthValue:game.configdata.DEFAULTHEROHP,
@@ -448,10 +533,7 @@
 				x:-700,
 			}).addTo(this);
 			
-			this.toolippanel = new game.ToolipNote({
-				x:1230,
-				y:300,
-			}).addTo(this);
+			
 			
 			var atlas = new Hilo.TextureAtlas({
                 image:game.getImg('effects'),
@@ -475,6 +557,24 @@
 				y:285+55,
 				interval:8,
 				visible:false,
+			}).addTo(this);
+			
+			this.tasktxt = new game.TaskLine({
+				txt:'消除危险的电火花',
+				x:932,
+				y:112,
+				visible:false,
+			}).addTo(this);
+			this.tasktxt1 = new game.TaskLine({
+				txt:'搜集有用的物品',
+				x:700,
+				y:112,
+				visible:false,
+			}).addTo(this);
+			
+			this.toolippanel = new game.ToolipNote({
+				x:1230,
+				y:300,
 			}).addTo(this);
 		},
 		addHero:function(){
@@ -547,9 +647,16 @@
 				scene.checkActiveObjects(targetx,targety);
 			});
 		},
+		checkEnough:function(){
+			this.objCount++;
+			if(this.objCount >= 4){
+				this.tasktxt1.hide();
+			}
+		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
 				this.notepanel.show(true,game.configdata.GAMETXTS.pass01_notestart,300);
+				this.tasktxt1.visible = true;
 			}
 			
 			if(this.readyShakeTime == 300){
@@ -586,18 +693,29 @@
 				this.y = this.inity;
 			}
 			this.toFallTime++;
-			if(this.toFallTime == 580){
-				this.fallfan.isFall = true;
+			if(this.toFallTime == 445){
+				this.fallfan1.isFall = true;
 			}
-			if(this.toFallTime == 500){
-				//this.falllamp.isFall = true;
+			if(this.toFallTime == 415){
+				this.fallfan2.isFall = true;
 			}
-			if(this.fallfan.onDanger && this.fallfan.y >= this.fallfan.floorline){
-				console.log('once check:'+this.fallfan.name);
-				this.fallfanShader.removeFromParent();
-				this.fallfan.onDanger = false;
+			if(this.fallfan1.onDanger && this.fallfan1.y >= this.fallfan1.floorline){
+				console.log('once check:'+this.fallfan1.name);
+				this.fallfanShader1.removeFromParent();
+				this.fallfan1.onDanger = false;
 				game.sounds.play(4,false);
-				if(game.checkInRect(this.hero.posx,this.hero.posy,256,598,200,50)){
+				if(game.checkInRect(this.hero.posx,this.hero.posy,256,578,200,90)){
+					this.hero.switchState('fallhit',6);
+					this.hero.currentHealth--;
+					this.headPanel.setHealth(this.hero.currentHealth);
+				}
+			}
+			if(this.fallfan2.onDanger && this.fallfan2.y >= this.fallfan2.floorline){
+				console.log('once check:'+this.fallfan2.name);
+				this.fallfanShader2.removeFromParent();
+				this.fallfan2.onDanger = false;
+				game.sounds.play(4,false);
+				if(game.checkInRect(this.hero.posx,this.hero.posy,776,578,200,90)){
 					this.hero.switchState('fallhit',6);
 					this.hero.currentHealth--;
 					this.headPanel.setHealth(this.hero.currentHealth);

@@ -121,6 +121,8 @@
 		},
 	});
 	
+	
+	
 	var ActiveObject = ns.ActiveObject = Hilo.Class.create({
 		Extends: Hilo.Container,
 		img:null,
@@ -522,9 +524,10 @@
 		inity:0,
 		showtime:0,
 		sumtime:0,
-		firstPosX:10,
-		firstPosY:10,
-		spaceLine:10,
+		firstPosX:22,
+		firstPosY:20,
+		spaceLine:74,
+		btnImg:null,
 		constructor: function(properties) {
 			ToolsIconPanel.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -536,20 +539,37 @@
 			}).addTo(this);
 			this.x = this.initx;
 			this.y = this.inity;
+			this.btnImg = new Hilo.Bitmap({
+				image: game.getImg('storebtn1'),
+				x:230,
+				y:250
+			}).addTo(this);
+			var panel = this;
+			this.btnImg.on(Hilo.event.POINTER_START, function(e) {
+				if(panel.y == panel.inity){
+					panel.show(true,2000);
+					this.setImage(game.getImg('storebtn1'));
+				}else{
+					panel.show(false,0);
+					this.setImage(game.getImg('storebtn2'));
+				}
+			});
 		},
 		setpos:function(x,y){
 			this.x = x;
 			this.y = y;
 		},
-		addIcon:function(){
+		addIcon:function(index){
 			this.count++;
 			var x = (this.count-1) % 6;
 			var y = Math.floor((this.count-1) / 6);
+			var item = game.configdata.TOOLSICONS[index];
 			var icon = new Hilo.Bitmap({
-				x:this.firstPosX + x * 50,
-				y:this.firstPosY + y * 50,
+				x:this.firstPosX + x * this.spaceLine,
+				y:this.firstPosY + y * this.spaceLine,
+				index:item.index,
 				image:game.getImg('uimap'),
-				rect:game.configdata.getPngRect('proc_icon_088','uimap'),
+				rect:game.configdata.getPngRect(item.icon,'uimap'),
 			}).addTo(this);
 		},
 		show:function(isshow,time){
@@ -576,6 +596,111 @@
 				this.sumtime = 0;
 				this.showtime = 0;
 				this.show(false,0);
+			}
+		},
+	});
+	
+	
+	
+	var TaskLine = ns.TaskLine = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'task line',
+		interval:4,
+		index:0,
+		img:null,
+		text1:null,
+		txt:'',
+		frames:null,
+		constructor: function(properties) {
+			TaskLine.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.frames = ['question1','question2','question3','question4'];
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('question1','uimap'),
+			}).addTo(this);
+			var font = "18px arial";
+			this.text1 = new Hilo.Text({
+                	font: font,
+                	color:'green',
+                	text: this.txt,
+               		lineSpacing: 10,
+                	width:300,
+                	height:100,
+                	y: 30,
+                	x:85,
+           		 }).addTo(this);
+           	this.text1 = new Hilo.Text({
+                	font: font,
+                	color:'yellow',
+                	text: this.txt,
+               		lineSpacing: 10,
+                	width:300,
+                	height:100,
+                	y: 31,
+                	x:86,
+           		 }).addTo(this);
+		},
+		hide:function(){
+			new game.FlashStarEffect({
+				x:this.x-30,
+				y:this.y-30
+			}).addTo(this.parent);
+			this.removeFromParent();
+		},
+		onUpdate:function(){
+			if(this.interval > 3){
+				this.interval = 0;
+				this.index++;
+				if(this.index > this.frames.length-1){
+					this.index = 0;
+				}
+				this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.frames[this.index]));
+			}else{
+				this.interval++;
+			}
+		},
+	});
+	
+	var StarScore = ns.StarScore = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'star score',
+		score:4,
+		img:null,
+		basenum:'whitenum0',
+		constructor: function(properties) {
+			StarScore.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('start01','uimap'),
+			}).addTo(this);
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.basenum+this.score.toString(),'uimap'),
+				x:75
+			}).addTo(this);
+		},
+		addScore:function(){
+			this.score++;
+			var name = this.basenum+this.score.toString();
+			var rect = game.configdata.getPngRect(name,'uimap');
+			this.img.setImage(game.getImg('uimap'),rect);
+		},
+		onUpdate:function(){
+			if(this.interval > 3){
+				this.interval = 0;
+				this.index++;
+				if(this.index > this.frames.length-1){
+					this.index = 0;
+				}
+				this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.frames[this.index]));
+			}else{
+				this.interval++;
 			}
 		},
 	});
