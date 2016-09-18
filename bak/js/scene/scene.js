@@ -232,7 +232,7 @@
 			
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.story);
+				game.switchScene(game.configdata.SCENE_NAMES.attack);
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();

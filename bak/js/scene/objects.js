@@ -448,6 +448,7 @@
 				y:y-30
 			}).addTo(this.parent);
 			this.removeFromParent();
+			game.sounds.play(3,false);
 		},
 		onUpdate:function(){
 			if(this.interval > 10){
@@ -580,6 +581,7 @@
 					console.log('此场景不能使用该物品');
 				}
 			});
+			game.sounds.play(5,false);
 		},
 		show:function(isshow,time){
 			var panel = this;
