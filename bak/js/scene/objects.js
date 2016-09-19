@@ -676,8 +676,8 @@
 	var StarScore = ns.StarScore = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'star score',
-		score:4,
-		img:null,
+		score:10987653214,
+		imgpanel:null,
 		basenum:'whitenum0',
 		constructor: function(properties) {
 			StarScore.superclass.constructor.call(this, properties);
@@ -688,29 +688,24 @@
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect('start01','uimap'),
 			}).addTo(this);
-			this.img = new Hilo.Bitmap({
-				image: game.getImg('uimap'),
-				rect:game.configdata.getPngRect(this.basenum+this.score.toString(),'uimap'),
-				x:75
+			this.imgpanel = new Hilo.Container({
+				x:50
 			}).addTo(this);
+			this.addScore();
 		},
 		addScore:function(){
+			this.imgpanel.removeAllChildren();
 			this.score++;
-			var name = this.basenum+this.score.toString();
-			var rect = game.configdata.getPngRect(name,'uimap');
-			this.img.setImage(game.getImg('uimap'),rect);
+			var stringScore = this.score.toString();
+			for(var i=0;i<stringScore.length;i++){
+				var numimg = new Hilo.Bitmap({
+					image: game.getImg('uimap'),
+					rect:game.configdata.getPngRect(this.basenum+stringScore.charAt(i),'uimap'),
+					x:i*30
+				}).addTo(this.imgpanel);
+			}
 		},
 		onUpdate:function(){
-			if(this.interval > 3){
-				this.interval = 0;
-				this.index++;
-				if(this.index > this.frames.length-1){
-					this.index = 0;
-				}
-				this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.frames[this.index]));
-			}else{
-				this.interval++;
-			}
 		},
 	});
 	

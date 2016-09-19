@@ -646,28 +646,8 @@
 			}
 			
 			this.readyShakeTime++;
+			this.shakeScene();
 			
-			if(this.shakeTime > 0){
-				this.x = this.initx;
-				this.y = this.inity;
-				var offsetx = Math.random()*this.shakeLevel;
-				var offsety = Math.random()*this.shakeLevel;
-				var d1 = Math.random();
-				var d2 = Math.random();
-				if(d1 > 0.5)
-				  this.x += this.shakeSpeed;
-				else
-				  this.x -= this.shakeSpeed;
-				if(d2 > 0.5)
-				  this.y += this.shakeSpeed;
-				else
-				  this.y -= this.shakeSpeed;
-				this.shakeTime -= 2;
-			}else{
-				this.shakeTime = 0;
-				this.x = this.initx;
-				this.y = this.inity;
-			}
 			this.toFallTime++;
 			if(this.toFallTime == 545){
 				this.fallfan1.isFall = true;
@@ -708,6 +688,29 @@
 			}
 			if(this.readyShakeTime == 200){
 				this.testStart.hide();
+			}
+		},
+		shakeScene:function(){
+			if(this.shakeTime > 0){
+				this.x = this.initx;
+				this.y = this.inity;
+				var offsetx = Math.random()*this.shakeLevel;
+				var offsety = Math.random()*this.shakeLevel;
+				var d1 = Math.random();
+				var d2 = Math.random();
+				if(d1 > 0.5)
+				  this.x += offsetx;
+				else
+				  this.x -= offsetx;
+				if(d2 > 0.5)
+				  this.y += offsety;
+				else
+				  this.y -= offsety;
+				this.shakeTime -= 2;
+			}else{
+				this.shakeTime = 0;
+				this.x = this.initx;
+				this.y = this.inity;
 			}
 		},
 	});
