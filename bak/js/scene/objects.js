@@ -212,11 +212,15 @@
 			console.log('topheadpanel init');
 			var self = this;
 			var img = game.getImg('uimap');
+			new Hilo.Bitmap({
+				image: img,
+				rect:game.configdata.getPngRect('headbg','uimap'),
+			}).addTo(this);
 			this.headImg = new Hilo.Bitmap({
 				image: img,
 				rect:game.configdata.getPngRect(this.headImgUrl,'uimap'),
-				width:64,
-				height:64
+				x:70,
+				y:0
 			}).addTo(this);
 			
 			this.hpContainer = new Hilo.Container({

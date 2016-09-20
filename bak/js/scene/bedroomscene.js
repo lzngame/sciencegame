@@ -272,6 +272,7 @@
 			var pillowdata = game.boydata.bedroomData.pillow;
 			if(pillowdata.used){
 				this.pillow.x = 300;
+				this.phone.status = 1;
 			}
 			var plugdata   = game.boydata.bedroomData.plug;
 			if(plugdata.used){
@@ -484,12 +485,12 @@
 				game.notepanel.show(true,'灾难逃离解谜游戏，鼠标点击走动，D键蹲下（拾取物品）',350);
 			}
 			
-			if(this.readyShakeTime == 450){
+			if(this.readyShakeTime == 300){
 				this.shakeRoom();
 				this.changeBg();
 				//this.tasktxt1.visible = true;
 			}
-			if(this.readyShakeTime == 350){
+			if(this.readyShakeTime == 320){
 				game.notepanel.show(true,'地震中要小心头顶的掉落物，及时躲开',100);
 				this.pillow.status = 1;
 			}
@@ -498,10 +499,10 @@
 			this.shakeScene();
 			
 			this.toFallTime++;
-			if(this.toFallTime == 545){
+			if(this.toFallTime == 355){
 				this.fallfan1.isFall = true;
 			}
-			if(this.toFallTime == 515){
+			if(this.toFallTime == 375){
 				this.fallfan2.isFall = true;
 			}
 			this.checkFallObj(this.fallfan1,this.fallfanShader1);

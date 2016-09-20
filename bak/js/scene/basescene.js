@@ -167,7 +167,7 @@
 				var stagey = e.stageY;
 				var targetx = stagex - scene.x;
 				var targety = stagey - scene.y;
-				scene.fingerMouse.x = targetx;
+				scene.fingerMouse.x = targetx-7;
 				scene.fingerMouse.y = targety;
 				if(scene.checkShowFingerObjects(targetx,targety)){
 					scene.fingerMouse.visible = true;

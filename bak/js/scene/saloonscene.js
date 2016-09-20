@@ -48,36 +48,6 @@
 				return false;
 			}
 		},
-		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerBedroom)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_wrong,200);
-				new Hilo.Tween.to(this,{
-					alpha:0.99
-				},{
-					duration:2000,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.lift);
-					}
-				});
-			}
-			
-			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_right,200);
-				new Hilo.Tween.to(this,{
-					alpha:0.99
-				},{
-					duration:3000,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.runaway);
-					}
-				});
-			}
-		},
-		
 		receiveMsg: function(msg) {
 			switch (msg.msgtype) {
 				case game.configdata.MSAGE_TYPE.herosquat:
@@ -108,30 +78,24 @@
 					break;
 			}
 		},
+		enterDoor:function(mouseX,mouseY,scenename){
+			this.hero.switchState('handon',10);
+			var scene = this;
+			new Hilo.Tween.to(this,{
+					alpha:0.3
+				},{
+					duration:300,
+					onComplete:function(){
+						game.switchScene(scenename);
+					}
+			});
+		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerBedroom)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				new Hilo.Tween.to(this,{
-					alpha:0.3
-				},{
-					duration:300,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.attack);
-					}
-				});
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.attack);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCookie)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				new Hilo.Tween.to(this,{
-					alpha:0.3
-				},{
-					duration:300,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.cookieroom);
-					}
-				});
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.cookieroom);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
 				this.hero.switchState('handon',10);
