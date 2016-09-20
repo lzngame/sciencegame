@@ -30,6 +30,8 @@
 		notepanel:null,
 		toolippanel:null,
 		toolspanel:null,
+		
+		boydata:null,
 		init: function() {
 			var browserInfo = Hilo.browser;
 			var winWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -42,6 +44,7 @@
 				this.screenHeight = game.configdata.MAXSIZE.maxHeight;
 			this.refresh();
 			this.switchScene(game.configdata.SCENE_NAMES.load);
+			this.boydata = new game.BoyData();
 		},
 		refresh: function() {
 			console.log('game init :window had loaded');
@@ -105,11 +108,10 @@
 			this.scenes[game.configdata.SCENE_NAMES.map]     = new game.MapScene();
 			this.scenes[game.configdata.SCENE_NAMES.stash]   = new game.StashScene();
 			this.scenes[game.configdata.SCENE_NAMES.failure] = new game.FailureScene();
-			this.scenes[game.configdata.SCENE_NAMES.unlock]  = new game.UnlockScene();
 			this.scenes[game.configdata.SCENE_NAMES.shop]    = new game.ShopScene();
 			this.scenes[game.configdata.SCENE_NAMES.win]     = new game.WinoverScene();
-			this.scenes[game.configdata.SCENE_NAMES.coach]   = new game.CoachScene();
 			
+			this.scenes[game.configdata.SCENE_NAMES.saloon]  	  = new game.SaloonScene();
 			this.scenes[game.configdata.SCENE_NAMES.attack]       = new game.AttackScene();
 			this.scenes[game.configdata.SCENE_NAMES.choice]       = new game.ChoiceScene();
 			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();
@@ -143,5 +145,14 @@
         	}  
         	return true;  
 		},
+		delIndexData:function(targetArray,indexItem){
+			var index = targetArray.indexOf(indexItem);
+			if(index != -1){
+				targetArray.splice(index,1);
+				return true;
+			}else{
+				return false;
+			}
+		}
 	};
 })();

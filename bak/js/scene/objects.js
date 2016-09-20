@@ -52,9 +52,6 @@
 				}
 			}
 			if(this.startBreak){
-				console.log('index:%d',this.fallAnimaIndex);
-				console.log('interval:%d',this.interval);
-				
 				if(this.interval > 2){
 					this.img.setImage(game.getImg('fallobjs'),this.animaFrames[this.fallAnimaIndex]);
 					this.interval = 0;
@@ -227,9 +224,9 @@
 				y:5,
 			}).addTo(this);
 			
-			this.setHealth(0);
+			this.setHp(0);
 		},
-		setHealth: function(n) {
+		setHp: function(n) {
 			this.hpContainer.removeAllChildren();
 			var img = game.getImg('uimap');
 			for (var i = 0; i < this.healthValue; i++) {
@@ -519,7 +516,6 @@
 		Extends: Hilo.Container,
 		name:'ToolsIconPanel',
 		bg:null,
-		count:0,
 		index:0,
 		initx:0,
 		inity:0,
@@ -529,6 +525,7 @@
 		firstPosY:20,
 		spaceLine:74,
 		btnImg:null,
+		iconpanel:null,
 		constructor: function(properties) {
 			ToolsIconPanel.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -556,27 +553,44 @@
 					this.setImage(game.getImg('uimap'),game.configdata.getPngRect('storebtn2','uimap'));
 				}
 			});
+			this.iconpanel = new Hilo.Container({}).addTo(this);
 		},
 		setpos:function(x,y){
 			this.x = x;
 			this.y = y;
 		},
+		removeIcon:function(index){
+			if(game.delIndexData(game.boydata.bagdata,index)){
+				this.count--;
+			}
+			var panelarray = this.iconpanel.children;
+			for(var i=0;i<panelarray.length;i++){
+				var item = panelarray[i];
+				if(item.index === index){
+					item.removeFromParent();
+					break;
+				}
+			}
+		},
 		addIcon:function(index){
-			this.count++;
-			var x = (this.count-1) % 6;
-			var y = Math.floor((this.count-1) / 6);
+			game.boydata.bagdata.push(index);
+			this.addIconNoData(index);
+		},
+		addIconNoData:function(index){
+			var initPos = this.iconpanel.getNumChildren()+1;
+			var x = (initPos-1) % 6;
+			var y = Math.floor((initPos-1) / 6);
 			var item = game.configdata.TOOLSICONS[index];
 			var icon = new game.IconTool({
 				x:this.firstPosX + x * this.spaceLine,
 				y:this.firstPosY + y * this.spaceLine,
 				index:item.index,
 				iconname:item.icon,
-			}).addTo(this);
+			}).addTo(this.iconpanel);
 			icon.on(Hilo.event.POINTER_START, function(e) {
 				console.log('Icon Index:%d',this.index);
 				if(game.currentScene.excuteIcon){
 					game.currentScene.excuteIcon(this.index);
-					game.toolspanel
 				}else{
 					console.log('此场景不能使用该物品');
 				}
@@ -589,6 +603,7 @@
 			var h = this.bg.height-43;
 			if(isshow){
 				targety = targety + h;
+				this.refresh();
 			}
 			new Hilo.Tween.to(panel,{
 				 y:targety
@@ -598,6 +613,12 @@
 				}
 			});
 			panel.showtime = time;
+		},
+		refresh:function(){
+			this.iconpanel.removeAllChildren();
+			for(var i=0;i<game.boydata.bagdata.length;i++){
+				this.addIconNoData(game.boydata.bagdata[i]);
+			}
 		},
 		onUpdate:function(){
 			if(this.showtime > 0){
@@ -678,8 +699,8 @@
 	var StarScore = ns.StarScore = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'star score',
-		score:4,
-		img:null,
+		score:10987653214,
+		imgpanel:null,
 		basenum:'whitenum0',
 		constructor: function(properties) {
 			StarScore.superclass.constructor.call(this, properties);
@@ -690,29 +711,24 @@
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect('start01','uimap'),
 			}).addTo(this);
-			this.img = new Hilo.Bitmap({
-				image: game.getImg('uimap'),
-				rect:game.configdata.getPngRect(this.basenum+this.score.toString(),'uimap'),
-				x:75
+			this.imgpanel = new Hilo.Container({
+				x:50
 			}).addTo(this);
+			this.addScore();
 		},
 		addScore:function(){
+			this.imgpanel.removeAllChildren();
 			this.score++;
-			var name = this.basenum+this.score.toString();
-			var rect = game.configdata.getPngRect(name,'uimap');
-			this.img.setImage(game.getImg('uimap'),rect);
+			var stringScore = this.score.toString();
+			for(var i=0;i<stringScore.length;i++){
+				var numimg = new Hilo.Bitmap({
+					image: game.getImg('uimap'),
+					rect:game.configdata.getPngRect(this.basenum+stringScore.charAt(i),'uimap'),
+					x:i*30
+				}).addTo(this.imgpanel);
+			}
 		},
 		onUpdate:function(){
-			if(this.interval > 3){
-				this.interval = 0;
-				this.index++;
-				if(this.index > this.frames.length-1){
-					this.index = 0;
-				}
-				this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.frames[this.index]));
-			}else{
-				this.interval++;
-			}
 		},
 	});
 	
@@ -732,6 +748,34 @@
 				rect:game.configdata.getPngRect(this.iconname,'uimap'),
 			}).addTo(this);
 		},
+	});
+	
+	var FingerMouse = ns.FingerMouse = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'',
+		index:-1,
+		defaulticonname:'hand_001',
+		img:null,
+		active:false,
+		constructor: function(properties) {
+			FingerMouse.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.img = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.defaulticonname,'uimap'),
+			}).addTo(this);
+		},
+		setDefault:function(){
+			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.defaulticonname,'uimap'));
+		},
+		setCurrent:function(index){
+			this.active = true;
+			var item = game.configdata.TOOLSICONS[index];
+			var iconname = item.icon;
+			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(iconname,'uimap'));
+		}
 	});
 	
 })(window.game);
