@@ -96,11 +96,21 @@ game.monsterdata = new function(){
 	var BoyData = ns.BoyData = Hilo.Class.create({
 		currentHp:0,
 		bagdata:[],
+		bedroomData:null,
 		constructor: function(properties) {
 			this.init(properties);
 		},
 		init: function(properties) {
 			console.log('user data init');
+			this.bedroomData = {
+				isshake:{used:false},
+				pillow:{status:1,used:false},
+				phone:{status:1,used:false},
+				glim:{status:1,used:false},
+				drink:{status:1,used:false},
+				medicalkit:{status:1,used:false},
+				plug:{status:0,used:false},
+			};
 			this.reset();
 		},
 		addHp:function(){

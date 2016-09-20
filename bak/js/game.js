@@ -108,11 +108,10 @@
 			this.scenes[game.configdata.SCENE_NAMES.map]     = new game.MapScene();
 			this.scenes[game.configdata.SCENE_NAMES.stash]   = new game.StashScene();
 			this.scenes[game.configdata.SCENE_NAMES.failure] = new game.FailureScene();
-			this.scenes[game.configdata.SCENE_NAMES.unlock]  = new game.UnlockScene();
 			this.scenes[game.configdata.SCENE_NAMES.shop]    = new game.ShopScene();
 			this.scenes[game.configdata.SCENE_NAMES.win]     = new game.WinoverScene();
-			this.scenes[game.configdata.SCENE_NAMES.coach]   = new game.CoachScene();
 			
+			this.scenes[game.configdata.SCENE_NAMES.saloon]  	  = new game.SaloonScene();
 			this.scenes[game.configdata.SCENE_NAMES.attack]       = new game.AttackScene();
 			this.scenes[game.configdata.SCENE_NAMES.choice]       = new game.ChoiceScene();
 			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();

@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = false;
+	self.NOLINE = true;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -86,6 +86,7 @@ game.configdata = new function(){
 		lift:'LIFESCENE_NAME',
 		runaway:'RUN_AWAY_SCENE',
 		attack: 'ATTACK_SCENE',
+		saloon:'SALOON_SCENE',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
@@ -102,6 +103,7 @@ game.configdata = new function(){
 		unlock:'UNLOCK_SCENE',
 		coach:'COACH_SCENE',
 		point:'POINT_SCENE',
+		
 	};
 	
 	self.MSAGE_TYPE ={
@@ -358,16 +360,13 @@ game.userData = new function(){
 	var self = this;
 	
 	this.heroData = null;
-	this.userInfo = null;
 	this.coachData = null;
 	
 	this.saveHeroDataJsonSt = function(){
 		var st = JSON.stringify(this.heroData);
 		console.log(st);
 		localStorage.heroData = st;
-		var st2 = JSON.stringify(this.userInfo);
 		console.log(st2);
-		localStorage.userInfo = st2;
 	};
 	this.initData = function(){
 		console.log('userData.init');
@@ -381,12 +380,9 @@ game.userData = new function(){
 			this.heroData =  new game.HeroData();
 		}
 		if(localStorage.userInfo){
-			var st = localStorage.userInfo;
 			var obj = JSON.parse(st);
 			console.log(obj);
-			this.userInfo = obj;
 		}else{
-			this.userInfo =  new game.UserInfo();
 		}
 		//this.saveHeroDataJsonSt();
 	};
