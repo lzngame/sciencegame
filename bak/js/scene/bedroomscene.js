@@ -72,16 +72,14 @@
 			this.addHero();
 			this.initkeyevent();
 			this.initTouchEvent();
-			game.headPanel.setHealth(this.hero.currentHealth);
+			game.boydata.currentHp = 4;
+			game.headPanel.setHp(game.boydata.currentHp);
 			game.sounds.play(0,false);
 			
 			
-			this.fingerMouse = new Hilo.Bitmap({
-				image: game.getImg('uimap'),
+			this.fingerMouse = new game.FingerMouse({
 				visible:false,
-				rect:game.configdata.getPngRect('hand_001','uimap')
 			}).addTo(this);
-			
 		},
 		
 		initkeyevent:function(){
@@ -170,15 +168,34 @@
 				return false;
 			}
 		},
-		
+		excuteIcon:function(index){
+			if(index==3){
+				game.toolspanel.removeIcon(index);
+				game.boydata.addHp();
+				game.headPanel.setHp(game.boydata.currentHp);
+				new game.FlashStarEffect({
+					x:this.hero.posx-50,
+					y:this.hero.posy-250,
+				}).addTo(this);
+				game.toolippanel.show(true,'补充体力',200);
+				this.fingerMouse.visible = true;
+				this.fingerMouse.active = false; 
+				this.fingerMouse.setDefault();
+			}else{
+				this.fingerMouse.visible = true;
+				this.fingerMouse.active = true; 
+				this.fingerMouse.setCurrent(index);
+			}
+		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
 				this.phone.removeFromParent();
 				this.phone.status = 2;
 				this.checkEnough();
 				game.toolippanel.show(true,'准备好通讯工具非常重要',200);
-				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(1);
+				game.toolspanel.show(true,200);
+				
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.drink)){
@@ -186,8 +203,8 @@
 				this.drink.status = 2;
 				this.checkEnough();
 				game.toolippanel.show(true,'灾害中储备饮水',200);
-				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(3);
+				game.toolspanel.show(true,200);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.glim)){
@@ -195,8 +212,8 @@
 				this.glim.status = 2;
 				this.checkEnough();
 				game.toolippanel.show(true,'拿到手电筒',200);
-				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(0);
+				game.toolspanel.show(true,200);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.medicalkit)){
@@ -204,8 +221,8 @@
 				this.medicalkit.status = 2;
 				this.checkEnough();
 				game.toolippanel.show(true,'拿到医疗箱',200);
-				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(4);
+				game.toolspanel.show(true,200);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
@@ -286,6 +303,8 @@
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
 				if(Math.abs(x+w/2 - this.hero.posx) <100 && Math.abs(y+h/2 - this.hero.posy) <200){
 					isClickIn = true;
+					this.fingerMouse.active = false; 
+					this.fingerMouse.setDefault();
 				}else{
 					isClickIn = false;
 					game.notepanel.show(true,'走近点...',50);					
@@ -330,7 +349,7 @@
 			}
 		},
 		shakeRoom:function(){
-			this.shakeTime = 200;
+			this.shakeTime = 400;
 		},
 		changeBg:function(){
 			var scene = this;
@@ -338,13 +357,13 @@
 			Hilo.Tween.to(this, {
 				alpha:0
 			}, {
-				duration: 800,
+				duration: 2000,
 				ease: Hilo.Ease.Bounce.EaseOut,
 				onComplete: function() {
 					Hilo.Tween.to(this, {
 						alpha:1
 					}, {
-						duration: 200,
+						duration: 1200,
 						ease: Hilo.Ease.Bounce.EaseOut,
 						onComplete: function() {
 							scene.alpha = 1;
@@ -585,12 +604,13 @@
 				var stagey = e.stageY;
 				var targetx = stagex - scene.x;
 				var targety = stagey - scene.y;
+				scene.fingerMouse.x = targetx;
+				scene.fingerMouse.y = targety;
 				if(scene.checkShowFingerObjects(targetx,targety)){
 					scene.fingerMouse.visible = true;
-					scene.fingerMouse.x = targetx;
-					scene.fingerMouse.y = targety;
 				}else{
-					scene.fingerMouse.visible = false;
+					if(!this.active)
+						scene.fingerMouse.visible = false;
 				}
 			});
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
@@ -655,28 +675,8 @@
 			if(this.toFallTime == 515){
 				this.fallfan2.isFall = true;
 			}
-			if(this.fallfan1.onDanger && this.fallfan1.y >= this.fallfan1.floorline){
-				console.log('once check:'+this.fallfan1.name);
-				this.fallfanShader1.removeFromParent();
-				this.fallfan1.onDanger = false;
-				game.sounds.play(4,false);
-				if(game.checkInRect(this.hero.posx,this.hero.posy,256,578,200,90)){
-					this.hero.switchState('fallhit',6);
-					this.hero.currentHealth--;
-					game.headPanel.setHealth(this.hero.currentHealth);
-				}
-			}
-			if(this.fallfan2.onDanger && this.fallfan2.y >= this.fallfan2.floorline){
-				console.log('once check:'+this.fallfan2.name);
-				this.fallfanShader2.removeFromParent();
-				this.fallfan2.onDanger = false;
-				game.sounds.play(4,false);
-				if(game.checkInRect(this.hero.posx,this.hero.posy,776,578,200,90)){
-					this.hero.switchState('fallhit',6);
-					this.hero.currentHealth--;
-					game.headPanel.setHealth(this.hero.currentHealth);
-				}
-			}
+			this.checkFallObj(this.fallfan1,this.fallfanShader1);
+			this.checkFallObj(this.fallfan2,this.fallfanShader2);
 			
 			this.checkBlocks();
 			
@@ -713,5 +713,18 @@
 				this.y = this.inity;
 			}
 		},
+		checkFallObj:function(ceilingobj,objshader){
+			if(ceilingobj.onDanger && ceilingobj.y >= ceilingobj.floorline){
+				console.log('once check:'+ceilingobj.name);
+				objshader.removeFromParent();
+				ceilingobj.onDanger = false;
+				game.sounds.play(4,false);
+				if(game.checkInRect(this.hero.posx,this.hero.posy,objshader.x,objshader.y,objshader.width,objshader.height)){
+					this.hero.switchState('fallhit',6);
+					game.boydata.currentHp--;
+					game.headPanel.setHp(game.boydata.currentHp);
+				}
+			}
+		}
 	});
 })(window.game);

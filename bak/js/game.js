@@ -30,6 +30,8 @@
 		notepanel:null,
 		toolippanel:null,
 		toolspanel:null,
+		
+		boydata:null,
 		init: function() {
 			var browserInfo = Hilo.browser;
 			var winWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -42,6 +44,7 @@
 				this.screenHeight = game.configdata.MAXSIZE.maxHeight;
 			this.refresh();
 			this.switchScene(game.configdata.SCENE_NAMES.load);
+			this.boydata = new game.BoyData();
 		},
 		refresh: function() {
 			console.log('game init :window had loaded');
@@ -143,5 +146,14 @@
         	}  
         	return true;  
 		},
+		delIndexData:function(targetArray,indexItem){
+			var index = targetArray.indexOf(indexItem);
+			if(index != -1){
+				targetArray.splice(index,1);
+				return true;
+			}else{
+				return false;
+			}
+		}
 	};
 })();

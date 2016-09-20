@@ -16,7 +16,7 @@
 		petrifyTime:0,
 		
 		offsetx:-125,
-		offsety:-280,
+		offsety:-310,
 		offsetxRight:-125,
 		offsetxLeft:132,
 		posx:0,

@@ -25,11 +25,12 @@ game.configdata = new function(){
 	};
 	self.STORESIZE = 15;
 	
-	self.DEFAULTHEROHP = 5;
+	self.DEFAULTHEROHP = 4;
 	
 	self.JumpKey = 87;// W
 	self.StopKey = 65;// A
 	self.SquatKey= 68;// D
+	
 	
 	self.GAMETXTS ={
 		note01:'地震是一种自然现象，目前人列尚不能阻止地震的发生。但是，我们可以采取有效措施，最大限度地减轻地震灾害。由于地球不断运动，逐渐积累了巨大能量，在地壳某些脆弱地带造成岩层突然发生破裂或错动，这就是地震。 地震前兆指地震发生前出现的异常现象，如地震活动、地表的明显变化以及地磁、地电、重力等地球物理异常，地下水位、水化学、动物的异常行为等。',
@@ -351,6 +352,7 @@ game.pointdata = new function(){
 				  },
 	];
 };
+
 
 game.userData = new function(){
 	var self = this;
