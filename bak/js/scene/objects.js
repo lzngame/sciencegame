@@ -219,13 +219,13 @@
 			this.headImg = new Hilo.Bitmap({
 				image: img,
 				rect:game.configdata.getPngRect(this.headImgUrl,'uimap'),
-				x:70,
-				y:0
+				x:7,
+				y:5
 			}).addTo(this);
 			
 			this.hpContainer = new Hilo.Container({
-				x:75,
-				y:5,
+				x:130,
+				y:50,
 			}).addTo(this);
 			
 			this.setHp(0);
@@ -237,7 +237,7 @@
 				new Hilo.Bitmap({
 					image: img,
 					rect: game.configdata.getPngRect(this.healthIconBlack,'uimap'),
-					x: i * 70,
+					x: i * 30,
 					y:2
 				}).addTo(this.hpContainer);
 			}
@@ -245,7 +245,7 @@
 				new Hilo.Bitmap({
 					image: img,
 					rect: game.configdata.getPngRect(this.healthIcon,'uimap'),
-					x: i * 70 ,
+					x: i * 30 ,
 					y:2
 				}).addTo(this.hpContainer);
 			}
