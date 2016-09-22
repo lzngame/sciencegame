@@ -159,7 +159,7 @@
 		},
 		layoutUI:function(){
 			if(game.uiscene){
-				if(game.uiscene.depth > this.depth){
+				if(game.uiscene.depth < this.depth){
 					game.stage.swapChildren(this, game.uiscene);
 				}
 			}else{

@@ -857,6 +857,89 @@
 		}
 	});
 	
+	var TelPanel = ns.TelPanel = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'',
+		exitBtnImg:null,
+		callbtn:null,
+		numpanel:null,
+		firetelnum:'',
+		telnums:['telnum00','telnum01','telnum02','telnum03','telnum04','telnum05','telnum06','telnum07','telnum08','telnum09'],
+		constructor: function(properties) {
+			TelPanel.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			new Hilo.Bitmap({
+				image:game.getImg('telbg')
+			}).addTo(this);
+			var datas =[['tel0',642,389,0],
+						['tel1',582,274,1],['tel2',635,274,2],['tel3',692,274,3],
+						['tel4',582,313,4],['tel5',635,313,5],['tel6',692,313,6],
+						['tel7',582,349,7],['tel8',635,349,8],['tel9',692,349,9]];
+			for(var i=0;i<datas.length;i++){
+				var item = datas[i];
+				var x = item[1];
+				var y = item[2];
+				var btn = new game.PasswordlockBtn({
+					image:game.getImg('uimap'),
+					rect:game.configdata.getPngRect(item[0],'uimap'),
+					upimg:item[0],
+					downimg:item[0],
+					x:x,
+					y:y,
+					index:item[3],
+					state:true,
+				}).addTo(this);
+				btn.on(Hilo.event.POINTER_START, function(e) {
+					this.parent.addNum(this.index);
+					
+				});
+			}
+			this.callbtn = new Hilo.Bitmap({
+				x:693,
+				y:389,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('telenter','uimap'),
+			}).addTo(this);
+			this.exitBtnImg = new Hilo.Bitmap({
+				x:780,
+				y:545,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('backbtn','uimap'),
+			}).addTo(this);
+			this.numpanel = new Hilo.Container({
+				x:622,
+				y:152
+			}).addTo(this);
+		},
+		addNum:function(i){
+			var count = this.numpanel.getNumChildren()-1;
+			if(count > 4)
+				return;
+			var num = new Hilo.Bitmap({
+				x:30+count*25,
+				y:10,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect(this.telnums[i],'uimap'),
+			}).addTo(this.numpanel);
+			this.firetelnum += i.toString();
+			console.log(this.firetelnum);
+		},
+		reset:function(){
+			this.firetelnum = '';
+			this.numpanel.removeAllChildren();
+		},
+		checkLetter:function(){
+			console.log('check---');
+			if(this.firetelnum =='119'){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	});
+	
 	var IconTool = ns.IconTool = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'',

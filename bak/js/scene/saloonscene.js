@@ -22,7 +22,7 @@
 			this.inity = this.y;
 			this.activeObjects = new Array();
 		},
-		active: function(doorIndex) {
+		active: function(passdata) {
 			console.log('%s active:', this.name);
 			var scene = this;
 			
@@ -33,7 +33,7 @@
 			this.blocks = [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
-			this.addHero();
+			this.addHero(passdata[0],passdata[1]);
 			this.initTouchEvent();
 			this.initFingerMouse();
 		},
@@ -78,7 +78,7 @@
 					break;
 			}
 		},
-		enterDoor:function(mouseX,mouseY,scenename){
+		enterDoor:function(mouseX,mouseY,scenename,posarray){
 			this.hero.switchState('handon',10);
 			var scene = this;
 			new Hilo.Tween.to(this,{
@@ -86,30 +86,30 @@
 				},{
 					duration:300,
 					onComplete:function(){
-						game.switchScene(scenename);
+						game.switchScene(scenename,posarray);
 					}
 			});
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerBedroom)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.attack);
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.attack,[900,600]);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCookie)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.cookieroom);
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.cookieroom,[270,575]);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.shakecooridor);
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.shakecorridor,[285,588]);
 			}
 		},
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('corridor'),
+				image: game.getImg('saloon'),
 			}).addTo(this);
 			
 			this.doorhandlerBedroom  = new game.ActiveObject({
-				x:725,
-				y:219,
+				x:31,
+				y:370,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
@@ -117,17 +117,17 @@
 			}).addTo(this);
 			
 			this.doorhandlerCookie  = new game.ActiveObject({
-				x:825,
-				y:319,
+				x:750,
+				y:96,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[9,0,40,40],
+				clickArea:[0,0,120,290],
 				status:1,
 			}).addTo(this);
 			
 			this.doorhandlerCorridor  = new game.ActiveObject({
-				x:925,
-				y:519,
+				x:1067,
+				y:313,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],

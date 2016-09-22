@@ -232,7 +232,7 @@
 			
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.shakecorridor);
+				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();
@@ -383,7 +383,7 @@
 		active: function(data) {
 			console.log('%s active:', this.name);
 			this.addTo(game.stage);
-			game.stage.swapChildren(this, game.previousScene);
+			//game.stage.swapChildren(this, game.previousScene);
 			var scene = this;
 			this.alpha = 1;
 			new Hilo.Bitmap({

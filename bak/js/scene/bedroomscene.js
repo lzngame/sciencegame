@@ -54,7 +54,7 @@
 			this.initx = this.x;
 			this.inity = this.y;
 		},
-		active: function(doorIndex) {
+		active: function(passdata) {
 			console.log('%s active:', this.name);
 			var scene = this;
 			
@@ -65,15 +65,15 @@
 			this.layoutSceneData();
 			this.blocks = [[0,0,1202,443],[0,443,500,80],[0,500,200,80],[0,580,80,100],[934,440,270,70],[980,506,223,70],[1115,506,84,96],[1175,593,27,88],[718,516,90,30]];
 			this.initBlocks(this.blocks);
-			this.addHero();
+			this.addHero(passdata[0],passdata[1]);
 			this.initkeyevent();
 			this.initTouchEvent();
-			game.boydata.currentHp = 4;
-			game.headPanel.setHp(game.boydata.currentHp);
 			game.sounds.play(0,false);
 			this.initFingerMouse();
 			this.setPassData();
 			this.layoutUI();
+			game.boydata.currentHp = 4;
+			game.headPanel.setHp(game.boydata.currentHp);
 		},
 		
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -206,7 +206,7 @@
 				},{
 					duration:300,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.saloon);
+						game.switchScene(game.configdata.SCENE_NAMES.saloon,[100,600]);
 					}
 				});
 			}
@@ -266,7 +266,6 @@
 		setPassData:function(){
 			if(game.boydata.bedroomData.isshake.used){
 				this.bgImg.setImage(game.getImg('bedroomafter'));
-				this.hero.posx = 900;
 				this.hero.turnleft();
 				this.fallfan1.removeFromParent();
 				this.fallfan2.removeFromParent();

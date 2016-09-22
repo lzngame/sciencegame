@@ -1,16 +1,19 @@
 (function(ns) {
-	var ShakecorridorScene = ns.ShakecorridorScene = Hilo.Class.create({
+	var FirecorridorScene = ns.FirecorridorScene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.shakecorridor,
+		name: game.configdata.SCENE_NAMES.firecorridor,
 		
-		warnpaper:null,
-		passwordLock:null,
-		lockPanel:null,
-		doorhandlerCorridor:null,
-		
+		wallpaper:null,
+		firewarnBox:null,
+		firelamp:null,
+		telphone:null,
+		stone:null,
+		smokewall:null,
+		doorhandler:null,
+		telPanel:null,
 		
 		constructor: function(properties) {
-			ShakecorridorScene.superclass.constructor.call(this, properties);
+			FirecorridorScene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -41,9 +44,11 @@
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.warnpaper)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.passwordLock)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandlerCorridor)
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.wallpaper)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.firewarnBox)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.telphone)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.stone)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)
 			){
 				return true;
 			}else{
@@ -112,77 +117,103 @@
 			}
 		},
 		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItem(mouseX,mouseY,this.warnpaper)){
+			if(this.checkActiveItem(mouseX,mouseY,this.wallpaper)){
 				this.hero.switchState('handon',10);
-				var scene = this;
-				if(this.fingerMouse.index == 2){
-					new game.FlashStarEffect({
-						x:this.warnpaper.x,
-						y:this.warnpaper.y,
-					}).addTo(this);
-					this.warnpaper.setEndImg(0,-200);
-					this.warnpaper.status = 2;
-				}
+				this.wallpaper.setEndImg(0,0);
+				this.wallpaper.status = 2;
+				this.firewarnBox.status = 1;
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.passwordLock)){
-				this.lockPanel.visible = true;
+			if(this.checkActiveItem(mouseX,mouseY,this.stone)){
+				this.hero.switchState('handon',10);
+				game.toolspanel.addIcon(6);
+				this.stone.removeFromParent();
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.telphone)){
+				this.hero.switchState('handon',10);
+				this.telPanel.visible = true;
 				this.ignoreTouch = true;
 				this.hero.visible = false;
 				this.fingerMouse.visible = false;
-				this.lockPanel.y = 0;
-				this.lockPanel.x = (this.x*-1);
+				this.telPanel.y = 0;
+				this.telPanel.x = (this.x*-1);
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
-				game.switchScene(game.configdata.SCENE_NAMES.story);
+			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
+				//game.switchScene(game.configdata.SCENE_NAMES.story);
 			}
 		},
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('shakecorridor'),
+				image: game.getImg('firecorridor'),
 			}).addTo(this);
 			
-			this.passwordLock  = new game.ActiveObject({
-				x:1561,
-				y:217,
+			this.firewarnBox  = new game.ActiveObject({
+				x:129,
+				y:280,
+				readyImgUrl:'firewarnbtn',
+				finishedImgUrl:'firewarnbtn',
+				clickArea:[0,0,30,45],
+				status:0,
+			}).addTo(this);
+			
+			this.wallpaper  = new game.ActiveObject({
+				x:-40,
+				y:120,
+				readyImgUrl:'wallpaper01',
+				finishedImgUrl:'wallpaper02',
+				clickArea:[90,40,110,240],
+				status:1,
+			}).addTo(this);
+			
+			this.telphone  = new game.ActiveObject({
+				x:244,
+				y:182,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[9,0,60,40],
+				clickArea:[-10,0,50,70],
 				status:1,
 			}).addTo(this);
 			
-			this.warnpaper  = new game.ActiveObject({
-				x:2108,
-				y:395,
-				readyImgUrl:'warnpaper01',
-				finishedImgUrl:'warnpaper01',
-				clickArea:[19,10,60,150],
+			this.stone  = new game.ActiveObject({
+				x:550,
+				y:218,
+				readyImgUrl:'stoneicon',
+				finishedImgUrl:'stoneicon',
+				clickArea:[0,0,40,30],
 				status:1,
 			}).addTo(this);
 			
-			this.doorhandlerCorridor  = new game.ActiveObject({
-				x:169,
-				y:384,
+			this.doorhandler  = new game.ActiveObject({
+				x:816,
+				y:183,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
 				status:1,
 			}).addTo(this);
 			
-			this.lockPanel = new game.PasswordlockPanel({
+			this.telPanel = new game.TelPanel({
 				x:0,
 				y:0,
 				visible:false,
 			}).addTo(this);
-			this.lockPanel.sureBtnImg.on(Hilo.event.POINTER_START, function(e) {
-				if(scene.lockPanel.checkLetter()){
-						scene.lockPanel.visible =false;
-						scene.ignoreTouch = false;
-						scene.hero.visible = true;
-					    scene.fingerMouse.visible = true;
-				}
-				scene.lockPanel.resetDefault();
+			this.telPanel.exitBtnImg.on(Hilo.event.POINTER_START, function(e) {
+				scene.telPanel.visible = false;
+				scene.telPanel.reset();
+				scene.ignoreTouch = false;
+				scene.hero.visible = true;
+				scene.fingerMouse.visible = true;
 			});
+			this.telPanel.callbtn.on(Hilo.event.POINTER_START, function(e) {
+				if(scene.telPanel.checkLetter()){
+					scene.ignoreTouch = false;
+					scene.hero.visible = true;
+					scene.fingerMouse.visible = true;
+					scene.telPanel.visible = false;
+				}
+				scene.telPanel.reset();
+			});
+			
 		},
 		onUpdate:function(){
 			this.x = (610 - this.hero.posx);
