@@ -73,6 +73,7 @@
 			game.sounds.play(0,false);
 			this.initFingerMouse();
 			this.setPassData();
+			this.layoutUI();
 		},
 		
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -113,7 +114,6 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
 				this.phone.removeFromParent();
 				this.phone.status = 2;
-				this.checkEnough();
 				game.toolippanel.show(true,'准备好通讯工具非常重要',200);
 				game.toolspanel.addIcon(1);
 				game.toolspanel.show(true,200);
@@ -123,7 +123,6 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.drink)){
 				this.drink.removeFromParent();
 				this.drink.status = 2;
-				this.checkEnough();
 				game.toolippanel.show(true,'灾害中储备饮水',200);
 				game.toolspanel.addIcon(3);
 				game.toolspanel.show(true,200);
@@ -133,7 +132,6 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.glim)){
 				this.glim.removeFromParent();
 				this.glim.status = 2;
-				this.checkEnough();
 				game.toolippanel.show(true,'拿到手电筒',200);
 				game.toolspanel.addIcon(0);
 				game.toolspanel.show(true,200);
@@ -141,13 +139,32 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.medicalkit)){
-				this.medicalkit.removeFromParent();
-				this.medicalkit.status = 2;
-				this.checkEnough();
-				game.toolippanel.show(true,'拿到医疗箱',200);
-				game.toolspanel.addIcon(4);
-				game.toolspanel.show(true,200);
-				game.boydata.bedroomData.medicalkit.used = true;
+				if(this.medicalkit.state == 1){
+					this.medicalkit.state = 2;
+					this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('emptybox','uimap'));
+					this.medicalkit.status = 2;
+					game.toolspanel.addIcon(4);
+					new game.FlashStarEffect({
+							x:this.medicalkit.x,
+							y:this.medicalkit.y,
+					}).addTo(this);
+					game.boydata.bedroomData.medicalkit.state = 2;
+				}
+				
+				if(this.fingerMouse.index == 5){
+					if(this.medicalkit.state == 0){
+						this.medicalkit.state = 1;
+						this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('openbox','uimap'));
+						game.boydata.bedroomData.medicalkit.state = 1;
+					}
+				}
+
+				//this.medicalkit.removeFromParent();
+				//this.medicalkit.status = 2;
+				//game.toolippanel.show(true,'拿到医疗箱',200);
+				//game.toolspanel.addIcon(4);
+				//game.toolspanel.show(true,200);
+				//game.boydata.bedroomData.medicalkit.used = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
@@ -290,8 +307,15 @@
 			if(game.boydata.bedroomData.phone.used){
 				this.phone.removeFromParent();
 			}
-			if(game.boydata.bedroomData.medicalkit.used){
-				this.medicalkit.removeFromParent();
+			var medicalkitData = game.boydata.bedroomData.medicalkit;
+			if(medicalkitData.state == 2){
+				this.medicalkit.state = 2;
+				this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('emptybox','uimap'));
+				this.medicalkit.status = 2;
+			}
+			if(medicalkitData.state == 1){
+				this.medicalkit.state = 1;
+				this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('openbox','uimap'));
 			}
 		},
 		layoutSceneData:function(){
@@ -333,29 +357,29 @@
 			}).addTo(this);
 			
 			this.glim  = new game.ActiveObject({
-				x:994,
-				y:484,
+				x:974,
+				y:474,
 				status:1,
-				readyImgUrl:'glim',
-				finishedImgUrl:'glim',
+				readyImgUrl:'bedroomglim',
+				finishedImgUrl:'bedroomglim',
 				clickArea:[0,0,43,35],
 			}).addTo(this);
 			
 			this.drink  = new game.ActiveObject({
-				x:166,
-				y:430,
+				x:160,
+				y:420,
 				status:1,
-				readyImgUrl:'waterdrink',
-				finishedImgUrl:'waterdrink',
+				readyImgUrl:'bedroomdrink',
+				finishedImgUrl:'bedroomdrink',
 				clickArea:[0,0,28,56],
 			}).addTo(this);
 			
 			this.medicalkit  = new game.ActiveObject({
-				x:829,
-				y:414,
+				x:535,
+				y:354,
 				status:1,
-				readyImgUrl:'safebox',
-				finishedImgUrl:'safebox',
+				readyImgUrl:'lockbox',
+				finishedImgUrl:'lockbox',
 				clickArea:[0,0,65,56],
 			}).addTo(this);
 
@@ -410,33 +434,6 @@
 				x:720
 			}).addTo(this);
 			
-			game.uiscene = new Hilo.Container({}).addTo(game.stage);
-			game.headPanel = new game.TopHeadPanel({
-				healthValue:game.configdata.DEFAULTHEROHP,
-				headImgUrl:'headicon2',
-				healthIcon:'heart02',
-				healthIconBlack:'heart01',
-				x:20,
-				y:20,
-			}).addTo(game.uiscene);
-			game.starscore = new game.StarScore({
-				x:500,
-				y:20,
-			}).addTo(game.uiscene);
-			game.notepanel = new game.DrNote({
-				txt:game.configdata.GAMETXTS.pass01_notestart,
-				x:-700,
-			}).addTo(game.uiscene);
-			game.toolippanel = new game.ToolipNote({
-				x:1230,
-				y:300,
-			}).addTo(game.uiscene);
-			game.toolspanel = new game.ToolsIconPanel({
-				initx:724,
-				inity:-247,
-			}).addTo(game.uiscene);
-			
-			
 			var atlas = new Hilo.TextureAtlas({
                 image:game.getImg('effects'),
                 width: 1024,
@@ -461,6 +458,7 @@
 				visible:false,
 			}).addTo(this);
 			
+			
 			/*this.tasktxt = new game.TaskLine({
 				txt:'消除危险的电火花',
 				x:932,
@@ -473,12 +471,6 @@
 				y:112,
 				visible:false,
 			}).addTo(this);*/
-		},
-		checkEnough:function(){
-			this.objCount++;
-			if(this.objCount >= 4){
-				this.tasktxt1.hide();
-			}
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){

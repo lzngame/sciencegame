@@ -6,7 +6,7 @@
 		bgImg:null,
 		finerMouse:null,
 		blocks:null,
-		
+		ignoreTouch:false,
 		constructor: function(properties) {
 			BaseScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -41,12 +41,12 @@
          	}; 
 		},
 		
-		addHero:function(){
+		addHero:function(x,y){
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
-				posx: 306,
-				posy: 600,
+				posx: x,
+				posy: y,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
 				interval: 5,
@@ -146,7 +146,7 @@
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
-				if(Math.abs(x+w/2 - this.hero.posx) <100 && Math.abs(y+h/2 - this.hero.posy) <200){
+				if(Math.abs(x+w/2 - this.hero.posx) <100 && Math.abs(y+h/2 - (this.hero.posy-100)) <200){
 					isClickIn = true;
 					this.fingerMouse.active = false; 
 					this.fingerMouse.setDefault();
@@ -156,6 +156,42 @@
 				}
 			}
 			return isClickIn;
+		},
+		layoutUI:function(){
+			if(game.uiscene){
+				if(game.uiscene.depth > this.depth){
+					game.stage.swapChildren(this, game.uiscene);
+				}
+			}else{
+				this.initUI();
+			}
+		},
+		initUI:function(){
+			game.uiscene = new Hilo.Container({}).addTo(game.stage);
+			game.headPanel = new game.TopHeadPanel({
+				healthValue:game.configdata.DEFAULTHEROHP,
+				headImgUrl:'headicon2',
+				healthIcon:'heart02',
+				healthIconBlack:'heart01',
+				x:20,
+				y:20,
+			}).addTo(game.uiscene);
+			game.starscore = new game.StarScore({
+				x:150,
+				y:95,
+			}).addTo(game.uiscene);
+			game.notepanel = new game.DrNote({
+				txt:game.configdata.GAMETXTS.pass01_notestart,
+				x:-700,
+			}).addTo(game.uiscene);
+			game.toolippanel = new game.ToolipNote({
+				x:1230,
+				y:300,
+			}).addTo(game.uiscene);
+			game.toolspanel = new game.ToolsIconPanel({
+				initx:784,
+				inity:-395,
+			}).addTo(game.uiscene);
 		},
 		initTouchEvent:function(){
 			var scene = this;

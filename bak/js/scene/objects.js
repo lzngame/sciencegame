@@ -123,6 +123,7 @@
 	var ActiveObject = ns.ActiveObject = Hilo.Class.create({
 		Extends: Hilo.Container,
 		img:null,
+		state:0,
 		status:0,    //0 未激活 1激活 2完成
 		readyImgUrl:'',
 		finishedImgUrl:'',
@@ -147,8 +148,9 @@
 		},
 		setEndImg:function(x,y){
 			console.log(this.name+':ACTIVE');
-			this.status = 2;
-			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.finishedImgUrl,'uimap'));	
+			//this.status = 2;
+			var rect = game.configdata.getPngRect(this.finishedImgUrl,'uimap');
+			this.img.setImage(game.getImg('uimap'),rect);	
 			this.img.x = x;
 			this.img.y = y;
 		},
@@ -525,9 +527,9 @@
 		inity:0,
 		showtime:0,
 		sumtime:0,
-		firstPosX:22,
-		firstPosY:20,
-		spaceLine:74,
+		firstPosX:40,
+		firstPosY:50,
+		spaceLine:80,
 		btnImg:null,
 		iconpanel:null,
 		constructor: function(properties) {
@@ -544,8 +546,8 @@
 			this.btnImg = new Hilo.Bitmap({
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect('storebtn1','uimap'),
-				x:230,
-				y:250
+				x:280,
+				y:395
 			}).addTo(this);
 			var panel = this;
 			this.btnImg.on(Hilo.event.POINTER_START, function(e) {
@@ -582,8 +584,8 @@
 		},
 		addIconNoData:function(index){
 			var initPos = this.iconpanel.getNumChildren()+1;
-			var x = (initPos-1) % 6;
-			var y = Math.floor((initPos-1) / 6);
+			var x = (initPos-1) % 4;
+			var y = Math.floor((initPos-1) / 4);
 			var item = game.configdata.TOOLSICONS[index];
 			var icon = new game.IconTool({
 				x:this.firstPosX + x * this.spaceLine,
@@ -604,7 +606,7 @@
 		show:function(isshow,time){
 			var panel = this;
 			var targety = this.inity;
-			var h = this.bg.height-43;
+			var h = this.bg.height;
 			if(isshow){
 				targety = targety + h;
 				this.refresh();
@@ -703,7 +705,7 @@
 	var StarScore = ns.StarScore = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'star score',
-		score:10987653214,
+		score:10,
 		imgpanel:null,
 		basenum:'whitenum0',
 		constructor: function(properties) {
@@ -713,10 +715,11 @@
 		init: function(properties) {
 			new Hilo.Bitmap({
 				image: game.getImg('uimap'),
-				rect:game.configdata.getPngRect('start01','uimap'),
+				rect:game.configdata.getPngRect('smallstar','uimap'),
 			}).addTo(this);
 			this.imgpanel = new Hilo.Container({
-				x:50
+				x:25,
+				y:3,
 			}).addTo(this);
 			this.addScore();
 		},
@@ -728,12 +731,130 @@
 				var numimg = new Hilo.Bitmap({
 					image: game.getImg('uimap'),
 					rect:game.configdata.getPngRect(this.basenum+stringScore.charAt(i),'uimap'),
-					x:i*30
+					x:i*15
 				}).addTo(this.imgpanel);
 			}
 		},
 		onUpdate:function(){
 		},
+	});
+	
+	var UpBtn = ns.UpBtn = Hilo.Class.create({
+		Extends: Hilo.Bitmap,
+		name:'',
+		state:true,
+		upimg:'',
+		downimg:'',
+		sumtime:0,
+		constructor: function(properties) {
+			UpBtn.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.on(Hilo.event.POINTER_START, function(e) {
+				if(this.state){
+					this.state = false;
+					this.sumtime = 0;
+					this.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.downimg,'uimap'));
+				}
+			});
+		},
+		onUpdate:function(){
+			if(!this.state){
+				this.sumtime++;
+				if(this.sumtime > 3){
+					this.state = true;
+					this.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.upimg,'uimap'));
+				}
+			}
+		}
+	});
+	
+	var PasswordlockBtn = ns.PasswordlockBtn = Hilo.Class.create({
+		Extends: Hilo.Bitmap,
+		name:'',
+		index:-1,
+		state:true,
+		upimg:'',
+		downimg:'',
+		constructor: function(properties) {
+			PasswordlockBtn.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.on(Hilo.event.POINTER_START, function(e) {
+				this.state = !this.state;
+				var imgrect = this.upimg;
+				if(!this.state){
+					imgrect = this.downimg;
+				}
+				this.setImage(game.getImg('uimap'),game.configdata.getPngRect(imgrect,'uimap'));
+				console.log(this.state);
+			});
+		},
+	});
+	
+	var PasswordlockPanel = ns.PasswordlockPanel = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'',
+		sureBtnImg:null,
+		initx:420,
+		inity:200,
+		btns:null,
+		constructor: function(properties) {
+			PasswordlockPanel.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			new Hilo.Bitmap({
+				image:game.getImg('passwordbg')
+			}).addTo(this);
+			this.btns = new Array();
+			for(var i=0;i<9;i++){
+				var x = (i%3) * 120 + this.initx;
+				var y = Math.floor(i/3) * 82 + this.inity;
+				var btn = new game.PasswordlockBtn({
+					image:game.getImg('uimap'),
+					rect:game.configdata.getPngRect('passbtndown','uimap'),
+					upimg:'passbtndown',
+					downimg:'passbtnup',
+					x:x,
+					y:y,
+					index:i,
+					state:true,
+				}).addTo(this);
+				this.btns.push(btn);
+			}
+			this.sureBtnImg = new game.UpBtn({
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('surebtn1','uimap'),
+				upimg:'surebtn1',
+				downimg:'surebtn2',
+				state:true,
+				x:558,
+				y:450,
+			}).addTo(this);
+		},
+		resetDefault:function(){
+			for(var i=0;i<9;i++){
+				var btn = this.btns[i];
+				btn.state = true;
+				btn.setImage(game.getImg('uimap'),game.configdata.getPngRect(btn.upimg,'uimap'));
+			}
+		},
+		checkLetter:function(){
+			console.log('check---');
+			for(var i=0;i<9;i++){
+				var btn = this.btns[i];
+				console.log('index:%d  x:%f  y:%f  state:%s',i,btn.x,btn.y,btn.state);
+			}
+			
+			if(this.btns[7].state && this.btns[1].state  &&(!this.btns[0].state ) &&(!this.btns[2].state ) &&(!this.btns[3].state ) &&(!this.btns[4].state ) &&(!this.btns[5].state ) &&(!this.btns[6].state ) &&(!this.btns[8].state)){
+				return true;
+			}else{
+				return false;
+			}
+		}
 	});
 	
 	var IconTool = ns.IconTool = Hilo.Class.create({
@@ -778,6 +899,7 @@
 			this.active = true;
 			var item = game.configdata.TOOLSICONS[index];
 			var iconname = item.icon;
+			this.index = index;
 			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(iconname,'uimap'));
 		}
 	});

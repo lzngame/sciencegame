@@ -108,8 +108,15 @@ game.monsterdata = new function(){
 				phone:{status:1,used:false},
 				glim:{status:1,used:false},
 				drink:{status:1,used:false},
-				medicalkit:{status:1,used:false},
+				medicalkit:{state:0,used:false},
 				plug:{status:0,used:false},
+			};
+			this.cookieroomData ={
+				panused:false,
+				boxkeyused:false,
+				spannerused:false,
+				pipswitchused:false,
+				annihilatorused:false,
 			};
 			this.reset();
 		},

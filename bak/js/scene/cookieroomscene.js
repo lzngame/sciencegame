@@ -15,6 +15,9 @@
 		annihilatorEffect:null,
 		doorhandler:null,
 		tvflash:null,
+		pan:null,
+		boxkey:null,
+		pipswitch:null,
 		blocks:null,
 		
 		spanner:null,
@@ -43,15 +46,35 @@
 			this.alpha = 1;
 			this.currentIndex = 0;
 			this.layoutSceneData();
-			this.blocks = [[0,0,1202,530],[0,526,172,73],[1033,520,173,84],[0,600,53,85],[1154,605,53,85]];
+			this.blocks = [[0,0,1202,550],[0,526,172,73],[1033,520,173,84],[0,600,53,85],[1154,605,53,85],[834,526,368,158]];
 			this.initBlocks(this.blocks);
 			
 			this.addHero();
 			this.initkeyevent();
 			this.initTouchEvent();
 			this.initFingerMouse();
+			
+			this.setPassData();
 		},
-		
+		excuteIcon:function(index){
+			if(index==3){
+				game.toolspanel.removeIcon(index);
+				game.boydata.addHp();
+				game.headPanel.setHp(game.boydata.currentHp);
+				new game.FlashStarEffect({
+					x:this.hero.posx-50,
+					y:this.hero.posy-250,
+				}).addTo(this);
+				game.toolippanel.show(true,'补充体力',200);
+				this.fingerMouse.visible = true;
+				this.fingerMouse.active = false; 
+				this.fingerMouse.setDefault();
+			}else{
+				this.fingerMouse.visible = true;
+				this.fingerMouse.active = true; 
+				this.fingerMouse.setCurrent(index);
+			}
+		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
 				if(this.hero.scaleX == -1 || this.hero.framename != 'idle')
@@ -61,9 +84,9 @@
 				this.annihilator.visible = false;
 				this.annihilatorEffect.visible = true;
 				this.annihilatorEffect.x = this.hero.posx + 80;
-				this.annihilatorEffect.y = this.hero.posy - 90;
+				this.annihilatorEffect.y = this.hero.posy - 120;
 				this.ignoreTouch = true;
-				
+				game.boydata.cookieroomData.annihilatorused = true;
 				game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 				this.passstep = 1;
 				var scene = this;
@@ -77,6 +100,7 @@
 						scene.annihilatorEffect.removeFromParent();
 						scene.hero.switchState('idle',6);
 						scene.annihilator.status = 2;
+						scene.blocks.pop();
 						game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 					}
 				});
@@ -95,6 +119,42 @@
 				});
 			}
 			
+			if(this.checkActiveItem(mouseX,mouseY,this.pipswitch)){
+				this.hero.switchState('handon',10);
+				var scene = this;
+				if(this.fingerMouse.index == 2){
+					new game.FlashStarEffect({
+						x:this.pipswitch.x,
+						y:this.pipswitch.y,
+					}).addTo(this);
+					this.pipswitch.status = 2;
+					game.boydata.cookieroomData.pipswitchused = true;
+				}
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.boxkey)){
+				this.boxkey.removeFromParent();
+				this.boxkey.status = 2;
+				game.toolippanel.show(true,'这个工具会有用的',200);
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(5);
+				this.star01 = new game.FlashStar({
+					x:this.boxkey.x,
+					y:this.boxkey.y
+				}).addTo(this);
+				game.boydata.cookieroomData.boxkeyused = true;
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.pan)){
+				this.hero.switchState('handon',10);
+				var scene = this;
+				this.pan.x = 400;
+				this.pan.status = 2;
+				this.boxkey.visible = true;
+				this.boxkey.status = 1;
+				game.boydata.cookieroomData.panused = true;
+			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.spanner)){
 				this.spanner.removeFromParent();
 				this.spanner.status = 2;
@@ -105,13 +165,39 @@
 					x:560,
 					y:560
 				}).addTo(this);
+				game.boydata.cookieroomData.spannerused = true;
 			}
 		},
-		
+		setPassData:function(){
+			if(game.boydata.cookieroomData.pipswitchused){
+				this.pipswitch.status = 2;
+			}
+			if(game.boydata.cookieroomData.panused){
+				this.pan.x  = 400;
+				this.pan.status = 2;
+				if(!game.boydata.cookieroomData.boxkeyused){
+					this.boxkey.status = 1;
+				}
+			}
+			if(game.boydata.cookieroomData.spannerused){
+				this.spanner.removeFromParent();
+			}
+			if(game.boydata.cookieroomData.boxkeyused){
+				this.boxkey.removeFromParent();
+			}
+			if(game.boydata.cookieroomData.annihilatorused){
+				this.annihilator.status = 2;
+				this.tvflash.removeFromParent();
+				this.blocks.pop();
+			}
+		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.spanner)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
-			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.annihilator)
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.annihilator)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.pan)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.boxkey)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.pipswitch)
 			){
 				return true;
 			}else{
@@ -168,8 +254,8 @@
 			}).addTo(this);
 			
 			this.annihilator  = new game.ActiveObject({
-				x:835,
-				y:407,
+				x:755,
+				y:417,
 				readyImgUrl:'annihilator',
 				finishedImgUrl:'annihilator',
 				clickArea:[12,10,25,100],
@@ -185,14 +271,43 @@
 				clickArea:[9,0,40,40],
 			}).addTo(this);
 			
-			this.spanner  = new game.ActiveObject({
-				x:954,
-				y:574,
+			this.pipswitch  = new game.ActiveObject({
+				x:824,
+				y:300,
 				status:1,
-				readyImgUrl:'spanner',
-				finishedImgUrl:'spanner',
+				readyImgUrl:'empty',
+				finishedImgUrl:'empty',
+				clickArea:[9,0,40,40],
+			}).addTo(this);
+			
+			this.spanner  = new game.ActiveObject({
+				x:1000,
+				y:590,
+				status:1,
+				readyImgUrl:'panspanner',
+				finishedImgUrl:'panspanner',
 				clickArea:[0,0,85,52],
 			}).addTo(this);
+			
+			this.boxkey  = new game.ActiveObject({
+				x:488,
+				y:520,
+				status:0,
+				readyImgUrl:'pankey',
+				finishedImgUrl:'pankey',
+				clickArea:[0,0,85,52],
+			}).addTo(this);
+			
+			this.pan  = new game.ActiveObject({
+				x:488,
+				y:480,
+				status:1,
+				readyImgUrl:'pan',
+				finishedImgUrl:'pan',
+				clickArea:[0,20,95,52],
+			}).addTo(this);
+			
+			
 			var atlasHfire = new Hilo.TextureAtlas({
                 image:game.getImg('hfireeffect'),
                 width: 512,
@@ -233,8 +348,8 @@
             });
 			this.tvflash = new Hilo.Sprite({
 				frames: atlasHfire.getSprite('effect'),
-				x:930,
-				y:574,
+				x:854,
+				y:498,
 				interval:8,
 			}).addTo(this);
 			

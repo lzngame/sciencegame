@@ -1,22 +1,24 @@
 (function(ns) {
-	var SaloonScene = ns.SaloonScene = Hilo.Class.create({
+	var ShakecorridorScene = ns.ShakecorridorScene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.saloon,
+		name: game.configdata.SCENE_NAMES.shakecorridor,
 		
-		doorhandlerBedroom:null,
-		doorhandlerCookie:null,
+		warnpaper:null,
+		passwordLock:null,
+		lockPanel:null,
 		doorhandlerCorridor:null,
 		
+		
 		constructor: function(properties) {
-			SaloonScene.superclass.constructor.call(this, properties);
+			ShakecorridorScene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
 			console.log('%s init', this.name);
-			this.width = game.configdata.mainStageSize.width;
+			this.width = 2404;
 			this.height = game.configdata.mainStageSize.height;
-			this.x = game.screenWidth / 2 - this.width / 2;
-			this.y = game.screenHeight / 2 - this.height / 2;
+			this.x = 0;
+			this.y = 0;
 			this.background = '#1A0A04';
 			this.initx = this.x;
 			this.inity = this.y;
@@ -25,22 +27,22 @@
 		active: function(doorIndex) {
 			console.log('%s active:', this.name);
 			var scene = this;
-			
+			this.width = 2404;
 			this.addTo(game.stage);
 			this.alpha = 1;
-			game.stage.swapChildren(this, game.uiscene);
 			this.currentIndex = 0;
-			this.blocks = [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
+			this.blocks = [[0,0,2404,410]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
-			this.addHero();
+			this.addHero(260,590);
 			this.initTouchEvent();
 			this.initFingerMouse();
+			this.layoutUI();
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandlerBedroom)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandlerCookie)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.warnpaper)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.passwordLock)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandlerCorridor)
 			){
 				return true;
@@ -91,55 +93,78 @@
 			});
 		},
 		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerBedroom)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.attack);
+			if(this.checkActiveItem(mouseX,mouseY,this.warnpaper)){
+				this.warnpaper.setEndImg(0,-200);
+				this.warnpaper.status = 2;
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCookie)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.cookieroom);
+			if(this.checkActiveItem(mouseX,mouseY,this.passwordLock)){
+				this.lockPanel.visible = true;
+				this.ignoreTouch = true;
+				this.hero.visible = false;
+				this.fingerMouse.visible = false;
+				this.lockPanel.y = 0;
+				this.lockPanel.x = (this.x*-1);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.shakecooridor);
+				//
 			}
 		},
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('corridor'),
+				image: game.getImg('shakecorridor'),
 			}).addTo(this);
 			
-			this.doorhandlerBedroom  = new game.ActiveObject({
-				x:725,
-				y:219,
+			this.passwordLock  = new game.ActiveObject({
+				x:1561,
+				y:217,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[9,0,40,40],
+				clickArea:[9,0,60,40],
 				status:1,
 			}).addTo(this);
 			
-			this.doorhandlerCookie  = new game.ActiveObject({
-				x:825,
-				y:319,
-				readyImgUrl:'empty',
-				finishedImgUrl:'empty',
-				clickArea:[9,0,40,40],
+			this.warnpaper  = new game.ActiveObject({
+				x:2108,
+				y:395,
+				readyImgUrl:'warnpaper01',
+				finishedImgUrl:'warnpaper01',
+				clickArea:[19,10,60,150],
 				status:1,
 			}).addTo(this);
 			
 			this.doorhandlerCorridor  = new game.ActiveObject({
-				x:925,
-				y:519,
+				x:169,
+				y:384,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
 				status:1,
 			}).addTo(this);
+			
+			this.lockPanel = new game.PasswordlockPanel({
+				x:0,
+				y:0,
+				visible:false,
+			}).addTo(this);
+			this.lockPanel.sureBtnImg.on(Hilo.event.POINTER_START, function(e) {
+				if(scene.lockPanel.checkLetter()){
+						scene.lockPanel.visible =false;
+						scene.ignoreTouch = false;
+						scene.hero.visible = true;
+					    scene.fingerMouse.visible = true;
+				}
+				scene.lockPanel.resetDefault();
+			});
 		},
 		excuteIcon:function(index){
 		},
 		onUpdate:function(){
-			if(this.readyShakeTime == 50){
-				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_ask,200);
-			}
+			this.x = (610 - this.hero.posx);
+			if(this.x >= 0)
+				this.x = 0;
+			if(this.x <= -1202)
+				this.x = -1202;
 		},
 	});
 })(window.game);

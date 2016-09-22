@@ -111,6 +111,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.shop]    = new game.ShopScene();
 			this.scenes[game.configdata.SCENE_NAMES.win]     = new game.WinoverScene();
 			
+			this.scenes[game.configdata.SCENE_NAMES.shakecorridor]= new game.ShakecorridorScene();
 			this.scenes[game.configdata.SCENE_NAMES.saloon]  	  = new game.SaloonScene();
 			this.scenes[game.configdata.SCENE_NAMES.attack]       = new game.AttackScene();
 			this.scenes[game.configdata.SCENE_NAMES.choice]       = new game.ChoiceScene();
