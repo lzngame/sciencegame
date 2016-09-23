@@ -518,6 +518,49 @@
 	});
 	
 	
+	var AnimaEffect = ns.AnimaEffect = Hilo.Class.create({
+		Extends: Hilo.Bitmap,
+		name:'effect',
+		sourceImg:'',
+		interval:0,
+		initimg:null,
+		frames:null,
+		index:0,
+		fpstime:4,
+		isplay:false,
+		constructor: function(properties) {
+			AnimaEffect.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.img = new Hilo.Bitmap({
+				image: game.getImg(this.sourceImg),
+				rect:game.configdata.getPngRect(this.frames[0],'uimap')
+			});
+		},
+		setpos:function(x,y){
+			this.x = x;
+			this.y = y;
+		},
+		onUpdate:function(){
+			if(this.isplay){
+				if(this.interval > this.fpstime){
+					this.interval = 0;
+					this.index++;
+					if(this.index > this.frames.length-1){
+						this.index = 0;
+					}
+					console.log('index:%d',this.index);
+					this.setImage(game.getImg(this.sourceImg),game.configdata.getPngRect(this.frames[this.index],'uimap'));
+				}else{
+						this.interval++;
+				}
+			}
+		},
+	});
+	
+	
+	
 	var ToolsIconPanel = ns.ToolsIconPanel = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'ToolsIconPanel',

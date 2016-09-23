@@ -308,15 +308,15 @@
 			
 			
 			var atlasHfire = new Hilo.TextureAtlas({
-                image:game.getImg('hfireeffect'),
-                width: 512,
-                height: 512,
+                image:game.getImg('effect2'),
+                width: 2048,
+                height:2048,
                 frames: [
-                	[154,0,149,183],
-                	[154,188,149,183],
-                	[308,0,149,183],
-                	[0,188,149,183],
-                	[0,0,149,183],
+                	[1161,1080,149,183],
+                	[1161,1268,149,183],
+                	[1161,1456,149,183],
+                	[1161,892,149,183],
+                	[1161,704,149,183],
                 ],
                 sprites: {
                     effect:{from:0,to:4}

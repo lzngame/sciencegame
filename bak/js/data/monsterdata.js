@@ -6,6 +6,7 @@ game.monsterdata = new function(){
 	self.monster20_atlas = null;
 	self.soliderhero_atlas = null;
 	self.oldmannpc_atlas = null;
+	self.effect_atlas = null,
 	self.updataFunc = [];
 	
 	
@@ -58,8 +59,10 @@ game.monsterdata = new function(){
 					
 					[975, 343, 220, 343],  //pillowsquat 26
 					
-					
-					[926, 662, 64, 64]
+					[0, 474, 315,237],
+					[0, 0, 315,237],
+					[0, 237, 315,237],
+					[0, 711, 315,237],    //crawl   27-30
 				],
 				sprites: {
 					walk:[0,1,2,3,4,5],
@@ -75,6 +78,33 @@ game.monsterdata = new function(){
 					runstop:[25,25],
 					fallhit:[25,25],
 					pillowsquat:[26,26],
+					crawl:[27,28,29,30],
+				}
+			});
+			
+			var effectimg = game.getImg('effect2');
+			self.effect_atlas = new Hilo.TextureAtlas({
+				image: effectimg,
+				width: 2048,
+				height: 2048,
+				frames: [
+					[1000,1224,156,403],
+                	[1000,408,156,403],
+                	[1000,0,156,403],
+                	[1000,1632,156,403],
+                	[1000,816,156,403],      //0-4   corridor fire
+					
+					[0, 650, 995, 320], 
+					[0, 1300, 995, 320], 
+					[0, 975, 995, 320], 
+					[0, 1625, 995, 320], 
+					[0, 325, 995, 320], 
+					[0, 0, 995, 320],    //5-10  smokewall
+				],
+				sprites: {
+					corridorfireeffect:[0,1,2,3,4],
+					smokewalleffect:[5,6,7,8,9,10]
+					
 				}
 			});
 	};

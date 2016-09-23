@@ -146,7 +146,7 @@
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
-				if(Math.abs(x+w/2 - this.hero.posx) <100 && Math.abs(y+h/2 - (this.hero.posy-100)) <200){
+				if(Math.abs(x+w/2 - this.hero.posx) <150 && Math.abs(y+h/2 - (this.hero.posy-100)) <200){
 					isClickIn = true;
 					this.fingerMouse.active = false; 
 					this.fingerMouse.setDefault();

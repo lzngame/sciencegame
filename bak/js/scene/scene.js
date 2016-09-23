@@ -233,6 +233,8 @@
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
 				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
+				//game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
+				
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();

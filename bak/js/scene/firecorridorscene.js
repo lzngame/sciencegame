@@ -11,6 +11,12 @@
 		smokewall:null,
 		doorhandler:null,
 		telPanel:null,
+		fireeffect:null,
+		firreblock:null,
+		annihilatorEffect:null,
+		smokewall:null,
+		
+		isSmokeMove:false,
 		
 		constructor: function(properties) {
 			FirecorridorScene.superclass.constructor.call(this, properties);
@@ -34,7 +40,7 @@
 			this.addTo(game.stage);
 			this.alpha = 1;
 			this.currentIndex = 0;
-			this.blocks = [[0,0,2404,410]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
+			this.blocks = [[0,0,2404,410],[1560,396,180,275]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
 			this.addHero(passdata[0],passdata[1]);
@@ -48,6 +54,7 @@
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.firewarnBox)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.telphone)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.stone)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.firreblock)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)
 			){
 				return true;
@@ -138,7 +145,52 @@
 				this.telPanel.x = (this.x*-1);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
-				//game.switchScene(game.configdata.SCENE_NAMES.story);
+				this.hero.switchState('handon',10);
+				game.switchScene(game.configdata.SCENE_NAMES.washroom,[167,590]);
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.firewarnBox)){
+				this.hero.switchState('handon',10);
+				var scene = this;
+				if(this.fingerMouse.index == 6){
+					this.firewarnBox.status = 2;
+					this.firelamp.isplay = true;
+				}
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.firreblock)){
+				var scene = this;
+				if(this.fingerMouse.index == 8){
+					if(this.hero.scaleX == -1 || this.hero.framename != 'idle')
+						return;
+				
+					this.hero.switchState('annihilator',10);
+					this.annihilatorEffect.visible = true;
+					this.annihilatorEffect.x = this.hero.posx + 80;
+					this.annihilatorEffect.y = this.hero.posy - 120;
+					this.ignoreTouch = true;
+					var scene = this;
+					new Hilo.Tween.to(scene.fireeffect,{
+						alpha:0
+					},{
+						duration:3000,
+						onComplete:function(){
+							//scene.ignoreTouch = false;
+							scene.annihilatorEffect.removeFromParent();
+							scene.fireeffect.removeFromParent();
+							scene.firreblock.removeFromParent();
+							scene.firreblock.status = 2;
+							scene.hero.switchState('idle',6);
+							scene.blocks.pop();
+							scene.isSmokeMove = true;
+							scene.hero.switchState('crawl',10);
+							scene.hero.width = 315;
+							scene.hero.height = 237;
+							scene.hero.posy += 100;
+							scene.hero.targety = scene.hero.posy;
+							scene.hero.targetx = 2404;
+							scene.hero.speedx = 2;
+						}
+					});
+				}
 			}
 		},
 		layoutBgMap:function(){
@@ -192,6 +244,26 @@
 				status:1,
 			}).addTo(this);
 			
+			this.firreblock  = new game.ActiveObject({
+				x:1540,
+				y:396,
+				readyImgUrl:'empty',
+				finishedImgUrl:'empty',
+				clickArea:[0,0,200,275],
+				status:1,
+			}).addTo(this);
+			
+			this.firelamp = new game.AnimaEffect({
+				x:290,
+				y:150,
+				fpstime:4,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('firelamp1','uimap'),
+				sourceImg:'uimap',
+				frames:['firelamp1','firelamp2'],
+			}).addTo(this);
+			
+			
 			this.telPanel = new game.TelPanel({
 				x:0,
 				y:0,
@@ -214,13 +286,64 @@
 				scene.telPanel.reset();
 			});
 			
+			
+            this.fireeffect = new Hilo.Sprite({
+				frames: game.monsterdata.effect_atlas.getSprite('corridorfireeffect'),
+				x:1654,
+				y:290,
+				interval:8,
+			}).addTo(this);
+			
+			this.smokewall = new Hilo.Sprite({
+				frames: game.monsterdata.effect_atlas.getSprite('smokewalleffect'),
+				x:1654,
+				y:190,
+				interval:8,
+			}).addTo(this);
+			
+			var atlas = new Hilo.TextureAtlas({
+                image:game.getImg('effects'),
+                width: 1024,
+                height: 1024,
+                frames: [
+                	[380,834,128,69],
+                	[380,903,128,69],
+                	[508,834,128,69],
+                	[526,0,128,69],
+                	[508,903,128,69],//0-4 fire
+                	
+                	[0,0,234,160],
+                	[0,800,234,160],
+                	[0,640,234,160],
+                	[0,160,234,160],
+                	[0,320,234,160],//annihilator effect 5-9
+                ],
+                sprites: {
+                    tv: {from:0, to:4},
+                    effect:{from:5,to:9}
+                }
+            });
+			
+			this.annihilatorEffect = new Hilo.Sprite({
+				frames: atlas.getSprite('effect'),
+				x:520,
+				y:205,
+				interval:8,
+				visible:false,
+			}).addTo(this);
+			
 		},
 		onUpdate:function(){
 			this.x = (610 - this.hero.posx);
+			this.checkBlocks();
 			if(this.x >= 0)
 				this.x = 0;
 			if(this.x <= -1202)
 				this.x = -1202;
+				
+			if(this.isSmokeMove){
+				this.smokewall.x --;
+			}
 		},
 	});
 })(window.game);
