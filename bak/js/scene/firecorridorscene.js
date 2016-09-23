@@ -18,6 +18,8 @@
 		
 		isSmokeMove:false,
 		
+		crawlBtn:null,
+		
 		constructor: function(properties) {
 			FirecorridorScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -40,7 +42,7 @@
 			this.addTo(game.stage);
 			this.alpha = 1;
 			this.currentIndex = 0;
-			this.blocks = [[0,0,2404,410],[1560,396,180,275]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
+			this.blocks = [[0,0,2404,365],[0,0,286,406],[0,0,177,484],[1554,0,840,420],[1560,396,180,275]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
 			this.addHero(passdata[0],passdata[1]);
@@ -134,6 +136,7 @@
 				this.hero.switchState('handon',10);
 				game.toolspanel.addIcon(6);
 				this.stone.removeFromParent();
+				game.toolspanel.show(true,50);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.telphone)){
 				this.hero.switchState('handon',10);
@@ -150,10 +153,12 @@
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.firewarnBox)){
 				this.hero.switchState('handon',10);
+				game.headPanel.sayNo();
 				var scene = this;
 				if(this.fingerMouse.index == 6){
 					this.firewarnBox.status = 2;
 					this.firelamp.isplay = true;
+					game.headPanel.sayYes();
 				}
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.firreblock)){
@@ -173,21 +178,15 @@
 					},{
 						duration:3000,
 						onComplete:function(){
-							//scene.ignoreTouch = false;
+							scene.ignoreTouch = false;
 							scene.annihilatorEffect.removeFromParent();
 							scene.fireeffect.removeFromParent();
 							scene.firreblock.removeFromParent();
 							scene.firreblock.status = 2;
-							scene.hero.switchState('idle',6);
 							scene.blocks.pop();
 							scene.isSmokeMove = true;
-							scene.hero.switchState('crawl',10);
-							scene.hero.width = 315;
-							scene.hero.height = 237;
-							scene.hero.posy += 100;
-							scene.hero.targety = scene.hero.posy;
-							scene.hero.targetx = 2404;
-							scene.hero.speedx = 2;
+							scene.crawlBtn.visible = true;
+							scene.crawlBtn.addTo(game.uiscene);
 						}
 					});
 				}
@@ -278,14 +277,26 @@
 			});
 			this.telPanel.callbtn.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.telPanel.checkLetter()){
-					scene.ignoreTouch = false;
-					scene.hero.visible = true;
-					scene.fingerMouse.visible = true;
-					scene.telPanel.visible = false;
+					new game.FlashStarEffect({
+						x:this.x,
+						y:this.y,
+					}).addTo(this.parent);
+					new Hilo.Tween.to(this,{
+						alpha:1
+					},{
+						duration:1300,
+						onComplete:function(){
+							scene.ignoreTouch = false;
+							scene.hero.visible = true;
+							scene.fingerMouse.visible = true;
+							scene.telPanel.visible = false;
+							scene.telPanel.reset();
+						}
+					});
+				}else{
+					scene.telPanel.reset();
 				}
-				scene.telPanel.reset();
 			});
-			
 			
             this.fireeffect = new Hilo.Sprite({
 				frames: game.monsterdata.effect_atlas.getSprite('corridorfireeffect'),
@@ -332,6 +343,25 @@
 				visible:false,
 			}).addTo(this);
 			
+			this.crawlBtn = new Hilo.Bitmap({
+				x:115,
+				y:515,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('crawlbtn','uimap'),
+			});
+			
+			this.crawlBtn.on(Hilo.event.POINTER_START, function(e) {
+				scene.hero.turnright();
+				scene.hero.switchState('crawl',10);
+				scene.hero.width = 315;
+				scene.hero.height = 237;
+				scene.hero.posy += 100;
+				scene.hero.targety = scene.hero.posy;
+				scene.hero.targetx = 2404;
+				scene.hero.speedx = 2;
+				scene.ignoreTouch = true;
+			});
+			
 		},
 		onUpdate:function(){
 			this.x = (610 - this.hero.posx);
@@ -343,6 +373,11 @@
 				
 			if(this.isSmokeMove){
 				this.smokewall.x --;
+			}
+			if(this.hero.framename=='crawl' && this.hero.posx > 2000){
+				this.crawlBtn.removeFromParent();
+				this.hero.switchState('idle',6);
+				game.switchScene(game.configdata.SCENE_NAMES.fireglass,[200,600]);
 			}
 		},
 	});

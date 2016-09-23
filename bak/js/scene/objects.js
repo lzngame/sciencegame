@@ -206,6 +206,11 @@
 		magicContainer:null,
 		hpContainer:null,
 		checkBag:null,
+		interval:0,
+		fpstime:5,
+		isSayNo:false,
+		isSayYes:false,
+		index:0,
 		constructor: function(properties) {
 			TopHeadPanel.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -250,6 +255,36 @@
 					x: i * 30 ,
 					y:2
 				}).addTo(this.hpContainer);
+			}
+		},
+		sayNo:function(){
+			this.isSayNo = true;
+			this.isSayYes = false;
+		},
+		sayYes:function(){
+			this.isSayNo = false;
+			this.isSayYes = true;
+		},
+		onUpdate:function(){
+			if(this.isSayNo || this.isSayYes){
+				var frames = ['headok01','headok02'];
+				if(this.isSayNo){
+					frames = ['headfail0','headfail1','headfail2','headfail3'];
+				}
+				if(this.interval > this.fpstime){
+					this.interval = 0;
+					this.index++;
+					if(this.index > frames.length-1){
+						this.index = 0;
+						this.isSayNo = false;
+						this.isSayYes = false;
+						this.headImg.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.headImgUrl,'uimap'));
+					}
+					console.log('index:%d',this.index);
+					this.headImg.setImage(game.getImg('uimap'),game.configdata.getPngRect(frames[this.index],'uimap'));
+				}else{
+						this.interval++;
+				}
 			}
 		},
 	});

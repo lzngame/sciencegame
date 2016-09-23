@@ -111,6 +111,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.shop]    = new game.ShopScene();
 			this.scenes[game.configdata.SCENE_NAMES.win]     = new game.WinoverScene();
 			
+			this.scenes[game.configdata.SCENE_NAMES.fireglass]    = new game.FireGlassScene();
 			this.scenes[game.configdata.SCENE_NAMES.washroom]     = new game.WashroomScene();
 			this.scenes[game.configdata.SCENE_NAMES.firecorridor] = new game.FirecorridorScene();
 			this.scenes[game.configdata.SCENE_NAMES.shakecorridor]= new game.ShakecorridorScene();

@@ -1,18 +1,17 @@
 (function(ns) {
-	var WashroomScene = ns.WashroomScene = Hilo.Class.create({
+	var FireGlassScene = ns.FireGlassScene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.washroom,
+		name: game.configdata.SCENE_NAMES.fireglass,
+		bgImg2:null,
 		
-		annihilator:null,
+		carkey:null,
 		doorhandler:null,
-		basin:null,
+		doorcard:null,
+		drawer:null,
 		blocks:null,
-		towel:null,
-		passstep:0,
-		waterbasin:null,
-		waterbasinExit:null,
+		
 		constructor: function(properties) {
-			WashroomScene.superclass.constructor.call(this, properties);
+			FireGlassScene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -35,7 +34,7 @@
 			this.alpha = 1;
 			this.currentIndex = 0;
 			this.layoutSceneData();
-			this.blocks = [[0,0,1204,550],[0,0,30,686]];
+			this.blocks = [[0,0,1202,525],[0,526,172,73],[1033,520,173,84],[0,600,53,85],[1154,605,53,85]];
 			this.initBlocks(this.blocks);
 			
 			this.addHero(passdata[0],passdata[1]);
@@ -61,59 +60,66 @@
 				this.fingerMouse.visible = true;
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
+				game.toolspanel.show(false,0);
 			}
 		},
 		checkActiveObjects:function(mouseX,mouseY){
+			if(this.checkActiveItem(mouseX,mouseY,this.drawer)){
+				this.showDrawer();
+			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
 				var scene = this;
+				if(this.fingerMouse.index == 7){
+					new game.FlashStarEffect({
+						x:this.doorhandler.x,
+						y:this.doorhandler.y,
+					}).addTo(this);
+				}
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.doorcard)){
+				this.doorcard.removeFromParent();
+				this.doorhandler.status = 2;
+				this.doorhandler.status = 1;
+				game.toolspanel.addIcon(7);
+				game.toolspanel.show(true,50);
+				new game.FlashStarEffect({
+					x:this.doorcard.x,
+					y:this.doorcard.y,
+				}).addTo(this);
+				var scene = this;
 				new Hilo.Tween.to(this,{
-					alpha:0.3
+					alpha:1
 				},{
-					duration:400,
+					duration:1300,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[770,400]);
+						scene.bgImg2.removeFromParent();
+						scene.hero.visible = true;
+						scene.carkey.visible = true;
 					}
 				});
 			}
 			
-			if(this.checkActiveItem(mouseX,mouseY,this.basin)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				if(this.fingerMouse.index == 10){
-					new game.FlashStarEffect({
-						x:this.basin.x,
-						y:this.basin.y,
-					}).addTo(this);
-					this.basin.status = 2;
-					this.waterbasin.visible = true;
-					this.ignoreTouch = true;
-					this.hero.visible = false;
-				}
-			}
-			
-			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
-				this.annihilator.status = 2;
-				this.hero.switchState('handon',10);
-				game.toolspanel.addIcon(8);
-			}
-			
-			if(this.checkActiveItem(mouseX,mouseY,this.towel)){
-				this.hero.switchState('handon',10);
-				var scene = this;
-				this.towel.removeFromParent();
-				this.towel.status = 2;
-				game.toolspanel.addIcon(10);
+			if(this.checkActiveItem(mouseX,mouseY,this.carkey)){
+				this.carkey.removeFromParent();
+				this.carkey.status = 2;
+				game.toolspanel.addIcon(9);
+				new game.FlashStarEffect({
+					x:this.carkey.x,
+					y:this.carkey.y,
+				}).addTo(this);
 			}
 		},
 		setPassData:function(){
 			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
-			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.annihilator)||
-			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.towel)||
-			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.basin)
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.carkey)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.drawer)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorcard)
 			){
 				return true;
 			}else{
@@ -162,74 +168,67 @@
 					break;
 			}
 		},
-		
+		showDrawer:function(){
+			this.bgImg2.visible = true;
+			this.doorcard.visible = true;
+			this.doorcard.status = 1;
+			this.hero.visible = false;
+			this.doorhandler.status = 0;
+			this.carkey.visible = false;
+			this.drawer.status = 2;
+			//this.ignoreTouch = true;
+			//this.fingerMouse.visible = false;
+		},
 		layoutSceneData:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
-				image: game.getImg('washroombg'),
+				image: game.getImg('fireglassbg'),
 			}).addTo(this);
 			
+			this.bgImg2 = new Hilo.Bitmap({
+				image: game.getImg('drawer'),
+				visible:false,
+			}).addTo(this);
 			
-			this.annihilator  = new game.ActiveObject({
-				x:215,
-				y:420,
+			this.drawer  = new game.ActiveObject({
+				x:489,
+				y:441,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[0,0,75,120],
+				clickArea:[0,0,54,16],
 				status:1
+			}).addTo(this);
+			
+			this.doorcard  = new game.ActiveObject({
+				x:500,
+				y:330,
+				readyImgUrl:'doorcard',
+				finishedImgUrl:'doorcard',
+				clickArea:[0,0,150,86],
+				status:0,
+				visible:false,
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
-				x:122,
-				y:350,
+				x:1015,
+				y:356,
 				status:1,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[0,0,40,60],
+				clickArea:[0,0,40,40],
 			}).addTo(this);
 			
-			this.basin  = new game.ActiveObject({
-				x:1060,
-				y:370,
+			this.carkey  = new game.ActiveObject({
+				x:313,
+				y:519,
 				status:1,
-				readyImgUrl:'empty',
-				finishedImgUrl:'empty',
-				clickArea:[0,0,140,70],
+				readyImgUrl:'carkey',
+				finishedImgUrl:'carkey',
+				clickArea:[0,0,20,20],
 			}).addTo(this);
 			
-			this.towel  = new game.ActiveObject({
-				x:726,
-				y:285,
-				status:1,
-				readyImgUrl:'towel',
-				finishedImgUrl:'towel',
-				clickArea:[0,0,65,100],
-			}).addTo(this);
-			
-			this.waterbasin = new Hilo.Container({
-				visible:false
-			}).addTo(this);
-			new Hilo.Bitmap({
-				image:game.getImg('waterbasin')
-			}).addTo(this.waterbasin);
-			this.waterbasinExit = new Hilo.Bitmap({
-				x:1000,
-				y:620,
-				image:game.getImg('uimap'),
-				rect:game.configdata.getPngRect('backbtn','uimap')
-			}).addTo(this.waterbasin);
-			this.waterbasinExit.on(Hilo.event.POINTER_START, function(e) {
-				scene.waterbasin.removeFromParent();
-				scene.basin.status = 2;
-				scene.ignoreTouch = false;
-				scene.hero.visible = true;
-			});
 		},
 		onUpdate:function(){
-			if(this.readyShakeTime == 100){
-				game.notepanel.show(true,'找到有用的物品');//game.configdata.GAMETXTS.pass02_annihilator);
-			}
-			this.readyShakeTime++;
 			this.checkBlocks();
 		},
 	});
