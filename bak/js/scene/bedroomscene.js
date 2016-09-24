@@ -5,7 +5,7 @@
 		
 		readyShakeTime:0,
 		shakeTime:0,
-		shakeLevel:4,
+		shakeLevel:0,
 		shakeSpeed:1,
 		shakeOnce:false,
 		initx:0,
@@ -36,8 +36,6 @@
 		star02:null,
 		star03:null,
 		
-		
-		
 		tasktxt:null,
 		tasktxt1:null,
 		constructor: function(properties) {
@@ -65,10 +63,10 @@
 			this.layoutSceneData();
 			this.blocks = [[0,0,1202,443],[0,443,500,80],[0,500,200,80],[0,580,80,100],[934,440,270,70],[980,506,223,70],[1115,506,84,96],[1175,593,27,88],[718,516,90,30]];
 			this.initBlocks(this.blocks);
-			this.addHero(passdata[0],passdata[1]);
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initkeyevent();
 			this.initTouchEvent();
-			game.sounds.play(0,false);
+			game.sounds.play(0,true);
 			this.initFingerMouse();
 			this.setPassData();
 			this.layoutUI();
@@ -112,29 +110,26 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
-				this.phone.removeFromParent();
-				this.phone.status = 2;
-				game.toolippanel.show(true,'准备好通讯工具非常重要',200);
+				this.phone.remove();
+				game.toolippanel.show(true,'准备好通讯工具非常重要',100);
 				game.toolspanel.addIcon(1);
-				game.toolspanel.show(true,200);
+				game.toolspanel.show(true,100);
 				game.boydata.bedroomData.phone.used = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.drink)){
-				this.drink.removeFromParent();
-				this.drink.status = 2;
-				game.toolippanel.show(true,'灾害中储备饮水',200);
+				this.drink.remove();
+				game.toolippanel.show(true,'灾害中储备饮水',100);
 				game.toolspanel.addIcon(3);
-				game.toolspanel.show(true,200);
+				game.toolspanel.show(true,100);
 				game.boydata.bedroomData.drink.used = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.glim)){
-				this.glim.removeFromParent();
-				this.glim.status = 2;
-				game.toolippanel.show(true,'拿到手电筒',200);
+				this.glim.remove();
+				game.toolippanel.show(true,'拿到手电筒',100);
 				game.toolspanel.addIcon(0);
-				game.toolspanel.show(true,200);
+				game.toolspanel.show(true,100);
 				game.boydata.bedroomData.glim.used = true;
 			}
 			
@@ -144,11 +139,15 @@
 					this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('emptybox','uimap'));
 					this.medicalkit.status = 2;
 					game.toolspanel.addIcon(4);
+					game.toolspanel.show(true,100);
 					new game.FlashStarEffect({
 							x:this.medicalkit.x,
 							y:this.medicalkit.y,
 					}).addTo(this);
 					game.boydata.bedroomData.medicalkit.state = 2;
+					game.headPanel.sayYes();
+				}else{
+					game.headPanel.sayNo();
 				}
 				
 				if(this.fingerMouse.index == 5){
@@ -156,57 +155,55 @@
 						this.medicalkit.state = 1;
 						this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('openbox','uimap'));
 						game.boydata.bedroomData.medicalkit.state = 1;
+						game.headPanel.sayYes();
 					}
+				}else{
+					game.headPanel.sayNo();
 				}
-
-				//this.medicalkit.removeFromParent();
-				//this.medicalkit.status = 2;
-				//game.toolippanel.show(true,'拿到医疗箱',200);
-				//game.toolspanel.addIcon(4);
-				//game.toolspanel.show(true,200);
-				//game.boydata.bedroomData.medicalkit.used = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
 				this.pillow.x = 300;
-				this.pillow.status = 0;
+				this.pillow.status = 2;
 				this.phone.status = 1;
 				this.phone.visible = true;
 				game.boydata.bedroomData.pillow.used = true;
 				
 				new game.FlashStarEffect({x:mouseX-100,y:mouseY-100}).addTo(this);
-				game.notepanel.show(true,'找到手机');
+				game.notepanel.show(true,'找到手机',70);
 				this.passstep = 1;
 				this.star01 = new game.FlashStar({
 					x:560,
 					y:560
 				}).addTo(this);
-				game.toolippanel.show(true,'D 键 蹲下拾取星星',350);
+				game.toolippanel.show(true,'S 键 蹲下拾取星星',200);
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
 				this.hero.switchState('handon',10);
 				this.tvflash.visible = false;
 				this.plug.setEndImg(10,80);
-				//this.tasktxt.hide();
+				
 				this.doorhandler.status = 1;
 				game.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
 				this.star02 = new game.FlashStar({
 					x:760,
 					y:540
 				}).addTo(this);
-				game.toolippanel.show(true,'D 键 蹲下拾取星星',350);
+				game.toolippanel.show(true,'S 键 蹲下拾取星星',200);
 				game.boydata.bedroomData.plug.used = true;
+				game.sounds.play(12,false);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
+				game.sounds.play(5,false);
 				var scene = this;
 				new Hilo.Tween.to(this,{
 					alpha:0.3
 				},{
 					duration:300,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.saloon,[100,600]);
+						game.switchScene(game.configdata.SCENE_NAMES.saloon,[100,600,'right']);
 					}
 				});
 			}
@@ -233,8 +230,9 @@
 					break;
 			}
 		},
-		shakeRoom:function(){
-			this.shakeTime = 400;
+		shakeRoom:function(sumtime){
+			this.shakeTime = sumtime;
+			this.shakeLevel = 3;
 		},
 		changeBg:function(){
 			var scene = this;
@@ -247,7 +245,7 @@
 					Hilo.Tween.to(this, {
 						alpha:1
 					}, {
-						duration: 1200,
+						duration: 1500,
 						ease: Hilo.Ease.Bounce.EaseOut,
 						onComplete: function() {
 							scene.alpha = 1;
@@ -256,8 +254,6 @@
 							scene.tvflash.visible = true;
 							scene.plug.status = 1;
 							scene.hero.ispillow = false;
-							game.boydata.bedroomData.isshake.used = true;
-							//scene.tasktxt.visible = true;
 						}
 					});
 				}
@@ -266,7 +262,6 @@
 		setPassData:function(){
 			if(game.boydata.bedroomData.isshake.used){
 				this.bgImg.setImage(game.getImg('bedroomafter'));
-				this.hero.turnleft();
 				this.fallfan1.removeFromParent();
 				this.fallfan2.removeFromParent();
 				this.fallfanShader1.removeFromParent();
@@ -288,7 +283,11 @@
 			var pillowdata = game.boydata.bedroomData.pillow;
 			if(pillowdata.used){
 				this.pillow.x = 300;
+				this.pillow.status = 2;
 				this.phone.status = 1;
+			}else{
+				this.pillow.status = 1;
+				this.phone.status = 0;
 			}
 			var plugdata   = game.boydata.bedroomData.plug;
 			if(plugdata.used){
@@ -298,13 +297,13 @@
 			}
 			var glimdata   = game.boydata.bedroomData.glim;
 			if(glimdata.used){
-				this.glim.removeFromParent();
+				this.glim.remove();
 			}
 			if(game.boydata.bedroomData.drink.used){
-				this.drink.removeFromParent();
+				this.drink.remove();
 			}
 			if(game.boydata.bedroomData.phone.used){
-				this.phone.removeFromParent();
+				this.phone.remove();
 			}
 			var medicalkitData = game.boydata.bedroomData.medicalkit;
 			if(medicalkitData.state == 2){
@@ -352,13 +351,14 @@
 				y:410,
 				readyImgUrl:'pillow',
 				finishedImgUrl:'pillow',
-				clickArea:[9,0,130,50],
+				status:0,
+				clickArea:[9,0,90,40],
 			}).addTo(this);
 			
 			this.glim  = new game.ActiveObject({
 				x:974,
 				y:474,
-				status:1,
+				status:0,
 				readyImgUrl:'bedroomglim',
 				finishedImgUrl:'bedroomglim',
 				clickArea:[0,0,43,35],
@@ -367,7 +367,7 @@
 			this.drink  = new game.ActiveObject({
 				x:160,
 				y:420,
-				status:1,
+				status:0,
 				readyImgUrl:'bedroomdrink',
 				finishedImgUrl:'bedroomdrink',
 				clickArea:[0,0,28,56],
@@ -376,10 +376,10 @@
 			this.medicalkit  = new game.ActiveObject({
 				x:535,
 				y:354,
-				status:1,
+				status:0,
 				readyImgUrl:'lockbox',
 				finishedImgUrl:'lockbox',
-				clickArea:[0,0,65,56],
+				clickArea:[10,40,90,65],
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
@@ -457,49 +457,59 @@
 				visible:false,
 			}).addTo(this);
 			
-			
-			/*this.tasktxt = new game.TaskLine({
-				txt:'消除危险的电火花',
-				x:932,
-				y:112,
-				visible:false,
-			}).addTo(this);
-			this.tasktxt1 = new game.TaskLine({
-				txt:'搜集有用的物品',
-				x:700,
-				y:112,
-				visible:false,
-			}).addTo(this);*/
+			if(game.boydata.bedroomData.isshake.used){
+				this.glim.status = 1;
+				this.phone.status =1;
+				this.plug.status = 1;
+				this.drink.status = 1;
+				this.medicalkit.status =1;
+			}
 		},
 		onUpdate:function(){
-			if(this.readyShakeTime == 100){
-				game.notepanel.show(true,'灾难逃离解谜游戏，鼠标点击走动，D键蹲下（拾取物品）',350);
+			if(!game.boydata.bedroomData.isshake.used){
+				this.shaking();
+				this.shakeScene();
+			}
+			this.checkBlocks();
+		},
+		shaking:function(){
+			if(this.readyShakeTime == 50){
+				game.notepanel.show(true,'小心地震',100);
+			}
+			if(this.readyShakeTime == 200){
+				this.shakeRoom(200,3);
 			}
 			
-			if(this.readyShakeTime == 300){
-				this.shakeRoom();
+			if(this.readyShakeTime == 350){
+				game.notepanel.show(true,'微震是强震的前兆，务必小心掉落物',150);
+			}
+			
+			if(this.readyShakeTime == 700){
+				game.sounds.play(13,false);
+				this.shakeRoom(700,10);
+			}
+			if(this.readyShakeTime == 900){
 				this.changeBg();
 				//this.tasktxt1.visible = true;
 			}
-			if(this.readyShakeTime == 320){
-				game.notepanel.show(true,'地震中要小心头顶的掉落物，及时躲开',100);
+			if(this.readyShakeTime == 1200){
+				this.glim.status = 1;
 				this.pillow.status = 1;
+				this.drink.status = 1;
+				this.plug.status = 1;
+				this.medicalkit.status = 1;
+				game.notepanel.show(true,'逃离险境，S键拾取星星，鼠标行走',150);
+				game.boydata.bedroomData.isshake.used = true;
 			}
-			
-			this.readyShakeTime++;
-			this.shakeScene();
-			
 			this.toFallTime++;
-			if(this.toFallTime == 355){
+			if(this.toFallTime == 725){
 				this.fallfan1.isFall = true;
 			}
-			if(this.toFallTime == 375){
+			if(this.toFallTime == 745){
 				this.fallfan2.isFall = true;
 			}
 			this.checkFallObj(this.fallfan1,this.fallfanShader1);
 			this.checkFallObj(this.fallfan2,this.fallfanShader2);
-			
-			this.checkBlocks();
 			
 			if(this.readyShakeTime == 100){
 				this.testStart = new game.FlashStar({
@@ -510,6 +520,7 @@
 			if(this.readyShakeTime == 200){
 				this.testStart.hide();
 			}
+			this.readyShakeTime++;
 		},
 		shakeScene:function(){
 			if(this.shakeTime > 0){
@@ -539,7 +550,7 @@
 				console.log('once check:'+ceilingobj.name);
 				objshader.removeFromParent();
 				ceilingobj.onDanger = false;
-				game.sounds.play(4,false);
+				game.sounds.play(10,false);
 				if(game.checkInRect(this.hero.posx,this.hero.posy,objshader.x,objshader.y,objshader.width,objshader.height)){
 					this.hero.switchState('fallhit',6);
 					game.boydata.currentHp--;

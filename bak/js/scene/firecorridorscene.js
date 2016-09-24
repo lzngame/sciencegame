@@ -45,7 +45,8 @@
 			this.blocks = [[0,0,2404,365],[0,0,286,406],[0,0,177,484],[1554,0,840,420],[1560,396,180,275]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
-			this.addHero(passdata[0],passdata[1]);
+			this.setPassData();
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initTouchEvent();
 			this.initFingerMouse();
 			this.layoutUI();
@@ -124,6 +125,7 @@
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
 			}
+			game.toolspanel.show(false,0);
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.wallpaper)){
@@ -131,12 +133,14 @@
 				this.wallpaper.setEndImg(0,0);
 				this.wallpaper.status = 2;
 				this.firewarnBox.status = 1;
+				game.boydata.firecorridordata.wallpaper = true;
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.stone)){
 				this.hero.switchState('handon',10);
 				game.toolspanel.addIcon(6);
-				this.stone.removeFromParent();
+				this.stone.remove();
 				game.toolspanel.show(true,50);
+				game.boydata.firecorridordata.stone = true;
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.telphone)){
 				this.hero.switchState('handon',10);
@@ -159,6 +163,8 @@
 					this.firewarnBox.status = 2;
 					this.firelamp.isplay = true;
 					game.headPanel.sayYes();
+					game.boydata.firecorridordata.warnbox = true;
+					game.sounds.play(4,false);
 				}
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.firreblock)){
@@ -277,6 +283,8 @@
 			});
 			this.telPanel.callbtn.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.telPanel.checkLetter()){
+					game.boydata.firecorridordata.tel= true;
+					game.headPanel.sayYes();
 					new game.FlashStarEffect({
 						x:this.x,
 						y:this.y,
@@ -295,6 +303,7 @@
 					});
 				}else{
 					scene.telPanel.reset();
+					game.headPanel.sayNo();
 				}
 			});
 			
@@ -363,6 +372,23 @@
 			});
 			
 		},
+		setPassData:function(){
+			if(game.boydata.firecorridordata.wallpaper){
+				this.wallpaper.setEndImg(0,0);
+				this.wallpaper.status = 2;
+				this.firewarnBox.status = 1;
+			}
+			if(game.boydata.firecorridordata.warnbox){
+				this.firewarnBox.status = 2;
+				this.firelamp.isplay = true;
+			}
+			if(game.boydata.firecorridordata.stone){
+				this.stone.remove();
+			}
+			if(game.boydata.firecorridordata.tel){
+				this.telPanel.status = 2;
+			}
+		},
 		onUpdate:function(){
 			this.x = (610 - this.hero.posx);
 			this.checkBlocks();
@@ -375,10 +401,20 @@
 				this.smokewall.x --;
 			}
 			if(this.hero.framename=='crawl' && this.hero.posx > 2000){
-				this.crawlBtn.removeFromParent();
 				this.hero.switchState('idle',6);
-				game.switchScene(game.configdata.SCENE_NAMES.fireglass,[200,600]);
+				this.crawlBtn.removeFromParent();
+				game.switchScene(game.configdata.SCENE_NAMES.fireglass,[200,600],'right');
+				
+				/*new Hilo.Tween.to(this,{
+					alpha:0.3
+				},{
+					duration:300,
+					onComplete:function(){
+						
+					}
+				});*/
 			}
+			this.checkBlocks();
 		},
 	});
 })(window.game);

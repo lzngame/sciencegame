@@ -154,6 +154,11 @@
 			this.img.x = x;
 			this.img.y = y;
 		},
+		remove:function(){
+			this.removeFromParent();
+			this.status = 2;
+			game.sounds.play(12,false);
+		},
 		onUpdate:function(){
 			
 		},
@@ -260,10 +265,12 @@
 		sayNo:function(){
 			this.isSayNo = true;
 			this.isSayYes = false;
+			game.sounds.play(9,false);
 		},
 		sayYes:function(){
 			this.isSayNo = false;
 			this.isSayYes = true;
+			game.sounds.play(11,false);
 		},
 		onUpdate:function(){
 			if(this.isSayNo || this.isSayYes){
@@ -486,7 +493,6 @@
 				y:y-30
 			}).addTo(this.parent);
 			this.removeFromParent();
-			game.sounds.play(3,false);
 		},
 		onUpdate:function(){
 			if(this.interval > 10){
@@ -544,6 +550,7 @@
 				if(this.index > this.frames.length-1){
 					this.index = 0;
 					this.removeFromParent();
+					game.sounds.play(6,false);
 				}
 				this.img.setImage(game.getImg('effects'),this.frames[this.index]);
 			}else{
@@ -585,7 +592,6 @@
 					if(this.index > this.frames.length-1){
 						this.index = 0;
 					}
-					console.log('index:%d',this.index);
 					this.setImage(game.getImg(this.sourceImg),game.configdata.getPngRect(this.frames[this.index],'uimap'));
 				}else{
 						this.interval++;
@@ -659,6 +665,7 @@
 		addIcon:function(index){
 			game.boydata.bagdata.push(index);
 			this.addIconNoData(index);
+			game.sounds.play(1,false);
 		},
 		addIconNoData:function(index){
 			var initPos = this.iconpanel.getNumChildren()+1;
@@ -675,11 +682,11 @@
 				console.log('Icon Index:%d',this.index);
 				if(game.currentScene.excuteIcon){
 					game.currentScene.excuteIcon(this.index);
+					game.sounds.play(12,false);
 				}else{
 					console.log('此场景不能使用该物品');
 				}
 			});
-			game.sounds.play(5,false);
 		},
 		show:function(isshow,time){
 			var panel = this;
@@ -867,7 +874,7 @@
 					imgrect = this.downimg;
 				}
 				this.setImage(game.getImg('uimap'),game.configdata.getPngRect(imgrect,'uimap'));
-				console.log(this.state);
+				game.sounds.play(2,false);
 			});
 		},
 	});
@@ -879,6 +886,7 @@
 		initx:420,
 		inity:200,
 		btns:null,
+		exitBtnImg:null,
 		constructor: function(properties) {
 			PasswordlockPanel.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -911,6 +919,12 @@
 				state:true,
 				x:558,
 				y:450,
+			}).addTo(this);
+			this.exitBtnImg = new Hilo.Bitmap({
+				x:543,
+				y:565,
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('lockpanelexit','uimap'),
 			}).addTo(this);
 		},
 		resetDefault:function(){
@@ -971,7 +985,7 @@
 				}).addTo(this);
 				btn.on(Hilo.event.POINTER_START, function(e) {
 					this.parent.addNum(this.index);
-					
+					game.sounds.play(2,false);
 				});
 			}
 			this.callbtn = new Hilo.Bitmap({

@@ -232,8 +232,9 @@
 			
 			var scene = this;
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
-				//game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
+				game.sounds.play(2,false);
+				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
+				game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
 				
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
@@ -394,37 +395,13 @@
 				height:686
 			}).addTo(this);
 			
+			
 			var img = game.getImg('uimap');
 			new Hilo.Bitmap({
 				image:img,
-				rect:game.configdata.getPngRect('pass01btn','uimap'),
+				rect:game.configdata.getPngRect('boy','uimap'),
 				x:460,
-				y:10
-			}).addTo(this);
-			
-			var bedroom = new Hilo.Bitmap({
-				image:img,
-				rect:game.configdata.getPngRect('bedroompass','uimap'),
-				x:430,
-				y:100
-			}).addTo(this);
-			var cookieroom = new Hilo.Bitmap({
-				image:img,
-				rect:game.configdata.getPngRect('cookiepass','uimap'),
-				x:750,
-				y:100
-			}).addTo(this);
-			var liftroom = new Hilo.Bitmap({
-				image:img,
-				rect:game.configdata.getPngRect('liftpass','uimap'),
-				x:430,
-				y:300
-			}).addTo(this);
-			var corridor = new Hilo.Bitmap({
-				image:img,
-				rect:game.configdata.getPngRect('corridorpass','uimap'),
-				x:750,
-				y:300
+				y:210
 			}).addTo(this);
 			
 			var btnback = new Hilo.Bitmap({
@@ -437,52 +414,21 @@
 			
 			
 			var font = "14px arial";
-            //text view
             var text = new Hilo.Text({
                 font: font,
                 color:'#333330',
-                text:game.configdata.GAMETXTS.note01,
+                text:'下一关',
                 lineSpacing: 10,
                 width: 250,
                 height: 100,
-                x: 140,
-                y: 100
+                x: 1049,
+                y: 490
             }).addTo(this);
             
-            bedroom.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.attack);
-			});
-			
-			cookieroom.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.cookieroom);
-			});
-			
-			liftroom.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.choice);
-			});
-			
-			corridor.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.runaway);
-			});
 			
 			btnback.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.main);
+				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
 			});
-
-			/*this.on(Hilo.event.POINTER_START,function(e){
-				new Hilo.Tween.to(this,{
-					alpha:0.05
-				},{
-					duration:1000,
-					onComplete:function(){
-						if(localStorage.heroData){
-							game.switchScene(game.configdata.SCENE_NAMES.map);
-						}else{
-							game.switchScene(game.configdata.SCENE_NAMES.coach);
-						}
-					}
-				})
-			});*/
 		},
 		deactive: function() {
 			this.destory();

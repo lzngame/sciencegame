@@ -38,7 +38,7 @@
 			this.blocks = [[0,0,1204,550],[0,0,30,686]];
 			this.initBlocks(this.blocks);
 			
-			this.addHero(passdata[0],passdata[1]);
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initkeyevent();
 			this.initTouchEvent();
 			this.initFingerMouse();
@@ -89,6 +89,7 @@
 					this.waterbasin.visible = true;
 					this.ignoreTouch = true;
 					this.hero.visible = false;
+					this.fingerMouse.visible = false;
 				}
 			}
 			
@@ -96,6 +97,7 @@
 				this.annihilator.status = 2;
 				this.hero.switchState('handon',10);
 				game.toolspanel.addIcon(8);
+				game.boydata.washroomdata.annihilator = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.towel)){
@@ -104,10 +106,16 @@
 				this.towel.removeFromParent();
 				this.towel.status = 2;
 				game.toolspanel.addIcon(10);
+				game.boydata.washroomdata.towel = true;
 			}
 		},
 		setPassData:function(){
-			
+			if(game.boydata.washroomdata.towel){
+				this.towel.remove();
+			}
+			if(game.boydata.washroomdata.annihilator){
+				this.annihilator.status = 2;
+			}
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
@@ -223,6 +231,7 @@
 				scene.basin.status = 2;
 				scene.ignoreTouch = false;
 				scene.hero.visible = true;
+				scene.fingerMouse.visible = true;				
 			});
 		},
 		onUpdate:function(){

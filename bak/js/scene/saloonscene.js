@@ -30,10 +30,10 @@
 			this.alpha = 1;
 			game.stage.swapChildren(this, game.uiscene);
 			this.currentIndex = 0;
-			this.blocks = [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
+			this.blocks = [[0,0,1200,400],[0,400,140,300],[1043,386,236,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
-			this.addHero(passdata[0],passdata[1]);
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initTouchEvent();
 			this.initFingerMouse();
 		},
@@ -92,13 +92,13 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerBedroom)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.attack,[900,600]);
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.attack,[900,600,'left']);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCookie)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.cookieroom,[270,575]);
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.cookieroom,[270,575,'right']);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
-				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.shakecorridor,[285,588]);
+				this.enterDoor(mouseX,mouseY,game.configdata.SCENE_NAMES.shakecorridor,[285,588,'right']);
 			}
 		},
 		layoutBgMap:function(){
@@ -140,6 +140,7 @@
 			if(this.readyShakeTime == 50){
 				game.notepanel.show(true,game.configdata.GAMETXTS.pass03_ask,200);
 			}
+			this.checkBlocks();
 		},
 	});
 })(window.game);

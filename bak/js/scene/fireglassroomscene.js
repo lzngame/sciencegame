@@ -37,7 +37,7 @@
 			this.blocks = [[0,0,1202,525],[0,526,172,73],[1033,520,173,84],[0,600,53,85],[1154,605,53,85]];
 			this.initBlocks(this.blocks);
 			
-			this.addHero(passdata[0],passdata[1]);
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initkeyevent();
 			this.initTouchEvent();
 			this.initFingerMouse();
@@ -76,15 +76,19 @@
 						x:this.doorhandler.x,
 						y:this.doorhandler.y,
 					}).addTo(this);
+				}else{
+					game.headPanel.sayNo();
 				}
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorcard)){
-				this.doorcard.removeFromParent();
-				this.doorhandler.status = 2;
-				this.doorhandler.status = 1;
+				this.doorcard.remove();
+				game.headPanel.sayYes();
 				game.toolspanel.addIcon(7);
 				game.toolspanel.show(true,50);
+				
+				this.doorhandler.status = 1;
+				this.carkey.status = 1;
 				new game.FlashStarEffect({
 					x:this.doorcard.x,
 					y:this.doorcard.y,
@@ -106,14 +110,12 @@
 				this.carkey.removeFromParent();
 				this.carkey.status = 2;
 				game.toolspanel.addIcon(9);
+				game.toolspanel.show(true,50);
 				new game.FlashStarEffect({
 					x:this.carkey.x,
 					y:this.carkey.y,
 				}).addTo(this);
 			}
-		},
-		setPassData:function(){
-			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.carkey)||
@@ -126,8 +128,9 @@
 				return false;
 			}
 		},
-		
-		
+		setPassData:function(){
+			
+		},
 		checkStar:function(star){
 			if(star && star.parent){
 				if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){

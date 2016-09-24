@@ -29,8 +29,8 @@ game.configdata = new function(){
 	self.DEFAULTHEROHP = 4;
 	
 	self.JumpKey = 87;// W
-	self.StopKey = 65;// A
-	self.SquatKey= 68;// D
+	self.StopKey = 65;// A 65  S83 D68
+	self.SquatKey= 83;// S
 	
 	
 	self.GAMETXTS ={
@@ -41,10 +41,10 @@ game.configdata = new function(){
 		pass01_hide:'做的很好，迅速躲到坚固的墙体',
 		pass01_squat:'按住D 键不要松手，等强震过后',
 		pass01_tvflash:'地震过后，防止电器着火，拔下插座',
-		pass01_okend:'做的很好，请离开房间去下一关卡',
+		pass01_okend:'做的很好，断电保持安全',
 		
 		pass02_annihilator:'找到灭火器，扑灭厨房火源',
-		pass02_ok:'干得不错，现在可以去走廊了',
+		pass02_ok:'干得不错',
 		
 		pass03_ask:'考考你，地震发生时，走楼梯，还是电梯？',
 		pass03_right:'非常正确，地震发生时，要走楼梯',
@@ -407,13 +407,20 @@ game.userData = new function(){
 game.sounds = new function(){
 	var self = this;
 	this.sounds_url =[
-	'bg91.mp3',   //0
-	'levelup.mp3',   //1
-	'winover.mp3',   //2
+	'bg01.mp3',   //0
+	'di01.mp3',   //1
+	'di02.mp3',   //2
 	'deadth.mp3',  //3
-	'btn_ting.mp3', //4
-	'CoinPickup.mp3', //5
-	'player_hurt_male.mp3',//6
+	'firewarn.mp3', //4
+	'turn.mp3', //5
+	'uplv.mp3',//6
+	'opendoor.mp3',//7
+	'warn01.mp3',//8
+	'fail.mp3',//9
+	'break.mp3',//10
+	'laugh.mp3',//11
+	'ting.mp3',//12
+	'shake.mp3',//13
 	];
 	this.play = function(index,loop){
 		if(loop == null)

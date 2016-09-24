@@ -100,11 +100,16 @@ game.monsterdata = new function(){
 					[0, 1625, 995, 320], 
 					[0, 325, 995, 320], 
 					[0, 0, 995, 320],    //5-10  smokewall
+					
+					[1161,528,154,171],
+					[1161,0,154,171],
+					[1161,176,154,171],
+					[1161,352,154,171],  //11-14 gas effect
 				],
 				sprites: {
 					corridorfireeffect:[0,1,2,3,4],
-					smokewalleffect:[5,6,7,8,9,10]
-					
+					smokewalleffect:[5,6,7,8,9,10],
+					gaseffect:[11,12,13,14]
 				}
 			});
 	};
@@ -148,6 +153,16 @@ game.monsterdata = new function(){
 				pipswitchused:false,
 				annihilatorused:false,
 			};
+			this.firecorridordata ={
+				wallpaper:false,
+				warnbox:false,
+				tel:false,
+				stone:false,
+			};
+			this.washroomdata ={
+				annihilator:false,
+				towel:false,
+			},
 			this.reset();
 		},
 		addHp:function(){

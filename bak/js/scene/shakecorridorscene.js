@@ -31,10 +31,10 @@
 			this.addTo(game.stage);
 			this.alpha = 1;
 			this.currentIndex = 0;
-			this.blocks = [[0,0,2404,410]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
+			this.blocks = [[0,0,2404,410],[0,0,120,686],[120,410,90,165],[0,0,360,480],[2304,0,100,686],[2104,0,200,570],[557,507,370,180]];// [[0,0,1200,400],[0,455,140,250],[1143,386,36,152],[1166,542,37,146]];
 			this.initBlocks(this.blocks);
 			this.layoutBgMap();
-			this.addHero(passdata[0],passdata[1]);
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initTouchEvent();
 			this.initFingerMouse();
 			this.layoutUI();
@@ -110,6 +110,7 @@
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
 			}
+			game.toolspanel.show(false,0);
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.warnpaper)){
@@ -133,7 +134,16 @@
 				this.lockPanel.x = (this.x*-1);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
-				game.switchScene(game.configdata.SCENE_NAMES.story);
+				this.hero.switchState('handon',10);
+				var scene = this;
+				new Hilo.Tween.to(this,{
+					alpha:0.3
+				},{
+					duration:400,
+					onComplete:function(){
+						game.switchScene(game.configdata.SCENE_NAMES.saloon,[1049,570,'left']);
+					}
+				});
 			}
 		},
 		layoutBgMap:function(){
@@ -174,14 +184,34 @@
 				y:0,
 				visible:false,
 			}).addTo(this);
+			
 			this.lockPanel.sureBtnImg.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.lockPanel.checkLetter()){
-						scene.lockPanel.visible =false;
-						scene.ignoreTouch = false;
-						scene.hero.visible = true;
-					    scene.fingerMouse.visible = true;
+					game.headPanel.sayYes();
+					game.sounds.play(6,false);
+					new Hilo.Tween.to(this,{
+						alpha:1
+					},{
+						duration:1300,
+						onComplete:function(){
+							scene.lockPanel.visible =false;
+							scene.ignoreTouch = false;
+							scene.hero.visible = true;
+							scene.fingerMouse.visible = true;
+							game.switchScene(game.configdata.SCENE_NAMES.story);
+						}
+					});
+				}else{
+					game.headPanel.sayNo();
 				}
 				scene.lockPanel.resetDefault();
+			});
+			this.lockPanel.exitBtnImg.on(Hilo.event.POINTER_START, function(e) {
+				scene.lockPanel.visible =false;
+				scene.hero.visible = true;
+				scene.fingerMouse.visible = true;
+				scene.lockPanel.resetDefault();
+				scene.ignoreTouch = false;
 			});
 		},
 		onUpdate:function(){
@@ -190,6 +220,7 @@
 				this.x = 0;
 			if(this.x <= -1202)
 				this.x = -1202;
+			this.checkBlocks();
 		},
 	});
 })(window.game);

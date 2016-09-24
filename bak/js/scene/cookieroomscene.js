@@ -18,6 +18,7 @@
 		pan:null,
 		boxkey:null,
 		pipswitch:null,
+		gaseffect:null,
 		blocks:null,
 		
 		spanner:null,
@@ -49,7 +50,7 @@
 			this.blocks = [[0,0,1202,550],[0,526,172,73],[1033,520,173,84],[0,600,53,85],[1154,605,53,85],[834,526,368,158]];
 			this.initBlocks(this.blocks);
 			
-			this.addHero(passdata[0],passdata[1]);
+			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initkeyevent();
 			this.initTouchEvent();
 			this.initFingerMouse();
@@ -113,7 +114,7 @@
 				},{
 					duration:400,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.saloon,[776,416]);
+						game.switchScene(game.configdata.SCENE_NAMES.saloon,[776,416,'left']);
 					}
 				});
 			}
@@ -127,6 +128,7 @@
 						y:this.pipswitch.y,
 					}).addTo(this);
 					this.pipswitch.status = 2;
+					this.gaseffect.visible = false;
 					game.boydata.cookieroomData.pipswitchused = true;
 				}
 			}
@@ -170,6 +172,7 @@
 		setPassData:function(){
 			if(game.boydata.cookieroomData.pipswitchused){
 				this.pipswitch.status = 2;
+				this.gaseffect.visible = false;
 			}
 			if(game.boydata.cookieroomData.panused){
 				this.pan.x  = 400;
@@ -358,6 +361,13 @@
 				y:205,
 				interval:8,
 				visible:false,
+			}).addTo(this);
+			
+			this.gaseffect = new Hilo.Sprite({
+				frames: game.monsterdata.effect_atlas.getSprite('gaseffect'),
+				x:700,
+				y:270,
+				interval:8,
 			}).addTo(this);
 		},
 		onUpdate:function(){

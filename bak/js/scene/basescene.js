@@ -41,7 +41,7 @@
          	}; 
 		},
 		
-		addHero:function(x,y){
+		addHero:function(x,y,dir){
 			this.hero = new game.Hero({
 				name: 'Hero',
 				framename: 'idle',
@@ -52,6 +52,11 @@
 				interval: 5,
 				alpha:1,
 			}).addTo(this);
+			if(dir == 'left'){
+				this.hero.turnleft();
+			}else{
+				this.hero.turnright();
+			}
 		},
 		deactive: function() {
 			this.destory();
@@ -68,6 +73,7 @@
 			this.hero.speedy = 0;
 			this.hero.targetx = this.hero.posx;
 			this.hero.targety = this.hero.posy;
+			this.hero.switchState('idle',6);
 		},
 		initBlocks:function(blockdata){
 			for(var i=0;i<blockdata.length;i++){
@@ -186,7 +192,7 @@
 			}).addTo(game.uiscene);
 			game.toolippanel = new game.ToolipNote({
 				x:1230,
-				y:300,
+				y:420,
 			}).addTo(game.uiscene);
 			game.toolspanel = new game.ToolsIconPanel({
 				initx:784,
