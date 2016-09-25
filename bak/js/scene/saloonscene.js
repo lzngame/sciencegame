@@ -80,6 +80,10 @@
 		},
 		enterDoor:function(mouseX,mouseY,scenename,posarray){
 			this.hero.switchState('handon',10);
+			if(!this.checkFinger(-1)){
+					return;
+				}
+			game.sounds.play(7,false);
 			var scene = this;
 			new Hilo.Tween.to(this,{
 					alpha:0.3

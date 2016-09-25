@@ -73,6 +73,7 @@
 				this.fingerMouse.visible = true;
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
+				game.toolippanel.show(false,0);
 			}
 		},
 		checkActiveObjects:function(mouseX,mouseY){
@@ -90,6 +91,7 @@
 				game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 				this.passstep = 1;
 				var scene = this;
+				game.sounds.play(17,true);
 				new Hilo.Tween.to(scene.tvflash,{
 					alpha:0
 				},{
@@ -101,6 +103,7 @@
 						scene.hero.switchState('idle',6);
 						scene.annihilator.status = 2;
 						scene.blocks.pop();
+						game.sounds.stop(17);
 						game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 					}
 				});
@@ -108,6 +111,10 @@
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
+				if(!this.checkFinger(-1)){
+					return;
+				}
+				game.sounds.play(7,false);
 				var scene = this;
 				new Hilo.Tween.to(this,{
 					alpha:0.3
@@ -120,6 +127,9 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pipswitch)){
+				if(!this.checkFinger(2)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				var scene = this;
 				if(this.fingerMouse.index == 2){
@@ -134,10 +144,13 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.boxkey)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.boxkey.removeFromParent();
 				this.boxkey.status = 2;
-				game.toolippanel.show(true,'这个工具会有用的',200);
-				game.toolspanel.show(true,200);
+				game.toolippanel.show(true,'这个工具会有用的',100);
+				game.toolspanel.show(true,100);
 				game.toolspanel.addIcon(5);
 				this.star01 = new game.FlashStar({
 					x:this.boxkey.x,
@@ -147,6 +160,9 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pan)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				var scene = this;
 				this.pan.x = 400;
@@ -157,6 +173,9 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.spanner)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.spanner.removeFromParent();
 				this.spanner.status = 2;
 				game.toolippanel.show(true,'这个工具会有用的',200);

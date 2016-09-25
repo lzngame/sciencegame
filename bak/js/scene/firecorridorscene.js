@@ -19,6 +19,8 @@
 		isSmokeMove:false,
 		
 		crawlBtn:null,
+		isHurt:true,
+		hurttime:0,
 		
 		constructor: function(properties) {
 			FirecorridorScene.superclass.constructor.call(this, properties);
@@ -167,8 +169,11 @@
 					game.sounds.play(4,false);
 				}
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.firreblock)){
+			if(this.checkActiveItem(mouseX,mouseY,this.firreblock,true)){
 				var scene = this;
+				if(!this.checkFinger(8)){
+					return ;
+				}
 				if(this.fingerMouse.index == 8){
 					if(this.hero.scaleX == -1 || this.hero.framename != 'idle')
 						return;
@@ -397,9 +402,27 @@
 			if(this.x <= -1202)
 				this.x = -1202;
 				
+			this.checkBlocks();
 			if(this.isSmokeMove){
 				this.smokewall.x --;
 			}
+			
+			if(this.hero.framename != 'crawl' && this.smokewall.x <= this.hero.posx){
+				if(this.isHurt){
+					this.hero.switchState('fallhit',6);
+					game.boydata.currentHp--;
+					game.headPanel.setHp(game.boydata.currentHp);
+					this.isHurt = false;
+				}else{
+					this.hurttime++;
+					if(this.hurttime > 200){
+						this.hurttime = 0;
+						this.isHurt = true;
+					}
+				}
+			}
+			
+			
 			if(this.hero.framename=='crawl' && this.hero.posx > 2000){
 				this.hero.switchState('idle',6);
 				this.crawlBtn.removeFromParent();
@@ -414,7 +437,7 @@
 					}
 				});*/
 			}
-			this.checkBlocks();
+			
 		},
 	});
 })(window.game);

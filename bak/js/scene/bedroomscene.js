@@ -66,7 +66,7 @@
 			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initkeyevent();
 			this.initTouchEvent();
-			game.sounds.play(0,true);
+			//game.sounds.play(14,true);
 			this.initFingerMouse();
 			this.setPassData();
 			this.layoutUI();
@@ -107,9 +107,13 @@
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
 			}
+			game.toolspanel.show(false,0);
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.phone)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.phone.remove();
 				game.toolippanel.show(true,'准备好通讯工具非常重要',100);
 				game.toolspanel.addIcon(1);
@@ -118,6 +122,9 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.drink)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.drink.remove();
 				game.toolippanel.show(true,'灾害中储备饮水',100);
 				game.toolspanel.addIcon(3);
@@ -126,6 +133,9 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.glim)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.glim.remove();
 				game.toolippanel.show(true,'拿到手电筒',100);
 				game.toolspanel.addIcon(0);
@@ -135,6 +145,9 @@
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.medicalkit)){
 				if(this.medicalkit.state == 1){
+					if(!this.checkFinger(-1)){
+						return;
+					}
 					this.medicalkit.state = 2;
 					this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('emptybox','uimap'));
 					this.medicalkit.status = 2;
@@ -146,8 +159,7 @@
 					}).addTo(this);
 					game.boydata.bedroomData.medicalkit.state = 2;
 					game.headPanel.sayYes();
-				}else{
-					game.headPanel.sayNo();
+					this.fingerMouse.setDefault();
 				}
 				
 				if(this.fingerMouse.index == 5){
@@ -156,13 +168,21 @@
 						this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('openbox','uimap'));
 						game.boydata.bedroomData.medicalkit.state = 1;
 						game.headPanel.sayYes();
+						this.fingerMouse.setDefault();
+						game.toolspanel.removeIcon(5);
 					}
 				}else{
-					game.headPanel.sayNo();
+					if(this.medicalkit.status != 2){
+						this.fingerMouse.setDefault();
+						game.headPanel.sayNo();
+					}
 				}
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pillow)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.pillow.x = 300;
 				this.pillow.status = 2;
 				this.phone.status = 1;
@@ -180,6 +200,9 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.plug)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				this.tvflash.visible = false;
 				this.plug.setEndImg(10,80);
@@ -193,10 +216,14 @@
 				game.toolippanel.show(true,'S 键 蹲下拾取星星',200);
 				game.boydata.bedroomData.plug.used = true;
 				game.sounds.play(12,false);
+				game.sounds.stop(16);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
-				game.sounds.play(5,false);
+				game.sounds.play(7,false);
 				var scene = this;
 				new Hilo.Tween.to(this,{
 					alpha:0.3
@@ -500,6 +527,7 @@
 				this.medicalkit.status = 1;
 				game.notepanel.show(true,'逃离险境，S键拾取星星，鼠标行走',150);
 				game.boydata.bedroomData.isshake.used = true;
+				game.sounds.play(16,true);
 			}
 			this.toFallTime++;
 			if(this.toFallTime == 725){

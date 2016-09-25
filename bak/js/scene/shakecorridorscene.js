@@ -93,6 +93,7 @@
 			});
 		},
 		excuteIcon:function(index){
+			
 			if(index==3){
 				game.toolspanel.removeIcon(index);
 				game.boydata.addHp();
@@ -114,6 +115,9 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.warnpaper)){
+				if(!this.checkFinger(2)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				var scene = this;
 				if(this.fingerMouse.index == 2){
@@ -123,17 +127,25 @@
 					}).addTo(this);
 					this.warnpaper.setEndImg(0,-200);
 					this.warnpaper.status = 2;
+					game.toolspanel.removeIcon(this.fingerMouse.index);
 				}
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.passwordLock)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.lockPanel.visible = true;
 				this.ignoreTouch = true;
 				this.hero.visible = false;
 				this.fingerMouse.visible = false;
 				this.lockPanel.y = 0;
 				this.lockPanel.x = (this.x*-1);
+				game.sounds.play(19,false);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandlerCorridor)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				var scene = this;
 				new Hilo.Tween.to(this,{
@@ -188,7 +200,7 @@
 			this.lockPanel.sureBtnImg.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.lockPanel.checkLetter()){
 					game.headPanel.sayYes();
-					game.sounds.play(6,false);
+					game.sounds.play(15,false);
 					new Hilo.Tween.to(this,{
 						alpha:1
 					},{

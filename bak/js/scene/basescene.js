@@ -129,6 +129,15 @@
 				}
 			}
 		},
+		checkFinger:function(index){
+			if(this.fingerMouse.index != index){
+				this.fingerMouse.setDefault();
+				game.headPanel.sayNo();
+				return false;
+			}else{
+				return true;
+			}
+		},
 		checkActiveItemWithoutPos:function(mouseX,mouseY,obj){
 			var isClickIn = false;
 			if(!obj)
@@ -143,7 +152,7 @@
 			return isClickIn;
 		},
 		
-		checkActiveItem:function(mouseX,mouseY,obj){
+		checkActiveItem:function(mouseX,mouseY,obj,nowarn){
 			var isClickIn = false;
 			if(!obj)
 				return false;
@@ -151,14 +160,18 @@
 			var y = obj.clickArea[1]+obj.y;
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
+			if(nowarn == null){
+				nowarn = false;
+			}
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
 				if(Math.abs(x+w/2 - this.hero.posx) <150 && Math.abs(y+h/2 - (this.hero.posy-100)) <200){
 					isClickIn = true;
 					this.fingerMouse.active = false; 
-					this.fingerMouse.setDefault();
 				}else{
 					isClickIn = false;
-					game.notepanel.show(true,'走近点...',50);					
+					if(!nowarn){
+						game.notepanel.show(true,'走近点...',50);					
+					}
 				}
 			}
 			return isClickIn;
@@ -216,6 +229,10 @@
 				}else{
 					if(!this.active)
 						scene.fingerMouse.visible = false;
+				}
+				if(game.toolspanel.y == 0){
+					console.log('check icon');
+					game.toolspanel.showshader(targetx,targety);
 				}
 			});
 			game.stage.on(Hilo.event.POINTER_START, function(e) {

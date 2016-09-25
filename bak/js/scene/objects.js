@@ -265,7 +265,7 @@
 		sayNo:function(){
 			this.isSayNo = true;
 			this.isSayYes = false;
-			game.sounds.play(9,false);
+			game.sounds.play(18,false);
 		},
 		sayYes:function(){
 			this.isSayNo = false;
@@ -616,6 +616,8 @@
 		spaceLine:80,
 		btnImg:null,
 		iconpanel:null,
+		isshow:false,
+		shader:null,
 		constructor: function(properties) {
 			ToolsIconPanel.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -627,6 +629,10 @@
 			}).addTo(this);
 			this.x = this.initx;
 			this.y = this.inity;
+			this.shader = new Hilo.Bitmap({
+				image:game.getImg('shadericon'),
+				visible:false,
+			}).addTo(this);
 			this.btnImg = new Hilo.Bitmap({
 				image: game.getImg('uimap'),
 				rect:game.configdata.getPngRect('storebtn1','uimap'),
@@ -645,6 +651,26 @@
 			});
 			this.iconpanel = new Hilo.Container({}).addTo(this);
 		},
+		showshader:function(mousex,mousey){
+			var icons = this.iconpanel.children;
+			for(var i=0;i<icons.length;i++){
+				var item = icons[i];
+				var x = this.x + item.x;
+				var y = this.y + item.y;
+				var w = item.img.width;
+				var h = item.img.height;
+				if(game.checkInRect(mousex,mousey,x,y,w,h)){
+					console.log('inrect');
+					this.shader.visible = true;
+					this.shader.x = item.x;
+					this.shader.y = item.y;
+					break;
+				}else{
+					console.log('no rect');
+					this.shader.visible = false;
+				}
+			}
+		},
 		setpos:function(x,y){
 			this.x = x;
 			this.y = y;
@@ -661,6 +687,7 @@
 					break;
 				}
 			}
+			this.shader.visible = false;
 		},
 		addIcon:function(index){
 			game.boydata.bagdata.push(index);
@@ -704,6 +731,7 @@
 				}
 			});
 			panel.showtime = time;
+			this.shader.visible = false;
 		},
 		refresh:function(){
 			this.iconpanel.removeAllChildren();
@@ -790,7 +818,7 @@
 	var StarScore = ns.StarScore = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'star score',
-		score:10,
+		score:0,
 		imgpanel:null,
 		basenum:'whitenum0',
 		constructor: function(properties) {
@@ -1069,6 +1097,7 @@
 		},
 		setDefault:function(){
 			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.defaulticonname,'uimap'));
+			this.index = -1;
 		},
 		setCurrent:function(index){
 			this.active = true;
