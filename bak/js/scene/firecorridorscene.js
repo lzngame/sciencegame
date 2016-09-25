@@ -131,6 +131,9 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.wallpaper)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				this.wallpaper.setEndImg(0,0);
 				this.wallpaper.status = 2;
@@ -138,6 +141,9 @@
 				game.boydata.firecorridordata.wallpaper = true;
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.stone)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				game.toolspanel.addIcon(6);
 				this.stone.remove();
@@ -145,6 +151,9 @@
 				game.boydata.firecorridordata.stone = true;
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.telphone)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				this.telPanel.visible = true;
 				this.ignoreTouch = true;
@@ -154,6 +163,9 @@
 				this.telPanel.x = (this.x*-1);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
 				this.hero.switchState('handon',10);
 				game.switchScene(game.configdata.SCENE_NAMES.washroom,[167,590]);
 			}
@@ -161,6 +173,9 @@
 				this.hero.switchState('handon',10);
 				game.headPanel.sayNo();
 				var scene = this;
+				if(!this.checkFinger(6)){
+					return;
+				}
 				if(this.fingerMouse.index == 6){
 					this.firewarnBox.status = 2;
 					this.firelamp.isplay = true;
@@ -409,10 +424,14 @@
 			
 			if(this.hero.framename != 'crawl' && this.smokewall.x <= this.hero.posx){
 				if(this.isHurt){
-					this.hero.switchState('fallhit',6);
-					game.boydata.currentHp--;
-					game.headPanel.setHp(game.boydata.currentHp);
-					this.isHurt = false;
+					if(game.boydata.currentHp <= 0){
+						game.switchScene(game.configdata.SCENE_NAMES.gameover);
+					}else{
+						this.hero.switchState('fallhit',6);
+						game.boydata.currentHp--;
+						game.headPanel.setHp(game.boydata.currentHp);
+						this.isHurt = false;
+					}
 				}else{
 					this.hurttime++;
 					if(this.hurttime > 200){

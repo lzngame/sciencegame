@@ -367,7 +367,6 @@
 		},
 	});
 	
-	
 	var StoryScene = ns.StoryScene = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.story,
@@ -425,6 +424,56 @@
                 y: 490
             }).addTo(this);
             
+			
+			btnback.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
+			});
+		},
+		deactive: function() {
+			this.destory();
+		},
+		destory: function() {
+			console.log('%s destory', this.name);
+			this.removeAllChildren();
+			this.removeFromParent();
+		}
+	});
+	
+	var GameoverScene = ns.GameoverScene = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name: game.configdata.SCENE_NAMES.gameover,
+		storytxt:'',
+		constructor: function(properties) {
+			GameoverScene.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			console.log('%s init', this.name);
+			this.width = game.configdata.mainStageSize.width;
+			this.height = game.configdata.mainStageSize.height;
+			this.y = game.screenHeight / 2 - this.height / 2;
+			this.x = game.screenWidth/2 - this.width/2;
+		},
+		active: function(data) {
+			console.log('%s active:', this.name);
+			this.addTo(game.stage);
+			//game.stage.swapChildren(this, game.previousScene);
+			var scene = this;
+			this.alpha = 1;
+			new Hilo.Bitmap({
+				image:game.getImg('gameover'),
+				width:1202,
+				height:686
+			}).addTo(this);
+			
+			
+			var btnback = new Hilo.Bitmap({
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('backbtn','uimap'),
+				x:940,
+				y:480
+			}).addTo(this);
+			
 			
 			btnback.on(Hilo.event.POINTER_START, function(e) {
 				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
