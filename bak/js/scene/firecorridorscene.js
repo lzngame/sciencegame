@@ -305,6 +305,7 @@
 				if(scene.telPanel.checkLetter()){
 					game.boydata.firecorridordata.tel= true;
 					game.headPanel.sayYes();
+					game.sounds.play(15,false);
 					new game.FlashStarEffect({
 						x:this.x,
 						y:this.y,
