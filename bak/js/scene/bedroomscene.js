@@ -66,7 +66,7 @@
 			this.addHero(passdata[0],passdata[1],passdata[2]);
 			this.initkeyevent();
 			this.initTouchEvent();
-			//game.sounds.play(14,true);
+			game.sounds.play(14,true);
 			this.initFingerMouse();
 			this.setPassData();
 			this.layoutUI();

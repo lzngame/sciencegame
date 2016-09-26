@@ -20,6 +20,7 @@
 		pipswitch:null,
 		gaseffect:null,
 		blocks:null,
+		passCondition:false,
 		
 		spanner:null,
 		passstep:0,
@@ -75,6 +76,7 @@
 				this.fingerMouse.setCurrent(index);
 				game.toolippanel.show(false,0);
 			}
+			game.toolspanel.show(false,0);
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
@@ -147,6 +149,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				game.sounds.play(19,false);
 				this.boxkey.removeFromParent();
 				this.boxkey.status = 2;
 				game.toolippanel.show(true,'这个工具会有用的',100);
@@ -163,6 +166,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				game.sounds.play(19,false);
 				this.hero.switchState('handon',10);
 				var scene = this;
 				this.pan.x = 400;
@@ -181,10 +185,6 @@
 				game.toolippanel.show(true,'这个工具会有用的',200);
 				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(2);
-				this.star01 = new game.FlashStar({
-					x:560,
-					y:560
-				}).addTo(this);
 				game.boydata.cookieroomData.spannerused = true;
 			}
 		},
@@ -202,6 +202,7 @@
 			}
 			if(game.boydata.cookieroomData.spannerused){
 				this.spanner.removeFromParent();
+				this.doorhandler.status = 1;
 			}
 			if(game.boydata.cookieroomData.boxkeyused){
 				this.boxkey.removeFromParent();
@@ -286,7 +287,7 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:210,
 				y:350,
-				status:1,
+				status:0,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],

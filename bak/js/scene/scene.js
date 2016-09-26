@@ -234,7 +234,7 @@
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
 				game.sounds.play(2,false);
 				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
-				game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
+				game.switchScene(game.configdata.SCENE_NAMES.story,[200,600]);
 				
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
@@ -399,31 +399,50 @@
 			new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('boy','uimap'),
-				x:460,
+				x:110,
 				y:210
+			}).addTo(this);
+			new Hilo.Bitmap({
+				image:game.getImg('pass01'),
+				x:695-350,
+				y:255-120,
+			}).addTo(this);
+			
+			new Hilo.Bitmap({
+				image:game.getImg('pass03'),
+				x:1146-350,
+				y:255-120
+			}).addTo(this);
+			new Hilo.Bitmap({
+				image:game.getImg('pass04'),
+				x:694-350,
+				y:529-120
+			}).addTo(this);
+			new Hilo.Bitmap({
+				image:game.getImg('pass05'),
+				x:947-350,
+				y:529-120
+			}).addTo(this);
+			new Hilo.Bitmap({
+				image:game.getImg('pass06'),
+				x:1184-350,
+				y:529-120
+			}).addTo(this);
+			
+			new Hilo.Bitmap({
+				image:game.getImg('exitbtn'),
+				x:1000,
+				y:50
 			}).addTo(this);
 			
 			var btnback = new Hilo.Bitmap({
-				image:img,
-				rect:game.configdata.getPngRect('backbtn','uimap'),
-				x:940,
-				y:480
+				image:game.getImg('pass02'),
+				x:945-350,
+				y:255-120
 			}).addTo(this);
 			
 			
 			
-			var font = "14px arial";
-            var text = new Hilo.Text({
-                font: font,
-                color:'#333330',
-                text:'下一关',
-                lineSpacing: 10,
-                width: 250,
-                height: 100,
-                x: 1049,
-                y: 490
-            }).addTo(this);
-            
 			
 			btnback.on(Hilo.event.POINTER_START, function(e) {
 				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
