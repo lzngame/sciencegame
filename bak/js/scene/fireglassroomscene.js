@@ -248,7 +248,7 @@
 			this.carkey  = new game.ActiveObject({
 				x:313,
 				y:519,
-				status:1,
+				status:0,
 				readyImgUrl:'carkey',
 				finishedImgUrl:'carkey',
 				clickArea:[0,0,20,20],
