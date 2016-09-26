@@ -9,6 +9,7 @@
 		doorcard:null,
 		drawer:null,
 		blocks:null,
+		flower:null,
 		
 		constructor: function(properties) {
 			FireGlassScene.superclass.constructor.call(this, properties);
@@ -65,12 +66,18 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.drawer)){
+				if(!this.checkFinger(-1)){
+					return ;
+				}
 				this.showDrawer();
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
 				this.hero.switchState('handon',10);
 				var scene = this;
+				if(!this.checkFinger(7)){
+					return ;
+				}
 				if(this.fingerMouse.index == 7){
 					new game.FlashStarEffect({
 						x:this.doorhandler.x,
@@ -81,7 +88,10 @@
 				}
 			}
 			
-			if(this.checkActiveItem(mouseX,mouseY,this.doorcard)){
+			if(this.checkActiveItem(mouseX,mouseY,this.doorcard,true,true)){
+				if(!this.checkFinger(-1)){
+					return ;
+				}
 				this.doorcard.remove();
 				game.headPanel.sayYes();
 				game.toolspanel.addIcon(7);
@@ -102,13 +112,16 @@
 						scene.bgImg2.removeFromParent();
 						scene.hero.visible = true;
 						scene.carkey.visible = true;
+						scene.flower.visible = true;
 					}
 				});
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.carkey)){
-				this.carkey.removeFromParent();
-				this.carkey.status = 2;
+				if(!this.checkFinger(-1)){
+					return ;
+				}
+				this.carkey.remove();
 				game.toolspanel.addIcon(9);
 				game.toolspanel.show(true,50);
 				new game.FlashStarEffect({
@@ -116,11 +129,21 @@
 					y:this.carkey.y,
 				}).addTo(this);
 			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.flower)){
+				if(!this.checkFinger(-1)){
+					return ;
+				}
+				this.flower.status = 2;
+				this.flower.x = 350;
+				this.carkey.status = 1;
+			}
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.carkey)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.drawer)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.flower)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorcard)
 			){
 				return true;
@@ -179,6 +202,7 @@
 			this.doorhandler.status = 0;
 			this.carkey.visible = false;
 			this.drawer.status = 2;
+			this.flower.visible = false;
 			//this.ignoreTouch = true;
 			//this.fingerMouse.visible = false;
 		},
@@ -213,8 +237,8 @@
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
-				x:1015,
-				y:356,
+				x:915,
+				y:326,
 				status:1,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
@@ -228,6 +252,15 @@
 				readyImgUrl:'carkey',
 				finishedImgUrl:'carkey',
 				clickArea:[0,0,20,20],
+			}).addTo(this);
+			
+			this.flower  = new game.ActiveObject({
+				x:270,
+				y:329,
+				status:1,
+				readyImgUrl:'flower',
+				finishedImgUrl:'flower',
+				clickArea:[20,20,53,193],
 			}).addTo(this);
 			
 		},

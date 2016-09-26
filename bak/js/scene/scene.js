@@ -206,13 +206,13 @@
 			
 			var btn01 = new Hilo.Bitmap({
 				image:img,
-				rect:game.configdata.getPngRect('pass01','uimap'),
+				rect:game.configdata.getPngRect('largepass01','uimap'),
 				x:400,
 				y:100
 			}).addTo(this);
 			var btnpass01 = new Hilo.Bitmap({
 				image:img,
-				rect:game.configdata.getPngRect('pass02','uimap'),
+				rect:game.configdata.getPngRect('largepass02','uimap'),
 				x:700,
 				y:100
 			}).addTo(this);
@@ -234,7 +234,7 @@
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
 				game.sounds.play(2,false);
 				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
-				game.switchScene(game.configdata.SCENE_NAMES.story,[200,600]);
+				game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
 				
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
@@ -396,57 +396,70 @@
 			
 			
 			var img = game.getImg('uimap');
+			
 			new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('boy','uimap'),
 				x:110,
-				y:210
-			}).addTo(this);
-			new Hilo.Bitmap({
-				image:game.getImg('pass01'),
-				x:695-350,
-				y:255-120,
+				y:180
 			}).addTo(this);
 			
-			new Hilo.Bitmap({
-				image:game.getImg('pass03'),
-				x:1146-350,
-				y:255-120
-			}).addTo(this);
-			new Hilo.Bitmap({
-				image:game.getImg('pass04'),
-				x:694-350,
-				y:529-120
-			}).addTo(this);
-			new Hilo.Bitmap({
-				image:game.getImg('pass05'),
-				x:947-350,
-				y:529-120
-			}).addTo(this);
-			new Hilo.Bitmap({
-				image:game.getImg('pass06'),
-				x:1184-350,
-				y:529-120
-			}).addTo(this);
+			var passdata = [
+			[0,'pass01',game.configdata.SCENE_NAMES.attack],
+			[1,'pass02',game.configdata.SCENE_NAMES.firecorridor],
+			[-1,'pass03',''],
+			[-1,'pass04',''],
+			[-1,'pass05',''],
+			[-1,'pass06',''],
+			];
+			for(var i=0;i<passdata.length;i++){
+				var item = passdata[i];
+				var passname = item[1];
+				var initx = 354;
+				var inity = 155;
+				var offsetx = (i % 3) * 220;
+				var offsety = Math.floor(i/3) * 250;
+				var btn = new Hilo.Bitmap({
+					image:img,
+					rect:game.configdata.getPngRect(passname,'uimap'),
+					x:initx + offsetx,
+					y:inity + offsety
+				}).addTo(this);
+				btn.extendname = item[2];
+				if(item[0] == -1){
+					new Hilo.Bitmap({
+						image:img,
+						rect:game.configdata.getPngRect('suo','uimap'),
+						x:btn.x + btn.width -45,
+						y:btn.y + btn.height -68
+					}).addTo(this);
+				}
+				if(item[0] == 1){
+					btn.on(Hilo.event.POINTER_START, function(e) {
+						game.switchScene(this.extendname,[200,600,'right']);
+					});
+				}
+				
+				if(item[0] == 0){
+					btn.alpha = 0.5;
+				}
+			}
 			
 			new Hilo.Bitmap({
-				image:game.getImg('exitbtn'),
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('quitbt','uimap'),
 				x:1000,
 				y:50
 			}).addTo(this);
 			
-			var btnback = new Hilo.Bitmap({
-				image:game.getImg('pass02'),
-				x:945-350,
-				y:255-120
-			}).addTo(this);
 			
 			
 			
 			
-			btnback.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
-			});
+			
+			//btnback.on(Hilo.event.POINTER_START, function(e) {
+			//	game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
+			//});
 		},
 		deactive: function() {
 			this.destory();
@@ -495,7 +508,12 @@
 			
 			
 			btnback.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
+				game.boydata.currentHp = 4;
+				game.boydata.reset();
+				game.toolspanel.refresh();
+				game.headPanel.setHp(game.boydata.currentHp);
+				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,500]);
+				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
 			});
 		},
 		deactive: function() {

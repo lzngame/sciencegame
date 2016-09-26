@@ -11,6 +11,8 @@
 		passstep:0,
 		waterbasin:null,
 		waterbasinExit:null,
+		
+		passcondition:false,
 		constructor: function(properties) {
 			WashroomScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -62,11 +64,16 @@
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
 			}
+			game.toolspanel.show(false,0);
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
+				if(!this.checkFinger(-1)){
+					return ;
+				}
 				this.hero.switchState('handon',10);
 				var scene = this;
+				game.sounds.play(7,false);
 				new Hilo.Tween.to(this,{
 					alpha:0.3
 				},{
@@ -80,6 +87,9 @@
 			if(this.checkActiveItem(mouseX,mouseY,this.basin)){
 				this.hero.switchState('handon',10);
 				var scene = this;
+				if(!this.checkFinger(10)){
+					return ;
+				}
 				if(this.fingerMouse.index == 10){
 					new game.FlashStarEffect({
 						x:this.basin.x,
@@ -90,17 +100,25 @@
 					this.ignoreTouch = true;
 					this.hero.visible = false;
 					this.fingerMouse.visible = false;
+					this.doorhandler.status = 1;
+					this.fingerMouse.setDefault();
 				}
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.annihilator)){
-				this.annihilator.status = 2;
+				if(!this.checkFinger(-1)){
+					return ;
+				}
+				this.annihilator.remove();
 				this.hero.switchState('handon',10);
 				game.toolspanel.addIcon(8);
 				game.boydata.washroomdata.annihilator = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.towel)){
+				if(!this.checkFinger(-1)){
+					return ;
+				}
 				this.hero.switchState('handon',10);
 				var scene = this;
 				this.towel.removeFromParent();
@@ -114,7 +132,7 @@
 				this.towel.remove();
 			}
 			if(game.boydata.washroomdata.annihilator){
-				this.annihilator.status = 2;
+				this.annihilator.remove();
 			}
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -180,17 +198,17 @@
 			
 			this.annihilator  = new game.ActiveObject({
 				x:215,
-				y:420,
-				readyImgUrl:'empty',
-				finishedImgUrl:'empty',
-				clickArea:[0,0,75,120],
+				y:450,
+				readyImgUrl:'annihilator',
+				finishedImgUrl:'annihilator',
+				clickArea:[15,0,30,120],
 				status:1
 			}).addTo(this);
 
 			this.doorhandler  = new game.ActiveObject({
 				x:122,
 				y:350,
-				status:1,
+				status:2,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[0,0,40,60],

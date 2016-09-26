@@ -152,7 +152,7 @@
 			return isClickIn;
 		},
 		
-		checkActiveItem:function(mouseX,mouseY,obj,nowarn){
+		checkActiveItem:function(mouseX,mouseY,obj,nowarn,nopos){
 			var isClickIn = false;
 			if(!obj)
 				return false;
@@ -163,6 +163,7 @@
 			if(nowarn == null){
 				nowarn = false;
 			}
+			
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
 				if(Math.abs(x+w/2 - this.hero.posx) <150 && Math.abs(y+h/2 - (this.hero.posy-100)) <200){
 					isClickIn = true;
@@ -172,6 +173,9 @@
 					if(!nowarn){
 						game.notepanel.show(true,'走近点...',50);					
 					}
+				}
+				if(nopos){
+					isClickIn = true;
 				}
 			}
 			return isClickIn;

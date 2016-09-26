@@ -151,7 +151,7 @@
 					this.medicalkit.state = 2;
 					this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('emptybox','uimap'));
 					this.medicalkit.status = 2;
-					game.toolspanel.addIcon(4);
+					game.toolspanel.addIcon(11);
 					game.toolspanel.show(true,100);
 					new game.FlashStarEffect({
 							x:this.medicalkit.x,
@@ -313,8 +313,10 @@
 				this.pillow.status = 2;
 				this.phone.status = 1;
 			}else{
-				this.pillow.status = 1;
-				this.phone.status = 0;
+				if(game.boydata.bedroomData.isshake.used){
+					this.pillow.status = 1;
+					this.phone.status = 0;
+				}
 			}
 			var plugdata   = game.boydata.bedroomData.plug;
 			if(plugdata.used){

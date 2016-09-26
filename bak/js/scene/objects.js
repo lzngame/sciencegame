@@ -146,9 +146,13 @@
 					g.lineStyle(1,"#00f").drawRect(0,0,w,h).endFill().addTo(this);
 				}
 		},
+		setInitImg:function(){
+			var rect = game.configdata.getPngRect(this.readyImgUrl,'uimap');
+			this.img.setImage(game.getImg('uimap'),rect);	
+			this.img.x = 0;
+			this.img.y = 0;
+		},
 		setEndImg:function(x,y){
-			console.log(this.name+':ACTIVE');
-			//this.status = 2;
 			var rect = game.configdata.getPngRect(this.finishedImgUrl,'uimap');
 			this.img.setImage(game.getImg('uimap'),rect);	
 			this.img.x = x;
@@ -267,10 +271,11 @@
 			this.isSayYes = false;
 			game.sounds.play(18,false);
 		},
-		sayYes:function(){
+		sayYes:function(nosound){
 			this.isSayNo = false;
 			this.isSayYes = true;
-			game.sounds.play(11,false);
+			if(!nosound)
+			   game.sounds.play(11,false);
 		},
 		onUpdate:function(){
 			if(this.isSayNo || this.isSayYes){
@@ -287,7 +292,6 @@
 						this.isSayYes = false;
 						this.headImg.setImage(game.getImg('uimap'),game.configdata.getPngRect(this.headImgUrl,'uimap'));
 					}
-					console.log('index:%d',this.index);
 					this.headImg.setImage(game.getImg('uimap'),game.configdata.getPngRect(frames[this.index],'uimap'));
 				}else{
 						this.interval++;
@@ -630,7 +634,8 @@
 			this.x = this.initx;
 			this.y = this.inity;
 			this.shader = new Hilo.Bitmap({
-				image:game.getImg('shadericon'),
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('shader'),
 				visible:false,
 			}).addTo(this);
 			this.btnImg = new Hilo.Bitmap({
@@ -660,13 +665,11 @@
 				var w = item.img.width;
 				var h = item.img.height;
 				if(game.checkInRect(mousex,mousey,x,y,w,h)){
-					console.log('inrect');
 					this.shader.visible = true;
 					this.shader.x = item.x;
 					this.shader.y = item.y;
 					break;
 				}else{
-					console.log('no rect');
 					this.shader.visible = false;
 				}
 			}
@@ -969,7 +972,7 @@
 				console.log('index:%d  x:%f  y:%f  state:%s',i,btn.x,btn.y,btn.state);
 			}
 			
-			if(this.btns[7].state && this.btns[1].state  &&(!this.btns[0].state ) &&(!this.btns[2].state ) &&(!this.btns[3].state ) &&(!this.btns[4].state ) &&(!this.btns[5].state ) &&(!this.btns[6].state ) &&(!this.btns[8].state)){
+			if(this.btns[3].state && this.btns[5].state  &&(!this.btns[0].state ) &&(!this.btns[1].state ) &&(!this.btns[2].state ) &&(!this.btns[4].state ) &&(!this.btns[6].state ) &&(!this.btns[7].state ) &&(!this.btns[8].state)){
 				return true;
 			}else{
 				return false;
@@ -1106,6 +1109,50 @@
 			this.index = index;
 			this.img.setImage(game.getImg('uimap'),game.configdata.getPngRect(iconname,'uimap'));
 		}
+	});
+	
+	
+	var PicPanel = ns.PicPanel = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'pic panel',
+		panel:null,
+		img1:null,
+		img2:null,
+		exitimg:null,
+		constructor: function(properties) {
+			PicPanel.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.exitimg = new Hilo.Bitmap({
+				image: game.getImg('uimap'),
+				rect:game.configdata.getPngRect('backbtn','uimap'),
+				x:0,
+				y:152
+			}).addTo(this);
+			this.exitimg.on(Hilo.event.POINTER_START, function(e) {
+				this.parent.exit();
+			});
+			this.panel = new Hilo.Container({}).addTo(this);
+		},
+		addPic:function(index){
+			this.visible = true;
+			var name = 'halfpic01';
+			if(index == 11)
+				name = 'halfpic01';
+			if(index == 12)
+				name = 'halfpic02';
+			new Hilo.Bitmap({
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect(name,'uimap')
+			}).addTo(this.panel);
+		},
+		exit:function(){
+			this.panel.removeAllChildren();
+			this.visible = false;
+		},
+		onUpdate:function(){
+		},
 	});
 	
 })(window.game);

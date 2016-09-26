@@ -8,6 +8,9 @@
 		lockPanel:null,
 		doorhandlerCorridor:null,
 		
+		halfpic2:null,
+		picpanel:null,
+		
 		
 		constructor: function(properties) {
 			ShakecorridorScene.superclass.constructor.call(this, properties);
@@ -38,10 +41,12 @@
 			this.initTouchEvent();
 			this.initFingerMouse();
 			this.layoutUI();
+			this.setPassData();
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.warnpaper)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.halfpic2)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.passwordLock)||
 				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandlerCorridor)
 			){
@@ -93,7 +98,6 @@
 			});
 		},
 		excuteIcon:function(index){
-			
 			if(index==3){
 				game.toolspanel.removeIcon(index);
 				game.boydata.addHp();
@@ -106,7 +110,12 @@
 				this.fingerMouse.visible = true;
 				this.fingerMouse.active = false; 
 				this.fingerMouse.setDefault();
-			}else{
+			}else if(index == 11 || index == 12){
+				this.picpanel.x = 400 -this.x;
+				this.picpanel.addPic(index);
+				console.log('--------------------------');
+			}
+			else{
 				this.fingerMouse.visible = true;
 				this.fingerMouse.active = true; 
 				this.fingerMouse.setCurrent(index);
@@ -118,6 +127,7 @@
 				if(!this.checkFinger(2)){
 					return;
 				}
+				game.boydata.shakecorridordata.warnpaper = true;
 				this.hero.switchState('handon',10);
 				var scene = this;
 				if(this.fingerMouse.index == 2){
@@ -127,8 +137,22 @@
 					}).addTo(this);
 					this.warnpaper.setEndImg(0,-200);
 					this.warnpaper.status = 2;
-					game.toolspanel.removeIcon(this.fingerMouse.index);
+					this.halfpic2.status = 1;
+					game.toolspanel.removeIcon(2);
+					this.fingerMouse.setDefault();
 				}
+			}
+			if(this.checkActiveItem(mouseX,mouseY,this.halfpic2)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
+				game.boydata.shakecorridordata.halfpic = true;
+				this.hero.switchState('handon',10);
+				var scene = this;
+				game.sounds.play(19,false);
+				this.halfpic2.remove();
+				game.toolspanel.show(true,100);
+				game.toolspanel.addIcon(12);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.passwordLock)){
 				if(!this.checkFinger(-1)){
@@ -137,6 +161,7 @@
 				this.lockPanel.visible = true;
 				this.ignoreTouch = true;
 				this.hero.visible = false;
+				this.picpanel.exit();
 				this.fingerMouse.visible = false;
 				this.lockPanel.y = 0;
 				this.lockPanel.x = (this.x*-1);
@@ -158,6 +183,16 @@
 				});
 			}
 		},
+		setPassData:function(){
+			if(game.boydata.shakecorridordata.warnpaper){
+				this.warnpaper.setEndImg(0,-200);
+				this.warnpaper.status = 2;
+				this.halfpic2.status = 1;
+			}
+			if(game.boydata.shakecorridordata.halfpic){
+				this.halfpic2.remove();
+			}
+		},
 		layoutBgMap:function(){
 			var scene = this;
 			this.bgImg = new Hilo.Bitmap({
@@ -173,9 +208,18 @@
 				status:1,
 			}).addTo(this);
 			
+			this.halfpic2  = new game.ActiveObject({
+				x:2100,
+				y:453,
+				readyImgUrl:'overhalfpic',
+				finishedImgUrl:'overhalfpic',
+				clickArea:[19,10,60,150],
+				status:2,
+			}).addTo(this);
+			
 			this.warnpaper  = new game.ActiveObject({
-				x:2108,
-				y:395,
+				x:2100,
+				y:405,
 				readyImgUrl:'warnpaper01',
 				finishedImgUrl:'warnpaper01',
 				clickArea:[19,10,60,150],
@@ -199,7 +243,7 @@
 			
 			this.lockPanel.sureBtnImg.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.lockPanel.checkLetter()){
-					game.headPanel.sayYes();
+					game.headPanel.sayYes(true);
 					game.sounds.play(15,false);
 					new Hilo.Tween.to(this,{
 						alpha:1
@@ -225,6 +269,9 @@
 				scene.lockPanel.resetDefault();
 				scene.ignoreTouch = false;
 			});
+			
+			this.picpanel = new game.PicPanel({
+			}).addTo(this);
 		},
 		onUpdate:function(){
 			this.x = (610 - this.hero.posx);

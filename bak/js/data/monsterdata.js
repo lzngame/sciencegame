@@ -137,6 +137,10 @@ game.monsterdata = new function(){
 		},
 		init: function(properties) {
 			console.log('user data init');
+			this.reset();
+		},
+		reset:function(){
+			this.bagdata = [];
 			this.bedroomData = {
 				isshake:{used:false},
 				pillow:{status:1,used:false},
@@ -153,6 +157,10 @@ game.monsterdata = new function(){
 				pipswitchused:false,
 				annihilatorused:false,
 			};
+			this.shakecorridordata = {
+				warnpaper:false,
+				halfpic:false,
+			};
 			this.firecorridordata ={
 				wallpaper:false,
 				warnbox:false,
@@ -162,15 +170,12 @@ game.monsterdata = new function(){
 			this.washroomdata ={
 				annihilator:false,
 				towel:false,
-			},
-			this.reset();
+			};
 		},
 		addHp:function(){
 			if(this.currentHp < game.configdata.DEFAULTHEROHP){
 				this.currentHp++;
 			}
-		},
-		reset: function() {
 		},
 	});
 })(window.game);

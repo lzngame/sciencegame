@@ -52,6 +52,10 @@
 			this.initTouchEvent();
 			this.initFingerMouse();
 			this.layoutUI();
+			
+			this.isSmokeMove =false;
+			this.isHurt = true;
+			this.hurttime = 0;
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -167,6 +171,7 @@
 					return;
 				}
 				this.hero.switchState('handon',10);
+				game.sounds.play(7,false);
 				game.switchScene(game.configdata.SCENE_NAMES.washroom,[167,590]);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.firewarnBox)){
@@ -199,6 +204,8 @@
 					this.annihilatorEffect.y = this.hero.posy - 120;
 					this.ignoreTouch = true;
 					var scene = this;
+					game.sounds.play(17,true);
+					this.fingerMouse.setDefault();
 					new Hilo.Tween.to(scene.fireeffect,{
 						alpha:0
 					},{
@@ -212,7 +219,7 @@
 							scene.blocks.pop();
 							scene.isSmokeMove = true;
 							scene.crawlBtn.visible = true;
-							scene.crawlBtn.addTo(game.uiscene);
+							game.sounds.stop(17);
 						}
 					});
 				}
@@ -304,7 +311,7 @@
 			this.telPanel.callbtn.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.telPanel.checkLetter()){
 					game.boydata.firecorridordata.tel= true;
-					game.headPanel.sayYes();
+					game.headPanel.sayYes(true);
 					game.sounds.play(15,false);
 					new game.FlashStarEffect({
 						x:this.x,
@@ -376,9 +383,10 @@
 			this.crawlBtn = new Hilo.Bitmap({
 				x:115,
 				y:515,
+				visible:false,
 				image:game.getImg('uimap'),
 				rect:game.configdata.getPngRect('crawlbtn','uimap'),
-			});
+			}).addTo(this);
 			
 			this.crawlBtn.on(Hilo.event.POINTER_START, function(e) {
 				scene.hero.turnright();
@@ -389,6 +397,7 @@
 				scene.hero.targety = scene.hero.posy;
 				scene.hero.targetx = 2404;
 				scene.hero.speedx = 2;
+				scene.hero.speedy = 0;
 				scene.ignoreTouch = true;
 			});
 			
@@ -411,6 +420,8 @@
 			}
 		},
 		onUpdate:function(){
+			if(game.boydata.currentHp <= 0)
+				return;
 			this.x = (610 - this.hero.posx);
 			this.checkBlocks();
 			if(this.x >= 0)
@@ -422,42 +433,33 @@
 			if(this.isSmokeMove){
 				this.smokewall.x --;
 			}
+			if(this.crawlBtn.visible){
+				this.crawlBtn.x = 120 - this.x;
+			}
+			
+			if(this.hero.framename=='crawl' && this.hero.posx > 2000 ){
+				this.hero.switchState('idle',6);
+				game.switchScene(game.configdata.SCENE_NAMES.fireglass,[200,600],'right');
+			}
 			
 			if(this.hero.framename != 'crawl' && this.smokewall.x <= this.hero.posx){
 				if(this.isHurt){
+					this.hero.switchState('fallhit',6);
+					game.boydata.currentHp--;
+					game.headPanel.setHp(game.boydata.currentHp);
+					this.isHurt = false;
 					if(game.boydata.currentHp <= 0){
+						game.boydata.currentHp = 0;
 						game.switchScene(game.configdata.SCENE_NAMES.gameover);
-					}else{
-						this.hero.switchState('fallhit',6);
-						game.boydata.currentHp--;
-						game.headPanel.setHp(game.boydata.currentHp);
-						this.isHurt = false;
 					}
 				}else{
 					this.hurttime++;
-					if(this.hurttime > 200){
+					if(this.hurttime > 150){
 						this.hurttime = 0;
 						this.isHurt = true;
 					}
 				}
 			}
-			
-			
-			if(this.hero.framename=='crawl' && this.hero.posx > 2000){
-				this.hero.switchState('idle',6);
-				this.crawlBtn.removeFromParent();
-				game.switchScene(game.configdata.SCENE_NAMES.fireglass,[200,600],'right');
-				
-				/*new Hilo.Tween.to(this,{
-					alpha:0.3
-				},{
-					duration:300,
-					onComplete:function(){
-						
-					}
-				});*/
-			}
-			
 		},
 	});
 })(window.game);

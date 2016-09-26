@@ -140,7 +140,9 @@
 						y:this.pipswitch.y,
 					}).addTo(this);
 					this.pipswitch.status = 2;
+					this.doorhandler.status = 1;
 					this.gaseffect.visible = false;
+					this.fingerMouse.setDefault();
 					game.boydata.cookieroomData.pipswitchused = true;
 				}
 			}
@@ -150,8 +152,7 @@
 					return;
 				}
 				game.sounds.play(19,false);
-				this.boxkey.removeFromParent();
-				this.boxkey.status = 2;
+				this.boxkey.remove();
 				game.toolippanel.show(true,'这个工具会有用的',100);
 				game.toolspanel.show(true,100);
 				game.toolspanel.addIcon(5);
@@ -180,8 +181,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
-				this.spanner.removeFromParent();
-				this.spanner.status = 2;
+				this.spanner.remove();
 				game.toolippanel.show(true,'这个工具会有用的',200);
 				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(2);
@@ -201,11 +201,11 @@
 				}
 			}
 			if(game.boydata.cookieroomData.spannerused){
-				this.spanner.removeFromParent();
+				this.spanner.remove();
 				this.doorhandler.status = 1;
 			}
 			if(game.boydata.cookieroomData.boxkeyused){
-				this.boxkey.removeFromParent();
+				this.boxkey.remove();
 			}
 			if(game.boydata.cookieroomData.annihilatorused){
 				this.annihilator.status = 2;
