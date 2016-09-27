@@ -79,6 +79,7 @@
 					return ;
 				}
 				if(this.fingerMouse.index == 7){
+					//game.switchScene(game.configdata.SCENE_NAMES.story);
 					new game.FlashStarEffect({
 						x:this.doorhandler.x,
 						y:this.doorhandler.y,
@@ -113,6 +114,7 @@
 						scene.hero.visible = true;
 						scene.carkey.visible = true;
 						scene.flower.visible = true;
+						
 					}
 				});
 			}

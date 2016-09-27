@@ -224,6 +224,7 @@
 				}
 				this.hero.switchState('handon',10);
 				game.sounds.play(7,false);
+				game.sounds.stop(16);
 				var scene = this;
 				new Hilo.Tween.to(this,{
 					alpha:0.3

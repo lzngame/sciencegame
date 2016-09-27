@@ -152,8 +152,8 @@ game.configdata = new function(){
 		{name:'annihilator',icon:'killfireicon',index:8},
 		{name:'carkey',icon:'carkeyicon',index:9},
 		{name:'towel',icon:'towelicon',index:10},
-		{name:'halfpic01',icon:'halfpic01icon',index:11},
-		{name:'halfpic02',icon:'halfpic02icon',index:12},
+		{name:'halfpic01',icon:'halfpic02icon',index:11},
+		{name:'halfpic02',icon:'halfpic01icon',index:12},
 		
 	];
 
@@ -429,6 +429,8 @@ game.sounds = new function(){
 	'annihilator.mp3',//17
 	'sayno.mp3',//18
 	'ting.mp3',//19
+	'passbg.mp3',//20
+	'dang.mp3',//21
 	];
 	this.play = function(index,loop){
 		if(loop == null)

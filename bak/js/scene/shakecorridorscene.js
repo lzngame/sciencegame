@@ -123,6 +123,19 @@
 			game.toolspanel.show(false,0);
 		},
 		checkActiveObjects:function(mouseX,mouseY){
+			if(this.checkActiveItem(mouseX,mouseY,this.halfpic2)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
+				game.boydata.shakecorridordata.halfpic = true;
+				this.hero.switchState('handon',10);
+				var scene = this;
+				game.sounds.play(19,false);
+				this.halfpic2.remove();
+				game.toolspanel.show(true,100);
+				game.toolspanel.addIcon(12);
+			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.warnpaper)){
 				if(!this.checkFinger(2)){
 					return;
@@ -142,18 +155,7 @@
 					this.fingerMouse.setDefault();
 				}
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.halfpic2)){
-				if(!this.checkFinger(-1)){
-					return;
-				}
-				game.boydata.shakecorridordata.halfpic = true;
-				this.hero.switchState('handon',10);
-				var scene = this;
-				game.sounds.play(19,false);
-				this.halfpic2.remove();
-				game.toolspanel.show(true,100);
-				game.toolspanel.addIcon(12);
-			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.passwordLock)){
 				if(!this.checkFinger(-1)){
 					return;
@@ -190,6 +192,7 @@
 				this.halfpic2.status = 1;
 			}
 			if(game.boydata.shakecorridordata.halfpic){
+				console.log('remove halfpic');
 				this.halfpic2.remove();
 			}
 		},
@@ -271,6 +274,7 @@
 			});
 			
 			this.picpanel = new game.PicPanel({
+				visible:false,
 			}).addTo(this);
 		},
 		onUpdate:function(){

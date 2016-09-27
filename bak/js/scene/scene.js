@@ -250,9 +250,11 @@
 					game.previousScene.destory();
 				}
 			});
+			game.sounds.play(20,true);
 		},
 		deactive: function() {
 			var scene = this;
+			game.sounds.stop(20);
 			Hilo.Tween.to(this, {
 					y: -this.height,
 				}, {
@@ -452,8 +454,8 @@
 				y:50
 			}).addTo(this);
 			
-			
-			
+			game.sounds.stop(14);
+			game.sounds.play(20,true);
 			
 			
 			
@@ -468,6 +470,7 @@
 			console.log('%s destory', this.name);
 			this.removeAllChildren();
 			this.removeFromParent();
+			game.sounds.stop(20);
 		}
 	});
 	

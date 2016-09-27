@@ -22,6 +22,9 @@
 		isHurt:true,
 		hurttime:0,
 		
+		picfinished:false,
+		telfinished:false,
+		
 		constructor: function(properties) {
 			FirecorridorScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -56,6 +59,7 @@
 			this.isSmokeMove =false;
 			this.isHurt = true;
 			this.hurttime = 0;
+			game.sounds.play(14,true);
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -143,6 +147,7 @@
 				this.wallpaper.status = 2;
 				this.firewarnBox.status = 1;
 				game.boydata.firecorridordata.wallpaper = true;
+				game.sounds.play(12,false);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.stone)){
 				if(!this.checkFinger(-1)){
@@ -184,9 +189,14 @@
 				if(this.fingerMouse.index == 6){
 					this.firewarnBox.status = 2;
 					this.firelamp.isplay = true;
+					this.fingerMouse.setDefault();
 					game.headPanel.sayYes();
 					game.boydata.firecorridordata.warnbox = true;
 					game.sounds.play(4,false);
+					this.picfinished = true;
+					if(this.picfinished && this.telfinished){
+						this.doorhandler.status = 1;
+					}
 				}
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.firreblock,true)){
@@ -273,7 +283,7 @@
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
-				status:1,
+				status:0,
 			}).addTo(this);
 			
 			this.firreblock  = new game.ActiveObject({
@@ -310,6 +320,11 @@
 			});
 			this.telPanel.callbtn.on(Hilo.event.POINTER_START, function(e) {
 				if(scene.telPanel.checkLetter()){
+					scene.telfinished = true;
+					if(scene.picfinished && scene.telfinished){
+						scene.doorhandler.status = 1;
+					}
+					
 					game.boydata.firecorridordata.tel= true;
 					game.headPanel.sayYes(true);
 					game.sounds.play(15,false);
@@ -327,6 +342,7 @@
 							scene.fingerMouse.visible = true;
 							scene.telPanel.visible = false;
 							scene.telPanel.reset();
+							
 						}
 					});
 				}else{
@@ -418,6 +434,10 @@
 			if(game.boydata.firecorridordata.tel){
 				this.telPanel.status = 2;
 			}
+			
+			if(game.boydata.firecorridordata.tel && game.boydata.firecorridordata.warnbox){
+				this.doorhandler.status = 1;
+			}
 		},
 		onUpdate:function(){
 			if(game.boydata.currentHp <= 0)
@@ -442,7 +462,7 @@
 				game.switchScene(game.configdata.SCENE_NAMES.fireglass,[200,600],'right');
 			}
 			
-			if(this.hero.framename != 'crawl' && this.smokewall.x <= this.hero.posx){
+			if(this.hero && this.hero.framename != 'crawl' && this.smokewall.x <= this.hero.posx){
 				if(this.isHurt){
 					this.hero.switchState('fallhit',6);
 					game.boydata.currentHp--;
