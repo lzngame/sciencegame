@@ -352,13 +352,6 @@
 				image: game.getImg('bedroombefore'),
 			}).addTo(this);
 			
-			new Hilo.Bitmap({
-				image: game.getImg('uimap'),
-				rect:game.configdata.getPngRect('chuanglian','uimap'),
-				x:592-170,
-				y:119-55
-			}).addTo(this);
-			
 			this.plug  = new game.ActiveObject({
 				x:906,
 				y:262,
@@ -415,8 +408,8 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:1162,
 				y:422,
-				readyImgUrl:'handler',
-				finishedImgUrl:'handler',
+				readyImgUrl:'empty',
+				finishedImgUrl:'empty',
 				clickArea:[0,0,50,50],
 			}).addTo(this);
 			

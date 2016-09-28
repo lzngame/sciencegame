@@ -132,6 +132,7 @@ game.monsterdata = new function(){
 		currentHp:0,
 		bagdata:[],
 		bedroomData:null,
+		passdata:null,
 		constructor: function(properties) {
 			this.init(properties);
 		},
@@ -171,6 +172,15 @@ game.monsterdata = new function(){
 				annihilator:false,
 				towel:false,
 			};
+			//-1 No start 0:doing -1:finished
+			this.passdata = [
+			[0,'pass01',game.configdata.SCENE_NAMES.attack],
+			[-1,'pass02',game.configdata.SCENE_NAMES.firecorridor],
+			[-1,'pass03',''],
+			[-1,'pass04',''],
+			[-1,'pass05',''],
+			[-1,'pass06',''],
+			];
 		},
 		addHp:function(){
 			if(this.currentHp < game.configdata.DEFAULTHEROHP){

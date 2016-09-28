@@ -257,7 +257,9 @@
 							scene.ignoreTouch = false;
 							scene.hero.visible = true;
 							scene.fingerMouse.visible = true;
-							game.switchScene(game.configdata.SCENE_NAMES.story);
+							game.boydata.passdata[0][0] = 1;
+							game.boydata.passdata[1][0] = 0;
+							game.switchScene(game.configdata.SCENE_NAMES.passchoice);
 						}
 					});
 				}else{
