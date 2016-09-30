@@ -232,8 +232,8 @@
 			btnpass01.on(Hilo.event.POINTER_START, function(e) {
 				game.sounds.play(2,false);
 				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
-				game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
-				
+				//game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
+				game.switchScene(game.configdata.SCENE_NAMES.depot);
 			});
 			btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();
@@ -337,6 +337,11 @@
 				}
 				
 				if(item[0] == 1){
+					new Hilo.Bitmap({
+						image:game.getImg('right'),
+						x:btn.x + btn.width -45,
+						y:btn.y + btn.height -68
+					}).addTo(this);
 					btn.alpha = 0.5;
 				}
 			}
@@ -405,7 +410,6 @@
 				game.toolspanel.refresh();
 				game.headPanel.setHp(game.boydata.currentHp);
 				game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,500]);
-				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600,'right']);
 			});
 		},
 		deactive: function() {

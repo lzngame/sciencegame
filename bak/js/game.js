@@ -101,8 +101,8 @@
 		},
 		initScene: function() {
 			this.scenes = {};
-			this.scenes[game.configdata.SCENE_NAMES.load]    = new game.LoadScene();
-			this.scenes[game.configdata.SCENE_NAMES.main]    = new game.MainScene();
+			this.scenes[game.configdata.SCENE_NAMES.load]         = new game.LoadScene();
+			this.scenes[game.configdata.SCENE_NAMES.main]         = new game.MainScene();
 
 			this.scenes[game.configdata.SCENE_NAMES.passchoice]   = new game.PassChoiceScene();
 			this.scenes[game.configdata.SCENE_NAMES.gameover]     = new game.GameoverScene();
@@ -113,6 +113,8 @@
 			this.scenes[game.configdata.SCENE_NAMES.saloon]  	  = new game.SaloonScene();
 			this.scenes[game.configdata.SCENE_NAMES.attack]       = new game.AttackScene();
 			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();
+			this.scenes[game.configdata.SCENE_NAMES.depot]        = new game.DepotScene();
+			
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

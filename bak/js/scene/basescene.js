@@ -247,19 +247,20 @@
 				var targetx = stagex - scene.x;
 				var targety = stagey - scene.y;
 				if(!scene.checkInBlocks(targetx,targety)){
-					scene.hero.switchState('walk',5);
-					
-					var disX = targetx - scene.hero.posx;
-					var disY = targety - scene.hero.posy;
-					var angle = Math.atan2(disY,disX);
-					scene.hero.speedx = Math.cos(angle) *  scene.hero.speed ;
-					scene.hero.speedy = Math.sin(angle) *  scene.hero.speed ;
-					scene.hero.targetx = targetx;
-					scene.hero.targety = targety;
-					if(disX < 0)
-						scene.hero.turnleft();
-					else
-						scene.hero.turnright();
+					if(scene.hero){
+						scene.hero.switchState('walk',5);
+						var disX = targetx - scene.hero.posx;
+						var disY = targety - scene.hero.posy;
+						var angle = Math.atan2(disY,disX);
+						scene.hero.speedx = Math.cos(angle) *  scene.hero.speed ;
+						scene.hero.speedy = Math.sin(angle) *  scene.hero.speed ;
+						scene.hero.targetx = targetx;
+						scene.hero.targety = targety;
+						if(disX < 0)
+							scene.hero.turnleft();
+						else
+							scene.hero.turnright();
+					}
 				}
 				
 				scene.checkActiveObjects(targetx,targety);

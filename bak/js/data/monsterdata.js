@@ -176,7 +176,7 @@ game.monsterdata = new function(){
 			this.passdata = [
 			[0,'pass01',game.configdata.SCENE_NAMES.attack],
 			[-1,'pass02',game.configdata.SCENE_NAMES.firecorridor],
-			[-1,'pass03',''],
+			[-1,'pass03',game.configdata.SCENE_NAMES.depot],
 			[-1,'pass04',''],
 			[-1,'pass05',''],
 			[-1,'pass06',''],

@@ -83,6 +83,17 @@
 						x:this.doorhandler.x,
 						y:this.doorhandler.y,
 					}).addTo(this);
+					
+					new Hilo.Tween.to(this,{
+						alpha:1
+					},{
+						duration:1300,
+						onComplete:function(){
+							game.boydata.passdata[1][0] = 1;
+							game.boydata.passdata[2][0] = 0;
+							game.switchScene(game.configdata.SCENE_NAMES.depot);
+						}
+					});
 				}else{
 					game.headPanel.sayNo();
 				}
