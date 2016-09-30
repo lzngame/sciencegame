@@ -63,11 +63,6 @@
 					this.hero.switchState('squat');
 					this.changeBg();
 					break;
-				case game.configdata.MSAGE_TYPE.herojump:
-					this.hero.jumpspeed = -18;
-					this.hero.floory = this.hero.posy;
-					this.hero.switchState('jump');
-					break;
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
 					console.log('hero squat');
 					this.hero.switchState('idle',5);
@@ -214,6 +209,8 @@
 			this.halfpic2  = new game.ActiveObject({
 				x:2100,
 				y:453,
+				targetx:2090,
+				targety:500,
 				readyImgUrl:'overhalfpic',
 				finishedImgUrl:'overhalfpic',
 				clickArea:[19,10,60,150],

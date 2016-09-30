@@ -127,6 +127,8 @@
 		status:0,    //0 未激活 1激活 2完成
 		readyImgUrl:'',
 		finishedImgUrl:'',
+		targetx:0,
+		targety:0,
 		clickArea:[0,0,0,0],
 		constructor: function(properties) {
 			ActiveObject.superclass.constructor.call(this, properties);
@@ -144,6 +146,8 @@
 			if(game.configdata.NOLINE){
 					var g = new Hilo.Graphics({width:w,height:h,x:x,y:y});
 					g.lineStyle(1,"#00f").drawRect(0,0,w,h).endFill().addTo(this);
+					var t = new Hilo.Graphics({width:3,height:3,x:this.targetx,y:this.targety});
+					t.lineStyle(1,"#f00").drawRect(0,0,3,3).endFill().addTo(this);
 				}
 		},
 		setInitImg:function(){

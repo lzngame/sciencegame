@@ -5,6 +5,8 @@
 		bgImg:null,
 		interludetxt:null,
 		depotTime:0,
+		gasolinecan:null,
+		cardoorhandler:null,
 		
 		shakeTime:0,
 		shakeLevel:0,
@@ -74,13 +76,8 @@
 		
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.pillow)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.phone)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.plug)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorhandler)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.drink)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.glim)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.medicalkit)
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.cardoorhandler)||
+				this.checkActiveItemWithoutPos(mouseX,mouseY,this.gasolinecan)
 			){
 				return true;
 			}else{
@@ -236,7 +233,7 @@
 		},
 		
 		receiveMsg: function(msg) {
-			switch (msg.msgtype) {
+			/*switch (msg.msgtype) {
 				case game.configdata.MSAGE_TYPE.herosquat:
 					console.log('hero squat');
 					this.checkStar(this.star01);
@@ -254,7 +251,7 @@
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
 					this.hero.switchState('idle',5);
 					break;
-			}
+			}*/
 		},
 		shakeRoom:function(sumtime){
 			this.shakeTime = sumtime;
@@ -262,16 +259,16 @@
 		},
 		changeBg:function(){
 			var scene = this;
-			Hilo.Tween.to(this, {
+			Hilo.Tween.to(scene, {
 				alpha:0.01
 			}, {
-				duration: 2000,
+				duration: 400,
 				//ease: Hilo.Ease.Bounce.EaseOut,
 				onComplete: function() {
-					Hilo.Tween.to(this, {
+					Hilo.Tween.to(scene, {
 						alpha:1
 					}, {
-						duration: 1500,
+						duration: 400,
 						//ease: Hilo.Ease.Bounce.EaseOut,
 						onComplete: function() {
 							scene.alpha = 1;
@@ -296,24 +293,25 @@
 				x:1202,
 				y:200,
 			}).addTo(this);
-			/*this.plug  = new game.ActiveObject({
-				x:906,
-				y:262,
-				readyImgUrl:'plug1',
-				finishedImgUrl:'plug2',
-				clickArea:[19,0,40,40],
+			this.gasolinecan  = new game.ActiveObject({
+				x:387,
+				y:433,
+				status:1,
+				readyImgUrl:'firelamp2',
+				finishedImgUrl:'firelamp2',
+				clickArea:[0,0,40,40],
 			}).addTo(this);
 			
-			this.phone  = new game.ActiveObject({
-				x:434,
-				y:410,
-				status:0,
+			this.cardoorhandler  = new game.ActiveObject({
+				x:557,
+				y:504,
+				status:1,
 				readyImgUrl:'iphone',
 				finishedImgUrl:'iphone',
-				clickArea:[9,0,40,40],
+				clickArea:[0,0,40,40],
 			}).addTo(this);
 			
-			this.pillow  = new game.ActiveObject({
+				/*this.pillow  = new game.ActiveObject({
 				x:414,
 				y:410,
 				readyImgUrl:'pillow',

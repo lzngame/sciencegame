@@ -4,7 +4,7 @@
 		name:'',
 		hero:null,
 		bgImg:null,
-		finerMouse:null,
+		fingerMouse:null,
 		blocks:null,
 		ignoreTouch:false,
 		constructor: function(properties) {
@@ -171,7 +171,8 @@
 				}else{
 					isClickIn = false;
 					if(!nowarn){
-						game.notepanel.show(true,'走近点...',50);					
+						game.notepanel.show(true,'走近点...',50);	
+						this.herowalk(obj.x + obj.targetx,obj.y+obj.targety);
 					}
 				}
 				if(nopos){
@@ -216,6 +217,20 @@
 				inity:-395,
 			}).addTo(game.uiscene);
 		},
+		herowalk:function(targetx,targety){
+			this.hero.switchState('walk',5);
+			var disX = targetx - this.hero.posx;
+			var disY = targety - this.hero.posy;
+			var angle = Math.atan2(disY,disX);
+			this.hero.speedx = Math.cos(angle) *  this.hero.speed ;
+			this.hero.speedy = Math.sin(angle) *  this.hero.speed ;
+			this.hero.targetx = targetx;
+			this.hero.targety = targety;
+			if(disX < 0)
+				this.hero.turnleft();
+			else
+				this.hero.turnright();
+		},
 		initTouchEvent:function(){
 			var scene = this;
 			game.stage.off();
@@ -248,18 +263,7 @@
 				var targety = stagey - scene.y;
 				if(!scene.checkInBlocks(targetx,targety)){
 					if(scene.hero){
-						scene.hero.switchState('walk',5);
-						var disX = targetx - scene.hero.posx;
-						var disY = targety - scene.hero.posy;
-						var angle = Math.atan2(disY,disX);
-						scene.hero.speedx = Math.cos(angle) *  scene.hero.speed ;
-						scene.hero.speedy = Math.sin(angle) *  scene.hero.speed ;
-						scene.hero.targetx = targetx;
-						scene.hero.targety = targety;
-						if(disX < 0)
-							scene.hero.turnleft();
-						else
-							scene.hero.turnright();
+						scene.herowalk(targetx,targety);
 					}
 				}
 				

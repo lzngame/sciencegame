@@ -11,6 +11,7 @@
 		isflash: false,
 		loadingline:null,
 		inputtxt:null,
+
 		
 		constructor: function(properties) {
 			LoadScene.superclass.constructor.call(this, properties);
@@ -174,6 +175,10 @@
 	var MainScene = ns.MainScene = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.main,
+		fingerMouse:null,
+		btnpass01:null,
+		btnExit:null,
+		
 		constructor: function(properties) {
 			MainScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -184,10 +189,35 @@
 			this.height = game.configdata.mainStageSize.height;
 			this.y = -this.height;
 			this.x = game.screenWidth/2 - this.width/2;
+			
+		},
+		initTouchEvent:function(){
+			var scene = this;
+			game.stage.off();
+			game.stage.on(Hilo.event.POINTER_MOVE, function(e) {
+				if(scene.ignoreTouch)
+					return;
+				var stagex = e.stageX;
+				var stagey = e.stageY;
+				var targetx = stagex - scene.x;
+				var targety = stagey - scene.y;
+				scene.fingerMouse.x = targetx-7;
+				scene.fingerMouse.y = targety;
+				scene.fingerMouse.visible = false;
+				if(game.checkInRect(targetx,targety,scene.btnpass01.x,scene.btnpass01.y,scene.btnpass01.width,scene.btnpass01.height)||
+				   game.checkInRect(targetx,targety,scene.btnExit.x,scene.btnExit.y,scene.btnExit.width,scene.btnExit.height)
+				){
+					scene.fingerMouse.visible = true;
+				}else{
+					scene.fingerMouse.visible = false;
+				}
+			});
+			
 		},
 		active: function(data) {
 			console.log('%s active:', this.name);
 			this.addTo(game.stage);
+			this.initTouchEvent();
 			this.alpha = 1;
 			var img = game.getImg('uimap');
 			var bg = new Hilo.Bitmap({
@@ -208,34 +238,33 @@
 				x:400,
 				y:100
 			}).addTo(this);
-			var btnpass01 = new Hilo.Bitmap({
+			this.btnpass01 = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('largepass02','uimap'),
 				x:700,
 				y:100
 			}).addTo(this);
- 			var btnExit = new Hilo.Bitmap({
+ 			this.btnExit = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('quitbt','uimap'),
 				x:700,
 				y:450
 			}).addTo(this);
 			
-			/*var lockpass = new Hilo.Bitmap({
+			var lockpass = new Hilo.Bitmap({
 				image:img,
-				rect:game.configdata.getPngRect('lockicon','uimap'),
-				x:300,
-				y:100
-			}).addTo(this);*/
+				rect:game.configdata.getPngRect('suo','uimap'),
+				x:557,
+				y:285
+			}).addTo(this);
 			
 			var scene = this;
-			btnpass01.on(Hilo.event.POINTER_START, function(e) {
+			this.btnpass01.on(Hilo.event.POINTER_START, function(e) {
 				game.sounds.play(2,false);
-				//game.switchScene(game.configdata.SCENE_NAMES.firecorridor,[200,600]);
+				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
 				//game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
-				game.switchScene(game.configdata.SCENE_NAMES.depot);
 			});
-			btnExit.on(Hilo.event.POINTER_START, function(e) {
+			this.btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();
 			});
 
@@ -249,6 +278,16 @@
 				}
 			});
 			game.sounds.play(20,true);
+			this.fingerMouse = new game.FingerMouse({
+				visible:false,
+				pointerEnabled:false,
+			}).addTo(this);
+			
+			
+			this.btnpass01.on(Hilo.event.POINTER_MOVE, function(e) {
+				scene.fingerMouse.visible = true;
+			});
+			this.initTouchEvent();
 		},
 		deactive: function() {
 			var scene = this;
@@ -277,6 +316,8 @@
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.passchoice,
 		storytxt:'',
+		fingerMouse:null,
+		btnsPanel:null,
 		constructor: function(properties) {
 			PassChoiceScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -293,6 +334,7 @@
 			this.addTo(game.stage);
 			var scene = this;
 			this.alpha = 1;
+			
 			new Hilo.Bitmap({
 				image:game.getImg('mainbg'),
 				width:1202,
@@ -305,6 +347,10 @@
 				rect:game.configdata.getPngRect('boy','uimap'),
 				x:110,
 				y:180
+			}).addTo(this);
+			this.btnsPanel = new Hilo.Container({
+				x:0,
+				y:0,
 			}).addTo(this);
 			
 			var passdata = game.boydata.passdata;
@@ -320,15 +366,16 @@
 					rect:game.configdata.getPngRect(passname,'uimap'),
 					x:initx + offsetx,
 					y:inity + offsety
-				}).addTo(this);
+				}).addTo(this.btnsPanel);
 				btn.extendname = item[2];
+				btn.islock = item[0];
 				if(item[0] == -1){
 					new Hilo.Bitmap({
 						image:img,
 						rect:game.configdata.getPngRect('suo','uimap'),
 						x:btn.x + btn.width -45,
 						y:btn.y + btn.height -68
-					}).addTo(this);
+					}).addTo(this.btnsPanel);
 				}
 				if(item[0] == 0){
 					btn.on(Hilo.event.POINTER_START, function(e) {
@@ -346,16 +393,42 @@
 				}
 			}
 			
-			new Hilo.Bitmap({
-				image:game.getImg('uimap'),
-				rect:game.configdata.getPngRect('quitbt','uimap'),
-				x:1000,
-				y:50
-			}).addTo(this);
+			
 			
 			game.sounds.stop(14);
 			game.sounds.play(20,true);
+			this.fingerMouse = new game.FingerMouse({
+				visible:false,
+				pointerEnabled:false,
+			}).addTo(this);
 			
+			this.initTouchEvent();
+		},
+		initTouchEvent:function(){
+			var scene = this;
+			game.stage.off();
+			game.stage.on(Hilo.event.POINTER_MOVE, function(e) {
+				if(scene.ignoreTouch)
+					return;
+				var stagex = e.stageX;
+				var stagey = e.stageY;
+				var targetx = stagex - scene.x;
+				var targety = stagey - scene.y;
+				scene.fingerMouse.x = targetx-7;
+				scene.fingerMouse.y = targety;
+				scene.fingerMouse.visible = false;
+				var btns = scene.btnsPanel.children;
+				for(var i=0;i<btns.length;i++){
+					var btn = btns[i];
+					if(btn.islock == 0){
+						if(game.checkInRect(targetx,targety,btn.x,btn.y,btn.width,btn.height)){
+							scene.fingerMouse.visible = true;
+							break;
+						}
+					}
+				}
+				
+			});
 		},
 		deactive: function() { 
 			this.destory();

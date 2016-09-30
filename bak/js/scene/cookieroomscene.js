@@ -246,13 +246,13 @@
 					this.checkStar(this.star01);
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
-					this.hero.jumpspeed = -18;
-					this.hero.floory = this.hero.posy;
-					this.hero.switchState('jump');
+					//this.hero.jumpspeed = -18;
+					//this.hero.floory = this.hero.posy;
+					//this.hero.switchState('jump');
 					break;
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
-					console.log('hero squat');
-					this.hero.switchState('idle',5);
+					//console.log('hero squat');
+					//this.hero.switchState('idle',5);
 					break;
 				case game.configdata.MSAGE_TYPE.herodead:
 					game.stage.off();
@@ -278,6 +278,10 @@
 			this.annihilator  = new game.ActiveObject({
 				x:755,
 				y:417,
+				targetx:70,
+				targety:250,
+				targetx:0,
+				targety:150,
 				readyImgUrl:'annihilator',
 				finishedImgUrl:'annihilator',
 				clickArea:[12,10,25,100],
@@ -296,6 +300,8 @@
 			this.pipswitch  = new game.ActiveObject({
 				x:824,
 				y:300,
+				targetx:-60,
+				targety:280,
 				status:1,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
@@ -305,6 +311,8 @@
 			this.spanner  = new game.ActiveObject({
 				x:1000,
 				y:590,
+				targetx:-20,
+				targety:10,
 				status:1,
 				readyImgUrl:'panspanner',
 				finishedImgUrl:'panspanner',
@@ -314,6 +322,8 @@
 			this.boxkey  = new game.ActiveObject({
 				x:488,
 				y:520,
+				targetx:46,
+				targety:67,
 				status:0,
 				readyImgUrl:'pankey',
 				finishedImgUrl:'pankey',
@@ -323,6 +333,8 @@
 			this.pan  = new game.ActiveObject({
 				x:488,
 				y:480,
+				targetx:46,
+				targety:108,
 				status:1,
 				readyImgUrl:'pan',
 				finishedImgUrl:'pan',

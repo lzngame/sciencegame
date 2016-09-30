@@ -165,11 +165,6 @@
 					this.hero.switchState('squat');
 					this.checkStar(this.star01);
 					break;
-				case game.configdata.MSAGE_TYPE.herojump:
-					this.hero.jumpspeed = -18;
-					this.hero.floory = this.hero.posy;
-					this.hero.switchState('jump');
-					break;
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
 					console.log('hero squat');
 					this.hero.switchState('idle',5);

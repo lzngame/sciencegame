@@ -248,9 +248,9 @@
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
 					if(!this.hero.ispillow && this.hero.framename != 'jump'){
-						this.hero.jumpspeed = -18;
-						this.hero.floory = this.hero.posy;
-						this.hero.switchState('jump');
+						//this.hero.jumpspeed = -18;
+						//this.hero.floory = this.hero.posy;
+						//this.hero.switchState('jump');
 					}
 					break;
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
