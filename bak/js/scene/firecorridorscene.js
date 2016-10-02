@@ -194,7 +194,7 @@
 					}
 				}
 			}
-			if(this.checkActiveItem(mouseX,mouseY,this.firreblock,true)){
+			if(this.checkActiveItem(mouseX,mouseY,this.firreblock)){
 				var scene = this;
 				if(!this.checkFinger(8)){
 					return ;
@@ -239,6 +239,8 @@
 			this.firewarnBox  = new game.ActiveObject({
 				x:129,
 				y:280,
+				targetx:130,
+				targety:210,
 				readyImgUrl:'firewarnbtn',
 				finishedImgUrl:'firewarnbtn',
 				clickArea:[0,0,30,45],
@@ -248,6 +250,8 @@
 			this.wallpaper  = new game.ActiveObject({
 				x:-40,
 				y:120,
+				targetx:200,
+				targety:360,
 				readyImgUrl:'wallpaper01',
 				finishedImgUrl:'wallpaper02',
 				clickArea:[90,40,110,240],
@@ -257,6 +261,8 @@
 			this.telphone  = new game.ActiveObject({
 				x:244,
 				y:182,
+				targetx:120,
+				targety:250,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[-10,0,50,70],
@@ -266,6 +272,8 @@
 			this.stone  = new game.ActiveObject({
 				x:550,
 				y:218,
+				targetx:-30,
+				targety:220,
 				readyImgUrl:'stoneicon',
 				finishedImgUrl:'stoneicon',
 				clickArea:[0,0,40,30],
@@ -275,6 +283,8 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:816,
 				y:183,
+				targetx:0,
+				targety:220,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
@@ -284,6 +294,8 @@
 			this.firreblock  = new game.ActiveObject({
 				x:1540,
 				y:396,
+				targetx:0,
+				targety:140,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[0,0,200,275],

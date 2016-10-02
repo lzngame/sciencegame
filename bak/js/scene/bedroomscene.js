@@ -114,6 +114,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				this.hero.switchState('handon',10);
 				this.phone.remove();
 				game.toolippanel.show(true,'准备好通讯工具非常重要',100);
 				game.toolspanel.addIcon(1);
@@ -125,6 +126,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				this.hero.switchState('handon',10);
 				this.drink.remove();
 				game.toolippanel.show(true,'灾害中储备饮水',100);
 				game.toolspanel.addIcon(3);
@@ -136,6 +138,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				this.hero.switchState('handon',10);
 				this.glim.remove();
 				game.toolippanel.show(true,'拿到手电筒',100);
 				game.toolspanel.addIcon(0);
@@ -148,6 +151,7 @@
 					if(!this.checkFinger(-1)){
 						return;
 					}
+					this.hero.switchState('handon',10);
 					this.medicalkit.state = 2;
 					this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('emptybox','uimap'));
 					this.medicalkit.status = 2;
@@ -164,6 +168,7 @@
 				
 				if(this.fingerMouse.index == 5){
 					if(this.medicalkit.state == 0){
+						this.hero.switchState('handon',10);
 						this.medicalkit.state = 1;
 						this.medicalkit.img.setImage(game.getImg('uimap'),game.configdata.getPngRect('openbox','uimap'));
 						game.boydata.bedroomData.medicalkit.state = 1;
@@ -183,6 +188,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				this.hero.switchState('handon',10);
 				this.pillow.x = 300;
 				this.pillow.status = 2;
 				this.phone.status = 1;
@@ -206,7 +212,7 @@
 				this.hero.switchState('handon',10);
 				this.tvflash.visible = false;
 				this.plug.setEndImg(10,80);
-				
+				this.plug.status = 2;
 				this.doorhandler.status = 1;
 				game.notepanel.show(true,game.configdata.GAMETXTS.pass01_okend);
 				this.star02 = new game.FlashStar({
@@ -324,6 +330,7 @@
 				this.tvflash.removeFromParent();
 				this.plug.setEndImg(10,80);
 				this.doorhandler.status = 1;
+				this.plug.status = 2;
 			}
 			var glimdata   = game.boydata.bedroomData.glim;
 			if(glimdata.used){
@@ -355,6 +362,8 @@
 			this.plug  = new game.ActiveObject({
 				x:906,
 				y:262,
+				targetx:-90,
+				targety:200,
 				readyImgUrl:'plug1',
 				finishedImgUrl:'plug2',
 				clickArea:[19,0,40,40],
@@ -364,6 +373,8 @@
 				x:434,
 				y:410,
 				status:0,
+				targetx:140,
+				targety:150,
 				readyImgUrl:'iphone',
 				finishedImgUrl:'iphone',
 				clickArea:[9,0,40,40],
@@ -372,6 +383,8 @@
 			this.pillow  = new game.ActiveObject({
 				x:414,
 				y:410,
+				targetx:140,
+				targety:150,
 				readyImgUrl:'pillow',
 				finishedImgUrl:'pillow',
 				status:0,
@@ -381,6 +394,8 @@
 			this.glim  = new game.ActiveObject({
 				x:974,
 				y:474,
+				targetx:-100,
+				targety:150,
 				status:0,
 				readyImgUrl:'bedroomglim',
 				finishedImgUrl:'bedroomglim',
@@ -390,6 +405,8 @@
 			this.drink  = new game.ActiveObject({
 				x:160,
 				y:420,
+				targetx:110,
+				targety:120,
 				status:0,
 				readyImgUrl:'bedroomdrink',
 				finishedImgUrl:'bedroomdrink',
@@ -399,6 +416,8 @@
 			this.medicalkit  = new game.ActiveObject({
 				x:535,
 				y:354,
+				targetx:88,
+				targety:140,
 				status:0,
 				readyImgUrl:'lockbox',
 				finishedImgUrl:'lockbox',
@@ -408,6 +427,8 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:1162,
 				y:422,
+				targetx:-120,
+				targety:220,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[0,0,50,50],

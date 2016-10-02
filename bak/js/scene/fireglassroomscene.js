@@ -133,6 +133,7 @@
 				if(!this.checkFinger(-1)){
 					return ;
 				}
+				this.hero.switchState('pick',10);
 				this.carkey.remove();
 				game.toolspanel.addIcon(9);
 				game.toolspanel.show(true,50);
@@ -227,6 +228,8 @@
 			this.drawer  = new game.ActiveObject({
 				x:489,
 				y:441,
+				targetx:-30,
+				targety:100,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[0,0,54,16],
@@ -246,6 +249,8 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:915,
 				y:326,
+				targetx:-50,
+				targety:220,
 				status:1,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
@@ -254,7 +259,9 @@
 			
 			this.carkey  = new game.ActiveObject({
 				x:313,
-				y:519,
+				y:500,
+				targetx:70,
+				targety:60,
 				status:0,
 				readyImgUrl:'carkey',
 				finishedImgUrl:'carkey',
@@ -263,7 +270,9 @@
 			
 			this.flower  = new game.ActiveObject({
 				x:270,
-				y:329,
+				y:310,
+				targetx:0,
+				targety:260,
 				status:1,
 				readyImgUrl:'flower',
 				finishedImgUrl:'flower',

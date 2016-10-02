@@ -123,7 +123,7 @@
 					return;
 				}
 				game.boydata.shakecorridordata.halfpic = true;
-				this.hero.switchState('handon',10);
+				this.hero.switchState('pick',10);
 				var scene = this;
 				game.sounds.play(19,false);
 				this.halfpic2.remove();
@@ -136,7 +136,7 @@
 					return;
 				}
 				game.boydata.shakecorridordata.warnpaper = true;
-				this.hero.switchState('handon',10);
+				this.hero.switchState('pick',10);
 				var scene = this;
 				if(this.fingerMouse.index == 2){
 					new game.FlashStarEffect({
@@ -200,6 +200,8 @@
 			this.passwordLock  = new game.ActiveObject({
 				x:1561,
 				y:217,
+				targetx:43,
+				targety:240,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,60,40],
@@ -209,8 +211,8 @@
 			this.halfpic2  = new game.ActiveObject({
 				x:2100,
 				y:453,
-				targetx:2090,
-				targety:500,
+				targetx:-50,
+				targety:120,
 				readyImgUrl:'overhalfpic',
 				finishedImgUrl:'overhalfpic',
 				clickArea:[19,10,60,150],
@@ -220,6 +222,8 @@
 			this.warnpaper  = new game.ActiveObject({
 				x:2100,
 				y:405,
+				targetx:-70,
+				targety:120,
 				readyImgUrl:'warnpaper01',
 				finishedImgUrl:'warnpaper01',
 				clickArea:[19,10,60,150],
@@ -229,6 +233,8 @@
 			this.doorhandlerCorridor  = new game.ActiveObject({
 				x:169,
 				y:384,
+				targetx:70,
+				targety:170,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],

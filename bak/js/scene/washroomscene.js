@@ -194,6 +194,8 @@
 			this.annihilator  = new game.ActiveObject({
 				x:215,
 				y:450,
+				targetx:0,
+				targety:140,
 				readyImgUrl:'annihilator',
 				finishedImgUrl:'annihilator',
 				clickArea:[15,0,30,120],
@@ -203,6 +205,8 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:122,
 				y:350,
+				targetx:90,
+				targety:240,
 				status:2,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
@@ -212,6 +216,8 @@
 			this.basin  = new game.ActiveObject({
 				x:1060,
 				y:370,
+				targetx:-40,
+				targety:240,
 				status:1,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
@@ -221,6 +227,8 @@
 			this.towel  = new game.ActiveObject({
 				x:726,
 				y:285,
+				targetx:-20,
+				targety:300,
 				status:1,
 				readyImgUrl:'towel',
 				finishedImgUrl:'towel',

@@ -68,6 +68,7 @@ game.monsterdata = new function(){
 					walk:[0,1,2,3,4,5],
 					idle: [7,7,8,8],
 					squat:[6,6],
+					pick:[6,6],
 					jump:[9,9],
 					handon:[10,10],
 					handup:[11,11],

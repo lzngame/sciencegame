@@ -109,6 +109,8 @@
 			this.doorhandlerBedroom  = new game.ActiveObject({
 				x:31,
 				y:370,
+				targetx:150,
+				targety:220,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
@@ -118,6 +120,8 @@
 			this.doorhandlerCookie  = new game.ActiveObject({
 				x:750,
 				y:96,
+				targetx:-51,
+				targety:330,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[0,0,120,290],
@@ -127,6 +131,8 @@
 			this.doorhandlerCorridor  = new game.ActiveObject({
 				x:1067,
 				y:313,
+				targetx:-97,
+				targety:230,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],

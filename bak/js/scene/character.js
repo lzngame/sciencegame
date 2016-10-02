@@ -157,6 +157,9 @@
 					case 'handon':
 						this.regainIdle();
 						break;
+					case 'pick':
+						this.regainIdle();
+						break;
 					case 'dead':
 						if(!this.isdead){
 							this.sendMsg(game.currentScene, game.configdata.MSAGE_TYPE.herodead, 'hero dead');

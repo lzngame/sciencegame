@@ -151,6 +151,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				this.hero.switchState('pick',10);
 				game.sounds.play(19,false);
 				this.boxkey.remove();
 				game.toolippanel.show(true,'这个工具会有用的',100);
@@ -168,7 +169,7 @@
 					return;
 				}
 				game.sounds.play(19,false);
-				this.hero.switchState('handon',10);
+				this.hero.switchState('pick',10);
 				var scene = this;
 				this.pan.x = 400;
 				this.pan.status = 2;
@@ -181,6 +182,7 @@
 				if(!this.checkFinger(-1)){
 					return;
 				}
+				this.hero.switchState('pick',10);
 				this.spanner.remove();
 				game.toolippanel.show(true,'这个工具会有用的',200);
 				game.toolspanel.show(true,200);
@@ -241,30 +243,20 @@
 			switch (msg.msgtype) {
 				case game.configdata.MSAGE_TYPE.herosquat:
 					console.log('hero squat');
+					this.checkStar(this.star01);
+					this.checkStar(this.star02);
 					this.hero.speedx = this.hero.speedy = 0;
 					this.hero.switchState('squat');
-					this.checkStar(this.star01);
 					break;
 				case game.configdata.MSAGE_TYPE.herojump:
-					//this.hero.jumpspeed = -18;
-					//this.hero.floory = this.hero.posy;
-					//this.hero.switchState('jump');
+					if(!this.hero.ispillow && this.hero.framename != 'jump'){
+						//this.hero.jumpspeed = -18;
+						//this.hero.floory = this.hero.posy;
+						//this.hero.switchState('jump');
+					}
 					break;
 				case game.configdata.MSAGE_TYPE.herosquat2idle:
-					//console.log('hero squat');
-					//this.hero.switchState('idle',5);
-					break;
-				case game.configdata.MSAGE_TYPE.herodead:
-					game.stage.off();
-					this.currentMonster.iswin = true;
-					this.addFinialScore();
-					break;
-				case game.configdata.MSAGE_TYPE.changeHerohp:
-					var n = msg.msgdata;
-					if(n <= 0){
-						game.stage.off();
-					}
-					this.topHeadPanel.setHealth(n);
+					this.hero.switchState('idle',5);
 					break;
 			}
 		},
@@ -279,8 +271,6 @@
 				x:755,
 				y:417,
 				targetx:70,
-				targety:250,
-				targetx:0,
 				targety:150,
 				readyImgUrl:'annihilator',
 				finishedImgUrl:'annihilator',
@@ -291,6 +281,8 @@
 			this.doorhandler  = new game.ActiveObject({
 				x:210,
 				y:350,
+				targetx:110,
+				targety:250,
 				status:0,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
