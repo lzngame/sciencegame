@@ -30,6 +30,7 @@
 		notepanel:null,
 		toolippanel:null,
 		toolspanel:null,
+		soundmute:null,
 		
 		boydata:null,
 		init: function() {

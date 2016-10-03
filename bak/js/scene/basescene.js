@@ -171,7 +171,7 @@
 				}else{
 					isClickIn = false;
 					if(!nowarn){
-						game.notepanel.show(true,'走近点...',50);	
+						//game.notepanel.show(true,'走近点...',50);	
 						this.herowalk(obj.x + obj.targetx,obj.y+obj.targety);
 					}
 				}
@@ -215,6 +215,19 @@
 			game.toolspanel = new game.ToolsIconPanel({
 				initx:784,
 				inity:-395,
+			}).addTo(game.uiscene);
+			game.soundmute = new game.SwitchBtn({
+				x:500,
+				y:10,
+				state:1,
+				func:function(index){
+					game.configdata.MUTE = index;
+					game.sounds.stop(14);
+				},
+				image:game.getImg('uimap'),
+				rect:game.configdata.getPngRect('tel0','uimap'),
+				default:'tel0',
+				other:'tel1',
 			}).addTo(game.uiscene);
 		},
 		herowalk:function(targetx,targety){

@@ -1129,4 +1129,33 @@
 		},
 	});
 	
+	
+	var SwitchBtn = ns.SwitchBtn = Hilo.Class.create({
+		Extends: Hilo.Bitmap,
+		state:false,
+		default:'',
+		other:'',
+		func:null,
+		constructor: function(properties) {
+			SwitchBtn.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.setRect(this.state);
+			this.on(Hilo.event.POINTER_START, function(e) {
+				this.state = !this.state;
+				this.setRect(this.state);
+				this.func(this.state);
+			});
+		},
+		setRect:function(indexstate){
+			this.state = indexstate;
+			var rectname = this.default;
+			if(this.state){
+				rectname = this.other;
+			}
+			this.setImage(game.getImg('uimap'),game.configdata.getPngRect(rectname,'uimap'));
+		}
+	});
+	
 })(window.game);
