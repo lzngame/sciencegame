@@ -21,6 +21,10 @@
 		gaseffect:null,
 		blocks:null,
 		passCondition:false,
+		toaster:null,
+		bread:null,
+		shootbread:null,
+		rag:null,
 		
 		spanner:null,
 		passstep:0,
@@ -392,6 +396,17 @@
 				x:700,
 				y:270,
 				interval:8,
+			}).addTo(this);
+			
+			this.toaster  = new game.ActiveObject({
+				x:389,
+				y:337,
+				targetx:70,
+				targety:150,
+				readyImgUrl:'toaster',
+				finishedImgUrl:'toaster',
+				clickArea:[0,0,50,50],
+				status:1
 			}).addTo(this);
 		},
 		onUpdate:function(){
