@@ -1158,4 +1158,46 @@
 		}
 	});
 	
+	
+	var ShootBread = ns.ShootBread = Hilo.Class.create({
+		Extends: Hilo.Bitmap,
+		name:'shootBread',
+		upline:0,
+		downline:0,
+		speed:0,
+		roasttime:100,
+		sumtime:0,
+		inity:0,
+		up:false,
+		constructor: function(properties) {
+			ShootBread.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.inity = this.y;
+		},
+		onUpdate:function(){
+			this.sumtime++;
+			if(this.sumtime == this.roasttime){
+				this.up = true;
+			}
+			if(this.y <= (this.inity - 100)){
+				this.up = false;
+				this.parent.swapChildren(this,this.parent.toaster);
+				this.speed = 6;
+				this.parent.ragfall = true;
+			}
+			if(this.up && this.sumtime > this.roasttime){
+				this.y -= this.speed;
+			}
+			if(!this.up && this.sumtime > this.roasttime){
+				if(this.y >= (this.inity + 200)){
+					this.setImage(game.getImg('uimap'),game.configdata.getPngRect('breadonfloor','uimap'));
+				}else{
+					this.y += this.speed;
+				}
+			}
+		},
+	});
+	
 })(window.game);

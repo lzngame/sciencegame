@@ -158,6 +158,8 @@ game.monsterdata = new function(){
 				spannerused:false,
 				pipswitchused:false,
 				annihilatorused:false,
+				breadused:false,
+				toasterused:false,  
 			};
 			this.shakecorridordata = {
 				warnpaper:false,

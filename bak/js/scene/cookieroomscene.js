@@ -25,6 +25,7 @@
 		bread:null,
 		shootbread:null,
 		rag:null,
+		ragfall:false, 
 		
 		spanner:null,
 		passstep:0,
@@ -116,11 +117,14 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
-				this.hero.switchState('handon',10);
-				if(!this.checkFinger(-1)){
+				if(!this.checkFinger(14)){
+					game.notepanel.show(true,'把手有点烫，最好找个布裹上',50);	
 					return;
 				}
+				this.hero.switchState('handon',10);
 				game.sounds.play(7,false);
+				game.toolspanel.removeIcon(14);
+				this.fingerMouse.setDefault();
 				var scene = this;
 				new Hilo.Tween.to(this,{
 					alpha:0.3
@@ -182,6 +186,39 @@
 				game.boydata.cookieroomData.panused = true;
 			}
 			
+			if(this.checkActiveItem(mouseX,mouseY,this.bread)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
+				this.hero.switchState('handon',10);
+				game.sounds.play(19,false);
+				this.bread.remove();
+				game.toolspanel.show(true,100);
+				game.toolspanel.addIcon(13);
+				game.boydata.cookieroomData.breadused = true;
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.toaster)){
+				if(!this.checkFinger(13)){
+					return;
+				}
+				this.hero.switchState('handon',10);
+				game.sounds.play(19,false);
+				game.boydata.cookieroomData.toasterused = true;
+				this.shootbread = new game.ShootBread({
+					x:396,
+					y:315,
+					speed:4,
+					image:game.getImg('uimap'),
+					rect:game.configdata.getPngRect('breadicon'),
+				}).addTo(this);
+				game.toolspanel.removeIcon(13);
+				this.swapChildren(this.toaster,this.shootbread);
+				this.swapChildren(this.toaster,this.hero);
+				this.toaster.status = 2;
+				this.fingerMouse.setDefault();
+			}
+			
 			if(this.checkActiveItem(mouseX,mouseY,this.spanner)){
 				if(!this.checkFinger(-1)){
 					return;
@@ -192,6 +229,17 @@
 				game.toolspanel.show(true,200);
 				game.toolspanel.addIcon(2);
 				game.boydata.cookieroomData.spannerused = true;
+			}
+			
+			if(this.checkActiveItem(mouseX,mouseY,this.rag)){
+				if(!this.checkFinger(-1)){
+					return;
+				}
+				this.hero.switchState('pick',10);
+				this.rag.remove();
+				game.toolspanel.show(true,200);
+				game.toolspanel.addIcon(14);
+				game.boydata.cookieroomData.ragused = true;
 			}
 		},
 		setPassData:function(){
@@ -225,6 +273,9 @@
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.annihilator)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.pan)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.boxkey)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.bread)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.toaster)||
+			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.rag)||
 			   this.checkActiveItemWithoutPos(mouseX,mouseY,this.pipswitch)
 			){
 				return true;
@@ -287,7 +338,7 @@
 				y:350,
 				targetx:110,
 				targety:250,
-				status:0,
+				status:1,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
 				clickArea:[9,0,40,40],
@@ -391,6 +442,19 @@
 				visible:false,
 			}).addTo(this);
 			
+			this.bread  = new game.ActiveObject({
+				x:760,
+				y:311,
+				status:1,
+				targetx:-20,
+				targety:266,
+				readyImgUrl:'breadonfloor',
+				finishedImgUrl:'breadonfloor',
+				clickArea:[0,0,50,50],
+				status:1
+			}).addTo(this);
+			
+			
 			this.gaseffect = new Hilo.Sprite({
 				frames: game.monsterdata.effect_atlas.getSprite('gaseffect'),
 				x:700,
@@ -402,12 +466,27 @@
 				x:389,
 				y:337,
 				targetx:70,
-				targety:150,
+				targety:270,
+				status:1,
 				readyImgUrl:'toaster',
 				finishedImgUrl:'toaster',
 				clickArea:[0,0,50,50],
 				status:1
 			}).addTo(this);
+			
+			this.rag  = new game.ActiveObject({
+				x:411,
+				y:215,
+				status:1,
+				targetx:70,
+				targety:150,
+				readyImgUrl:'ragicon',
+				finishedImgUrl:'ragonfloor',
+				clickArea:[0,0,50,50],
+				status:1
+			}).addTo(this);
+			
+			
 		},
 		onUpdate:function(){
 			if(this.readyShakeTime == 100){
@@ -415,6 +494,13 @@
 			}
 			this.readyShakeTime++;
 			this.checkBlocks();
+			if(this.ragfall){
+				this.rag.y += 4;
+				if(this.rag.y >= 572){
+					this.ragfall = false;
+					this.rag.setEndImg(0,0);
+				}
+			}
 		},
 	});
 })(window.game);

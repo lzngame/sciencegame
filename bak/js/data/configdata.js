@@ -130,6 +130,8 @@ game.configdata = new function(){
 		{name:'towel',icon:'towelicon',index:10},
 		{name:'halfpic01',icon:'halfpic02icon',index:11},
 		{name:'halfpic02',icon:'halfpic01icon',index:12},
+		{name:'bread',icon:'breadicon',index:13},
+		{name:'rag',icon:'ragicon',index:14},
 		
 	];
 

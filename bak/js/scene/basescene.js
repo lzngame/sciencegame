@@ -152,7 +152,7 @@
 			return isClickIn;
 		},
 		
-		checkActiveItem:function(mouseX,mouseY,obj,nowarn,nopos){
+		checkActiveItem:function(mouseX,mouseY,obj){
 			var isClickIn = false;
 			if(!obj)
 				return false;
@@ -160,9 +160,9 @@
 			var y = obj.clickArea[1]+obj.y;
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
-			if(nowarn == null){
-				nowarn = false;
-			}
+			//if(nowarn == null){
+			//	nowarn = false;
+			//}
 			
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
 				if(Math.abs(x+w/2 - this.hero.posx) <150 && Math.abs(y+h/2 - (this.hero.posy-100)) <200){
@@ -170,14 +170,14 @@
 					this.fingerMouse.active = false; 
 				}else{
 					isClickIn = false;
-					if(!nowarn){
+					//if(!nowarn){
 						//game.notepanel.show(true,'走近点...',50);	
 						this.herowalk(obj.x + obj.targetx,obj.y+obj.targety);
-					}
+					//}
 				}
-				if(nopos){
-					isClickIn = true;
-				}
+				//if(nopos){
+				//	isClickIn = true;
+				//}
 			}
 			return isClickIn;
 		},
