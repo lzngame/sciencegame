@@ -196,7 +196,7 @@
 				game.boydata.bedroomData.pillow.used = true;
 				
 				new game.FlashStarEffect({x:mouseX-100,y:mouseY-100}).addTo(this);
-				game.notepanel.show(true,'找到手机',70);
+				game.notepanel.show(true,'地震中硬木板这样的东西可以保护头部',100);
 				this.passstep = 1;
 				this.star01 = new game.FlashStar({
 					x:560,
