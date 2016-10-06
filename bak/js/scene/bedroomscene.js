@@ -509,6 +509,32 @@
 				this.medicalkit.status =1;
 			}
 		},
+		makeStive:function(x,y){
+			var atlas2 = new Hilo.TextureAtlas({
+                image:game.getImg('stive'),
+                width: 1024,
+                height: 1024,
+                frames: [
+                	[309,0,98,653],
+                	[515,0,98,653],
+                	[412,0,98,653],
+                	[618,0,98,653],
+                	[206,0,98,653],
+                	[103,0,98,653],
+                	[0,0,98,653],
+                ],
+                sprites: {
+                    stiveeffect:[0,0,1,1,2,2,2,3,3,4,5,6]
+                }
+            });
+			new Hilo.Sprite({
+				frames: atlas2.getSprite('stiveeffect'),
+				x:x,
+				y:y,
+				loop:false,
+				interval:8,
+			}).addTo(this);
+		},
 		onUpdate:function(){
 			if(!game.boydata.bedroomData.isshake.used){
 				this.shaking();
@@ -522,6 +548,8 @@
 			}
 			if(this.readyShakeTime == 200){
 				this.shakeRoom(200,3);
+				this.makeStive(890,0);
+				this.makeStive(990,0);
 			}
 			
 			if(this.readyShakeTime == 350){
@@ -532,6 +560,40 @@
 				game.sounds.play(13,false);
 				this.shakeRoom(700,10);
 			}
+			if(this.readyShakeTime == 710){
+				this.makeStive(380,0);
+			}
+			if(this.readyShakeTime == 720){
+				this.makeStive(850,0);
+			}
+			if(this.readyShakeTime == 750){
+				this.makeStive(1150,0);
+			}
+			if(this.readyShakeTime == 760){
+				this.makeStive(1050,0);
+			}
+			if(this.readyShakeTime == 765){
+				this.makeStive(380,-50);
+			}
+			if(this.readyShakeTime == 720){
+				this.makeStive(390,-100);
+			}
+			if(this.readyShakeTime == 723){
+				this.makeStive(1100,-80);
+			}
+			if(this.readyShakeTime == 860){
+				this.makeStive(1050,0);
+			}
+			if(this.readyShakeTime == 865){
+				this.makeStive(380,-50);
+			}
+			if(this.readyShakeTime == 900){
+				this.makeStive(390,-100);
+			}
+			if(this.readyShakeTime == 873){
+				this.makeStive(1100,-80);
+			}
+			
 			if(this.readyShakeTime == 900){
 				this.changeBg();
 				//this.tasktxt1.visible = true;

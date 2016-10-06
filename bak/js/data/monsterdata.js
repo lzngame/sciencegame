@@ -6,7 +6,8 @@ game.monsterdata = new function(){
 	self.monster20_atlas = null;
 	self.soliderhero_atlas = null;
 	self.oldmannpc_atlas = null;
-	self.effect_atlas = null,
+	self.effect_atlas = null;
+	self.stive_atlas = null;
 	self.updataFunc = [];
 	
 	
@@ -113,6 +114,8 @@ game.monsterdata = new function(){
 					gaseffect:[11,12,13,14]
 				}
 			});
+			
+			
 	};
 	
 	self.createAtlas = function(data){

@@ -385,7 +385,8 @@
 				
 				if(item[0] == 1){
 					new Hilo.Bitmap({
-						image:game.getImg('right'),
+						image:game.getImg('uimap'),
+						rect:game.configdata.getPngRect('right'),
 						x:btn.x + btn.width -45,
 						y:btn.y + btn.height -68
 					}).addTo(this);
