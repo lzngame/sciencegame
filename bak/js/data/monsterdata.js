@@ -160,6 +160,7 @@ game.monsterdata = new function(){
 				annihilatorused:false,
 				breadused:false,
 				toasterused:false,  
+				dooropenused:false,
 			};
 			this.shakecorridordata = {
 				warnpaper:false,

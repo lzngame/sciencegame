@@ -117,23 +117,41 @@
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.doorhandler)){
-				if(!this.checkFinger(14)){
-					game.notepanel.show(true,'把手有点烫，最好找个布裹上',50);	
-					return;
-				}
-				this.hero.switchState('handon',10);
-				game.sounds.play(7,false);
-				game.toolspanel.removeIcon(14);
-				this.fingerMouse.setDefault();
-				var scene = this;
-				new Hilo.Tween.to(this,{
-					alpha:0.3
-				},{
-					duration:400,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.saloon,[776,416,'left']);
+				if(game.boydata.cookieroomData.dooropenused){
+					if(!this.checkFinger(-1)){
+						return;
 					}
-				});
+					this.hero.switchState('handon',10);
+					game.sounds.play(7,false);
+					new Hilo.Tween.to(this,{
+						alpha:0.3
+					},{
+						duration:400,
+						onComplete:function(){
+						game.switchScene(game.configdata.SCENE_NAMES.saloon,[776,416,'left']);
+						}
+					});
+				}else{
+					if(!this.checkFinger(14)){
+						game.notepanel.show(true,'把手有点烫，最好找个布裹上',50);	
+						return;
+					}
+					this.hero.switchState('handon',10);
+					game.sounds.play(7,false);
+					game.toolspanel.removeIcon(14);
+					this.fingerMouse.setDefault();
+					var scene = this;
+					game.boydata.cookieroomData.dooropenused = true;
+					new Hilo.Tween.to(this,{
+						alpha:0.3
+					},{
+						duration:400,
+						onComplete:function(){
+						game.switchScene(game.configdata.SCENE_NAMES.saloon,[776,416,'left']);
+						}
+					});
+				}
+				
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.pipswitch)){
@@ -149,6 +167,8 @@
 					}).addTo(this);
 					this.pipswitch.status = 2;
 					this.doorhandler.status = 1;
+					this.bread.alpha = 1;
+					this.bread.status = 1;
 					this.gaseffect.visible = false;
 					this.fingerMouse.setDefault();
 					game.boydata.cookieroomData.pipswitchused = true;
@@ -246,6 +266,17 @@
 			if(game.boydata.cookieroomData.pipswitchused){
 				this.pipswitch.status = 2;
 				this.gaseffect.visible = false;
+				this.bread.alpha = 1;
+				this.bread.status = 1;
+			}
+			if(game.boydata.cookieroomData.breadused){
+				this.bread.remove();
+			}
+			if(game.boydata.cookieroomData.toasterused){
+				
+			}
+			if(game.boydata.cookieroomData.ragused){
+				this.rag.remove();
 			}
 			if(game.boydata.cookieroomData.panused){
 				this.pan.x  = 400;
@@ -445,13 +476,13 @@
 			this.bread  = new game.ActiveObject({
 				x:760,
 				y:311,
-				status:1,
+				status:0,
 				targetx:-20,
 				targety:266,
 				readyImgUrl:'breadonfloor',
 				finishedImgUrl:'breadonfloor',
 				clickArea:[0,0,50,50],
-				status:1
+				alpha:0.5,
 			}).addTo(this);
 			
 			

@@ -228,7 +228,7 @@
 				rect:game.configdata.getPngRect('tel0','uimap'),
 				default:'tel0',
 				other:'tel1',
-			}).addTo(game.uiscene);
+			});
 		},
 		herowalk:function(targetx,targety){
 			this.hero.switchState('walk',5);
