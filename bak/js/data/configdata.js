@@ -44,7 +44,7 @@ game.configdata = new function(){
 		pass01_hide:'做的很好，迅速躲到坚固的墙体',
 		pass01_squat:'按住D 键不要松手，等强震过后',
 		pass01_tvflash:'地震过后，防止电器着火，拔下插座',
-		pass01_okend:'做的很好，断电保持安全',
+		pass01_okend:'地震科普知识：做的很好，在地震的时候，断电保持安全',
 		
 		pass02_annihilator:'找到灭火器，扑灭厨房火源',
 		pass02_ok:'干得不错',

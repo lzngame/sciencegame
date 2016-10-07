@@ -143,6 +143,7 @@
 				this.firewarnBox.status = 1;
 				game.boydata.firecorridordata.wallpaper = true;
 				game.sounds.play(12,false);
+				game.notepanel.show(true,'科普知识：火灾报警按钮一般是个红色的盒子，砸碎盖子，按火灾按钮',150);
 			}
 			if(this.checkActiveItem(mouseX,mouseY,this.stone)){
 				if(!this.checkFinger(-1)){
@@ -349,7 +350,7 @@
 							scene.fingerMouse.visible = true;
 							scene.telPanel.visible = false;
 							scene.telPanel.reset();
-							
+							game.notepanel.show(true,'科普知识：火警电话119，要记住哦。');
 						}
 					});
 				}else{
@@ -422,6 +423,7 @@
 				scene.hero.speedx = 2;
 				scene.hero.speedy = 0;
 				scene.ignoreTouch = true;
+				game.notepanel.show(true,'科普知识：浓烟中要匍匐前进，防止被烟雾熏倒。');
 			});
 			
 		},

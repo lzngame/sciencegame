@@ -148,6 +148,7 @@
 					this.halfpic2.status = 1;
 					game.toolspanel.removeIcon(2);
 					this.fingerMouse.setDefault();
+					game.notepanel.show(true,'科普知识：在地震中是不可以乘坐电梯的。',150);
 				}
 			}
 			

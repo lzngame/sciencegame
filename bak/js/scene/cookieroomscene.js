@@ -95,7 +95,7 @@
 				this.annihilatorEffect.y = this.hero.posy - 120;
 				this.ignoreTouch = true;
 				game.boydata.cookieroomData.annihilatorused = true;
-				game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
+				game.notepanel.show(true,'科普知识：使用灭火器灭掉火源，防止更大的灾害');
 				this.passstep = 1;
 				var scene = this;
 				game.sounds.play(17,true);
@@ -111,7 +111,6 @@
 						scene.annihilator.status = 2;
 						scene.blocks.pop();
 						game.sounds.stop(17);
-						game.notepanel.show(true,game.configdata.GAMETXTS.pass02_ok);
 					}
 				});
 			}
@@ -172,6 +171,7 @@
 					this.gaseffect.visible = false;
 					this.fingerMouse.setDefault();
 					game.boydata.cookieroomData.pipswitchused = true;
+					game.notepanel.show(true,'科普知识：关闭燃气阀门是很重要的。');
 				}
 			}
 			

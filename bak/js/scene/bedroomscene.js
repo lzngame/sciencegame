@@ -128,7 +128,7 @@
 				}
 				this.hero.switchState('handon',10);
 				this.drink.remove();
-				game.toolippanel.show(true,'灾害中储备饮水',100);
+				game.toolippanel.show(true,'科普知识：灾害中储备饮水',100);
 				game.toolspanel.addIcon(3);
 				game.toolspanel.show(true,100);
 				game.boydata.bedroomData.drink.used = true;
@@ -196,7 +196,7 @@
 				game.boydata.bedroomData.pillow.used = true;
 				
 				new game.FlashStarEffect({x:mouseX-100,y:mouseY-100}).addTo(this);
-				game.notepanel.show(true,'地震中硬木板这样的东西可以保护头部',100);
+				game.notepanel.show(true,'科普知识：地震中硬木板这样的东西可以保护头部',100);
 				this.passstep = 1;
 				this.star01 = new game.FlashStar({
 					x:560,
