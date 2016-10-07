@@ -263,7 +263,8 @@
 							scene.fingerMouse.visible = true;
 							game.boydata.passdata[0][0] = 1;
 							game.boydata.passdata[1][0] = 0;
-							game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+							scene.showNote();
+							//game.switchScene(game.configdata.SCENE_NAMES.passchoice);
 						}
 					});
 				}else{
@@ -282,6 +283,17 @@
 			this.picpanel = new game.PicPanel({
 				visible:false,
 			}).addTo(this);
+		},
+		showNote:function(){
+			var scene = this;
+			var x = -this.x;
+			var img = new Hilo.Bitmap({
+				image:'img/note01.png',
+				x:x,
+			}).addTo(this);
+			img.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+			});
 		},
 		onUpdate:function(){
 			this.x = (610 - this.hero.posx);
