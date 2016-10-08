@@ -76,6 +76,7 @@ game.configdata = new function(){
 		fireglass:'FIREGLASS_SCENE',
 		gameover:'GAMEOVER_SCENE',
 		depot:'DEPOT_SCENE',
+		incar:'INCAR_SCENE',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
@@ -133,7 +134,9 @@ game.configdata = new function(){
 		{name:'halfpic02',icon:'halfpic01icon',index:12},
 		{name:'bread',icon:'breadicon',index:13},
 		{name:'rag',icon:'ragicon',index:14},
-		
+		{name:'tyre',icon:'tyreicon',index:15},
+		{name:'gasolinecan',icon:'gasolineicon',index:16},
+		{name:'clipper',icon:'clippericon',index:17},
 	];
 
 	self.mainStageSize ={width:320,height:480};

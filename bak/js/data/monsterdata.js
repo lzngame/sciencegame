@@ -179,6 +179,18 @@ game.monsterdata = new function(){
 				annihilator:false,
 				towel:false,
 			};
+			
+			this.depotdata = {
+				pass:false,
+				tyreonline:false,
+				tyreonfloor:false,
+				canused:false,
+				canfull:false,
+				tyreoncar:false,
+			},
+			this.incardata = {
+				clipperused:false,
+			},
 			//-1 No start 0:doing -1:finished
 			this.passdata = [
 			[0,'pass01',game.configdata.SCENE_NAMES.attack],

@@ -129,6 +129,7 @@
 		finishedImgUrl:'',
 		targetx:0,
 		targety:0,
+		initimg:true,
 		clickArea:[0,0,0,0],
 		constructor: function(properties) {
 			ActiveObject.superclass.constructor.call(this, properties);
@@ -155,12 +156,14 @@
 			this.img.setImage(game.getImg('uimap'),rect);	
 			this.img.x = 0;
 			this.img.y = 0;
+			this.initimg = true;
 		},
 		setEndImg:function(x,y){
 			var rect = game.configdata.getPngRect(this.finishedImgUrl,'uimap');
 			this.img.setImage(game.getImg('uimap'),rect);	
 			this.img.x = x;
 			this.img.y = y;
+			this.initimg = false;
 		},
 		remove:function(){
 			this.removeFromParent();
