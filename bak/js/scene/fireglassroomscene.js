@@ -91,7 +91,8 @@
 						onComplete:function(){
 							game.boydata.passdata[1][0] = 1;
 							game.boydata.passdata[2][0] = 0;
-							game.switchScene(game.configdata.SCENE_NAMES.depot);
+							scene.showNote();
+
 						}
 					});
 				}else{
@@ -163,6 +164,16 @@
 			}else{
 				return false;
 			}
+		},
+		showNote:function(){
+			var scene = this;
+			var x = -this.x;
+			var img = new Hilo.Bitmap({
+				image:'img/note02.png',
+			}).addTo(this);
+			img.on(Hilo.event.POINTER_START, function(e) {
+				//game.switchScene(game.configdata.SCENE_NAMES.depot);
+			});
 		},
 		setPassData:function(){
 			
