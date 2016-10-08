@@ -7,6 +7,7 @@
 		depotTime:0,
 		gasolinecan:null,
 		cardoorhandler:null,
+		linetyre:null,
 		
 		shakeTime:0,
 		shakeLevel:0,
@@ -260,11 +261,13 @@
 		changeBg:function(){
 			var scene = this;
 			Hilo.Tween.to(scene, {
-				alpha:0.01
+				alpha:0.01,
 			}, {
 				duration: 400,
-				//ease: Hilo.Ease.Bounce.EaseOut,
+				delay:3000,
 				onComplete: function() {
+					scene.interludetxt.removeFromParent();
+					scene.bgImg.setImage(game.getImg('depot'));
 					Hilo.Tween.to(scene, {
 						alpha:1
 					}, {
@@ -272,7 +275,8 @@
 						//ease: Hilo.Ease.Bounce.EaseOut,
 						onComplete: function() {
 							scene.alpha = 1;
-							scene.bgImg.setImage(game.getImg('depot'));
+							
+							
 						}
 					});
 				}
@@ -287,28 +291,32 @@
 			this.bgImg = new Hilo.Bitmap({
 				image: game.getImg('interlude'),
 			}).addTo(this);
-			this.interludetxt = new Hilo.Bitmap({
-				image: img,
-				rect:game.configdata.getPngRect('boy','uimap'),
-				x:1202,
-				y:200,
-			}).addTo(this);
+			
 			this.gasolinecan  = new game.ActiveObject({
-				x:387,
-				y:433,
+				x:375,
+				y:423,
 				status:1,
-				readyImgUrl:'firelamp2',
-				finishedImgUrl:'firelamp2',
+				readyImgUrl:'parcan',
+				finishedImgUrl:'parcan',
 				clickArea:[0,0,40,40],
 			}).addTo(this);
 			
 			this.cardoorhandler  = new game.ActiveObject({
-				x:557,
-				y:504,
+				x:530,
+				y:478,
 				status:1,
-				readyImgUrl:'iphone',
-				finishedImgUrl:'iphone',
-				clickArea:[0,0,40,40],
+				readyImgUrl:'empty',
+				finishedImgUrl:'empty',
+				clickArea:[0,0,60,60],
+			}).addTo(this);
+			
+			this.linetyre  = new game.ActiveObject({
+				x:-12,
+				y:270,
+				status:1,
+				readyImgUrl:'lintyre',
+				finishedImgUrl:'lintyre',
+				clickArea:[0,0,60,60],
 			}).addTo(this);
 			
 				/*this.pillow  = new game.ActiveObject({
@@ -429,13 +437,19 @@
 				this.drink.status = 1;
 				this.medicalkit.status =1;
 			}*/
+			
+			this.interludetxt = new Hilo.Bitmap({
+				image: 'img/note03.png',
+				x:1202,
+				y:200,
+			}).addTo(this);
 		},
 		onUpdate:function(){
 			this.depotTime++;
-			if(this.depotTime == 100){
+			if(this.depotTime == 70){
 				var scene = this;
 				new Hilo.Tween.to(scene.interludetxt,{
-						x:-210,
+						x:210,
 					},{
 						duration:5000,
 						onComplete:function(){
@@ -465,10 +479,7 @@
 				game.sounds.play(13,false);
 				this.shakeRoom(700,10);
 			}
-			if(this.readyShakeTime == 900){
-				this.changeBg();
-				//this.tasktxt1.visible = true;
-			}
+			
 			if(this.readyShakeTime == 1200){
 				this.glim.status = 1;
 				this.pillow.status = 1;

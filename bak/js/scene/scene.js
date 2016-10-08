@@ -261,8 +261,8 @@
 			var scene = this;
 			this.btnpass01.on(Hilo.event.POINTER_START, function(e) {
 				game.sounds.play(2,false);
-				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
-				//game.switchScene(game.configdata.SCENE_NAMES.attack,[200,600]);
+				//game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+				game.switchScene(game.configdata.SCENE_NAMES.depot,[200,600]);
 			});
 			this.btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();

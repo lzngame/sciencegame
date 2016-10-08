@@ -172,7 +172,7 @@
 				image:'img/note02.png',
 			}).addTo(this);
 			img.on(Hilo.event.POINTER_START, function(e) {
-				//game.switchScene(game.configdata.SCENE_NAMES.depot);
+				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
 			});
 		},
 		setPassData:function(){
