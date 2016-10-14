@@ -91,6 +91,7 @@
 					this.linetyre.remove();
 					game.headPanel.sayYes();
 					game.toolspanel.removeIcon(17);
+					game.boydata.depotdata.tyreonline = true;
 					this.fingerMouse.setDefault();
 					this.floortyre  = new game.ActiveObject({
 						x:10,
@@ -118,6 +119,7 @@
 				this.floortyre.remove();
 				game.toolspanel.show(true,100);
 				game.toolspanel.addIcon(15);
+				game.boydata.depotdata.tyreonfloor = true;
 			}
 			
 			if(this.checkActiveItem(mouseX,mouseY,this.emptytyre)){
@@ -136,6 +138,7 @@
 					}).addTo(this);
 					this.emptytyre.remove();
 					this.swapChildren(t,this.fingerMouse);
+					game.boydata.depotdata.tyreoncar = true;
 				}
 			}
 			
@@ -176,6 +179,7 @@
 				this.gasolinecan.remove();
 				game.toolspanel.addIcon(16);
 				game.toolspanel.show(true,100);
+				game.boydata.depotdata.canused = true;
 			}
 		},
 		destory: function() {
@@ -220,6 +224,12 @@
 				if(this.floortyre)
 					this.floortyre.visible = true;
 				this.gasolinecan.visible = true;
+			}
+			if(game.boydata.depotdata.gasolinecan){
+				this.gasolinecan.remove();
+			}
+			if(game.boydata.depotdata.tyreonfloor){
+				this.tyreonfloor.remove();
 			}
 		},
 		layoutSceneData:function(){
