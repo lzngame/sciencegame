@@ -1,7 +1,9 @@
 (function(ns) {
 	var Hero = ns.Hero = Hilo.Class.create({
-		Extends: Hilo.Sprite,
+		Extends: Hilo.Container,
+		body:null,
 		name: '',
+		nametxt:null,
 		atlas: null,
 		initx: 0,
 		isActionFirst:true,    //动作可能持续好多帧，每帧还会持续多个循环，这个值指示在动作的第一次发生 防止消息粘包
@@ -40,6 +42,16 @@
 			this.init(properties);
 			this.initx = this.x;
 		},
+		init: function(properties) {
+			console.log('%s init', this);
+			this.body = new Hilo.Sprite().addTo(this);
+			this.body._frames = this.atlas.getSprite('idle');
+			this.nametxt = new Hilo.Text({
+				text: 'loading...',
+				color: '#FF00FF',
+				y:-20,
+			}).addTo(this);
+		},
 		receiveMsg: function(msg) {
 			switch (msg.msgtype) {
 				case game.configdata.MSAGE_TYPE.behit:
@@ -47,15 +59,12 @@
 						this.exeBehit(msg.msgdata);
 					else if (this.framename == 'shield')
 						this.exeShield();
-					else if (this.framename == 'attack' && this.currentFrame > this.attackKeyFrame)
+					else if (this.framename == 'attack' && this.body.currentFrame > this.attackKeyFrame)
 						this.exeBehit(msg.msgdata);
 					break;
 			}
 		},
-		init: function(properties) { 
-			console.log('%s init', this);
-			this._frames = this.atlas.getSprite('idle');
-		},
+		
 		turnleft:function(){
 			this.scaleX = -1;
 			this.offsetx = this.offsetxLeft;
@@ -127,15 +136,15 @@
 		},
 		switchState: function(name, interval) {
 			this.framename = name;
-			this._frames = this.atlas.getSprite(name);
-			this.interval = interval;
-			this.currentFrame = 0;
+			this.body._frames = this.atlas.getSprite(name);
+			this.body.interval = interval;
+			this.body.currentFrame = 0;
 			if(name != 'shield'){
 				this.sendMsg(game.currentScene,game.configdata.MSAGE_TYPE.shieldfinish,'shield finished');
 			}
 		},
 		atLastFrame: function() {
-			if (this.currentFrame == this.getNumFrames() - 1) {
+			if (this.body.currentFrame == this.body.getNumFrames() - 1) {
 				switch (this.framename) {
 					case 'fallhit':
 						if(this.isRunaway){
@@ -257,7 +266,7 @@
 		regainIdle: function() {
 			this.switchState('idle',6);
 			
-			this.interval = 5;
+			this.body.interval = 5;
 			this.x = this.initx;
 		},
 	});
@@ -309,7 +318,7 @@ function addEffect(body,sttype) {
 		frames: atlas.getSprite(sttype),
 		timeBased: false,
 		onUpdate: function() {
-			if (this.currentFrame == this.getNumFrames() - 1) {
+			if (this.body.currentFrame == this.body.getNumFrames() - 1) {
 				this.removeFromParent();
 			}
 		}
