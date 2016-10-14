@@ -115,7 +115,7 @@
 			this.removeFromParent();
 		},
 		startLoadQueue: function() {
-			var list = this.getDownloadList(game.configdata.DOWNLOADLIST_PNGS, 'loadimgs');
+			var list = this.getDownloadList(game.loaddata.DOWNLOADLIST_PNGS, 'loadimgs');
 			var total = list.length;
 			var m = Math.floor(list.length / 10);
 			var self = this;
