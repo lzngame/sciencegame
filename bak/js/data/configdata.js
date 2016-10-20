@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = false;
+	self.NOLINE = true;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -71,6 +71,7 @@ game.configdata = new function(){
 		gameover:'GAMEOVER_SCENE',
 		depot:'DEPOT_SCENE',
 		incar:'INCAR_SCENE',
+		repairdepot:'REPAIRDEPOT_SCENE',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',

@@ -116,6 +116,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();
 			this.scenes[game.configdata.SCENE_NAMES.depot]        = new game.DepotScene();
 			this.scenes[game.configdata.SCENE_NAMES.incar]        = new game.IncarScene();
+			this.scenes[game.configdata.SCENE_NAMES.repairdepot]  = new game.RepairScene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

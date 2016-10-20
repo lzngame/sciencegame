@@ -1,0 +1,103 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="backpick1.png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="backpick2.png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="backpick3.png" x="1272" y="624" width="210" height="310"/>
+	<SubTexture name="backpick4.png" x="0" y="936" width="210" height="310"/>
+	//0-3
+	<SubTexture name="bee1.png" x="1925" y="1937" width="61" height="63"/>
+	<SubTexture name="bee2.png" x="1925" y="1872" width="61" height="63"/>
+	//4-5
+	<SubTexture name="crawlladder1.png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="crawlladder2.png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="crawlladder3.png" x="212" y="624" width="210" height="310"/>
+	<SubTexture name="crawlladder4.png" x="212" y="936" width="210" height="310"/>
+	<SubTexture name="crawlladder5.png" x="212" y="1248" width="210" height="310"/>
+	<SubTexture name="crawlladder6.png" x="1272" y="312" width="210" height="310"/>
+	//6-11
+	<SubTexture name="dogangry1.png" x="700" y="1872" width="173" height="153"/>
+	<SubTexture name="dogangry2.png" x="875" y="1872" width="173" height="153"/>
+	<SubTexture name="dogangry3.png" x="1050" y="1872" width="173" height="153"/>
+	<SubTexture name="dogangry4.png" x="1225" y="1872" width="173" height="153"/>
+	//12-15
+	<SubTexture name="dogeat1.png" x="175" y="1872" width="173" height="153"/>
+	<SubTexture name="dogeat2.png" x="350" y="1872" width="173" height="153"/>
+	<SubTexture name="dogeat3.png" x="525" y="1872" width="173" height="153"/>
+	<SubTexture name="dogeat4.png" x="350" y="1872" width="173" height="153"/>
+	//16-19
+	<SubTexture name="dogidle1.png" x="1400" y="1872" width="173" height="153"/>
+	<SubTexture name="dogidle2.png" x="1575" y="1872" width="173" height="153"/>
+	<SubTexture name="dogidle3.png" x="0" y="1872" width="173" height="153"/>
+	<SubTexture name="dogidle4.png" x="1750" y="1872" width="173" height="153"/>
+	//20-23
+	<SubTexture name="idle1.png" x="1272" y="936" width="210" height="310"/>
+	<SubTexture name="idle2.png" x="212" y="1560" width="210" height="310"/>
+	<SubTexture name="idle3.png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="idle4.png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="idle5.png" x="424" y="624" width="210" height="310"/>
+	//24-28
+	<SubTexture name="knockladder1.png" x="1272" y="0" width="210" height="310"/>
+	<SubTexture name="knockladder2.png" x="2120" y="312" width="210" height="310"/>
+	<SubTexture name="knockladder3.png" x="2120" y="0" width="210" height="310"/>
+	<SubTexture name="knockladder4.png" x="1908" y="1248" width="210" height="310"/>
+	//29-32
+	<SubTexture name="ladderfall1.png" x="1908" y="1560" width="210" height="310"/>
+	<SubTexture name="ladderfall2.png" x="1908" y="936" width="210" height="310"/>
+	<SubTexture name="ladderfall3.png" x="1696" y="1248" width="210" height="310"/>
+	<SubTexture name="ladderfall4.png" x="1908" y="624" width="210" height="310"/>
+	//33-36
+	<SubTexture name="ladderup1.png" x="636" y="1248" width="210" height="310"/>
+	<SubTexture name="ladderup2.png" x="636" y="936" width="210" height="310"/>
+	<SubTexture name="ladderup3.png" x="636" y="624" width="210" height="310"/>
+	<SubTexture name="ladderup4.png" x="636" y="312" width="210" height="310"/>
+	<SubTexture name="ladderup5.png" x="636" y="0" width="210" height="310"/>
+	//37-41
+	<SubTexture name="nocan1.png" x="1484" y="1560" width="210" height="310"/>
+	<SubTexture name="nocan2.png" x="1484" y="1248" width="210" height="310"/>
+	<SubTexture name="nocan3.png" x="1484" y="936" width="210" height="310"/>
+	<SubTexture name="nocan4.png" x="1484" y="624" width="210" height="310"/>
+	//42-45
+	<SubTexture name="pickobj1.png" x="424" y="936" width="210" height="310"/>
+	<SubTexture name="pickobj2.png" x="424" y="1248" width="210" height="310"/>
+	<SubTexture name="pickobj3.png" x="424" y="1560" width="210" height="310"/>
+	<SubTexture name="pickobj4.png" x="0" y="1248" width="210" height="310"/>
+	<SubTexture name="pickobj5.png" x="0" y="1560" width="210" height="310"/>
+	//46-50
+	<SubTexture name="prybox1.png" x="1696" y="624" width="210" height="310"/>
+	<SubTexture name="prybox2.png" x="1696" y="936" width="210" height="310"/>
+	<SubTexture name="prybox3.png" x="1272" y="1248" width="210" height="310"/>
+	<SubTexture name="prybox4.png" x="1696" y="312" width="210" height="310"/>
+	<SubTexture name="prybox5.png" x="1696" y="0" width="210" height="310"/>
+	//51-55
+	<SubTexture name="rightpick1.png" x="848" y="936" width="210" height="310"/>
+	<SubTexture name="rightpick2.png" x="848" y="624" width="210" height="310"/>
+	//56-57
+	<SubTexture name="snail1.png" x="2083" y="1946" width="45" height="75"/>
+	<SubTexture name="snail2.png" x="2036" y="1946" width="45" height="75"/>
+	<SubTexture name="snail3.png" x="1988" y="1946" width="46" height="72"/>
+	<SubTexture name="snail4.png" x="1988" y="1872" width="46" height="72"/>
+	<SubTexture name="snail5.png" x="2036" y="1872" width="46" height="72"/>
+	//58-62
+	<SubTexture name="squat1.png" x="848" y="312" width="210" height="310"/>
+	<SubTexture name="squat2.png" x="848" y="0" width="210" height="310"/>
+	<SubTexture name="squat3.png" x="636" y="1560" width="210" height="310"/>
+	//63-65
+	<SubTexture name="turnback1.png" x="0" y="624" width="210" height="310"/>
+	<SubTexture name="turnback2.png" x="1060" y="1560" width="210" height="310"/>
+	<SubTexture name="turnback3.png" x="1060" y="1248" width="210" height="310"/>
+	//66-68
+	<SubTexture name="turnright1.png" x="1484" y="312" width="210" height="310"/>
+	<SubTexture name="turnright2.png" x="1484" y="0" width="210" height="310"/>
+	<SubTexture name="turnright3.png" x="1272" y="1560" width="210" height="310"/>
+	//69-71
+	<SubTexture name="upjack1.png" x="1908" y="312" width="210" height="310"/>
+	<SubTexture name="upjack2.png" x="1908" y="0" width="210" height="310"/>
+	<SubTexture name="upjack3.png" x="1696" y="1560" width="210" height="310"/>
+	//72-74
+	<SubTexture name="walk1.png" x="1060" y="936" width="210" height="310"/>
+	<SubTexture name="walk2.png" x="1060" y="624" width="210" height="310"/>
+	<SubTexture name="walk3.png" x="1060" y="312" width="210" height="310"/>
+	<SubTexture name="walk4.png" x="1060" y="0" width="210" height="310"/>
+	<SubTexture name="walk5.png" x="848" y="1560" width="210" height="310"/>
+	<SubTexture name="walk6.png" x="848" y="1248" width="210" height="310"/>
+	//75-80
+</TextureAtlas>

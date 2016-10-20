@@ -161,8 +161,7 @@
 			var w = obj.clickArea[2];
 			var h = obj.clickArea[3];
 			
-			
-			
+
 			if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h && obj.status == 1){
 				if(!this.hero){
 					return true;
@@ -172,14 +171,8 @@
 					this.fingerMouse.active = false; 
 				}else{
 					isClickIn = false;
-					//if(!nowarn){
-						//game.notepanel.show(true,'走近点...',50);	
-						this.herowalk(obj.x + obj.targetx,obj.y+obj.targety);
-					//}
+					this.herowalk(obj.x + obj.targetx,obj.y+obj.targety);
 				}
-				//if(nopos){
-				//	isClickIn = true;
-				//}
 			}
 			return isClickIn;
 		},

@@ -17,10 +17,10 @@
 		shieldoffsety:32,
 		petrifyTime:0,
 		
-		offsetx:-125,
-		offsety:-310,
-		offsetxRight:-125,
-		offsetxLeft:132,
+		offsetx:0,
+		offsety:0,
+		offsetxRight:0,
+		offsetxLeft:0,
 		posx:0,
 		posy:0,
 		jumpspeed:0,
@@ -44,6 +44,8 @@
 		},
 		init: function(properties) {
 			console.log('%s init', this);
+			this.pivotX = 78;
+			this.pivotY = 282;
 			this.body = new Hilo.Sprite().addTo(this);
 			this.body._frames = this.atlas.getSprite('idle');
 			this.nametxt = new Hilo.Text({
@@ -67,11 +69,11 @@
 		
 		turnleft:function(){
 			this.scaleX = -1;
-			this.offsetx = this.offsetxLeft;
+			//this.offsetx = this.offsetxLeft;
 		},
 		turnright:function(){
 			this.scaleX = 1;
-			this.offsetx = this.offsetxRight;
+			//this.offsetx = this.offsetxRight;
 		},
 		blockStop:function(){
 			this.speedx = 0;

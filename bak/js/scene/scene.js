@@ -178,7 +178,10 @@
 		fingerMouse:null,
 		btnpass01:null,
 		btnExit:null,
-		
+		cloud1:null,
+		cloud2:null,
+		cloud3:null,
+		cloud4:null,
 		constructor: function(properties) {
 			MainScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -211,6 +214,15 @@
 				}else{
 					scene.fingerMouse.visible = false;
 				}
+				
+				if(game.checkInRect(targetx,targety,scene.btnpass01.x,scene.btnpass01.y,scene.btnpass01.width,scene.btnpass01.height)
+				   )
+				{
+					scene.btnpass01.scaleX = scene.btnpass01.scaleY = 1.1;
+				}else{
+					scene.btnpass01.scaleX = scene.btnpass01.scaleY = 1;
+				}
+				
 			});
 			
 		},
@@ -224,6 +236,26 @@
 				width:this.width,
 				height:this.height,
 				image:game.getImg('mainbg'),
+			}).addTo(this);
+			this.cloud1 = new Hilo.Bitmap({
+				image:'img/cloud1.png',
+				x:100,
+				y:230,
+			}).addTo(this);
+			this.cloud2 = new Hilo.Bitmap({
+				image:'img/cloud2.png',
+				x:500,
+				y:140,
+			}).addTo(this);
+			this.cloud3 = new Hilo.Bitmap({
+				image:'img/cloud3.png',
+				x:800,
+				y:30,
+			}).addTo(this);
+			this.cloud4 = new Hilo.Bitmap({
+				image:'img/cloud4.png',
+				x:200,
+				y:60,
 			}).addTo(this);
 			var boy = new Hilo.Bitmap({
 				image:img,
@@ -308,6 +340,27 @@
 			this.removeAllChildren();
 			this.removeFromParent();
 		},
+		onUpdate:function(){
+			this.cloudMove();
+		},
+		cloudMove:function(){
+			this.cloud1.x -= 0.5;
+			this.cloud2.x -= 1;
+			this.cloud3.x -= 0.6;
+			this.cloud4.x -= 0.8;
+			if(this.cloud1.x <-415){
+				this.cloud1.x = 1200;
+			}
+			if(this.cloud2.x <-341){
+				this.cloud1.x = 1200;
+			}
+			if(this.cloud3.x <-590){
+				this.cloud3.x = 1200;
+			}
+			if(this.cloud4.x <-389){
+				this.cloud4.x = 1200;
+			}
+		},
 	});
 	
 	
@@ -318,6 +371,11 @@
 		storytxt:'',
 		fingerMouse:null,
 		btnsPanel:null,
+		cloud1:null,
+		cloud2:null,
+		cloud3:null,
+		cloud4:null,
+		overPasses:['passover01','passover02','passover03','passover04','passover05','passover06'],
 		constructor: function(properties) {
 			PassChoiceScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -340,14 +398,42 @@
 				width:1202,
 				height:686
 			}).addTo(this);
-			
+			this.cloud1 = new Hilo.Bitmap({
+				image:'img/cloud1.png',
+				x:100,
+				y:230,
+			}).addTo(this);
+			this.cloud2 = new Hilo.Bitmap({
+				image:'img/cloud2.png',
+				x:500,
+				y:140,
+			}).addTo(this);
+			this.cloud3 = new Hilo.Bitmap({
+				image:'img/cloud3.png',
+				x:800,
+				y:30,
+			}).addTo(this);
+			this.cloud4 = new Hilo.Bitmap({
+				image:'img/cloud4.png',
+				x:200,
+				y:60,
+			}).addTo(this);
 			var img = game.getImg('uimap');
 			new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('boy','uimap'),
 				x:110,
 				y:180
+			});
+			
+			new Hilo.Sprite({
+				frames:game.monsterdata.soliderhero_atlas.getSprite('idle'),
+				x:110,
+				y:180,
+				interval:8,
 			}).addTo(this);
+			
+			
 			this.btnsPanel = new Hilo.Container({
 				x:0,
 				y:0,
@@ -367,6 +453,8 @@
 					x:initx + offsetx,
 					y:inity + offsety
 				}).addTo(this.btnsPanel);
+				btn.imgdex = i;
+				btn.initname = passname;
 				btn.extendname = item[2];
 				btn.islock = item[0];
 				if(item[0] == -1){
@@ -421,10 +509,17 @@
 				var btns = scene.btnsPanel.children;
 				for(var i=0;i<btns.length;i++){
 					var btn = btns[i];
-					if(btn.islock == 0){
+					if(true){
+					//if(btn.islock == 0){
 						if(game.checkInRect(targetx,targety,btn.x,btn.y,btn.width,btn.height)){
+							//btn.scaleX = btn.scaleY = 0.9;
+							var rect = game.configdata.getPngRect(scene.overPasses[btn.imgdex],'uimap');
+							btn.setImage(game.getImg('uimap'),rect);
 							scene.fingerMouse.visible = true;
 							break;
+						}else{
+							var rect = game.configdata.getPngRect(btn.initname,'uimap');
+							btn.setImage(game.getImg('uimap'),rect);
 						}
 					}
 				}
@@ -439,7 +534,28 @@
 			this.removeAllChildren();
 			this.removeFromParent();
 			game.sounds.stop(20);
-		}
+		},
+		cloudMove:function(){
+			this.cloud1.x -= 0.5;
+			this.cloud2.x -= 1;
+			this.cloud3.x -= 0.6;
+			this.cloud4.x -= 0.8;
+			if(this.cloud1.x <-415){
+				this.cloud1.x = 1200;
+			}
+			if(this.cloud2.x <-341){
+				this.cloud1.x = 1200;
+			}
+			if(this.cloud3.x <-590){
+				this.cloud3.x = 1200;
+			}
+			if(this.cloud4.x <-389){
+				this.cloud4.x = 1200;
+			}
+		},
+		onUpdate:function(){
+			this.cloudMove();
+		},
 	});
 	
 	var GameoverScene = ns.GameoverScene = Hilo.Class.create({
