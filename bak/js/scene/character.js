@@ -35,7 +35,13 @@
 		isRunaway:false,
 		gravity:1.5,
 		
+		prop:null,
+		hand:null,
+		inProp:false,
+		
 		currentHealth:5,
+		isFirstcirle:false,
+		preFrame:-1,
 		
 		constructor: function(properties) {
 			Hero.superclass.constructor.call(this, properties);
@@ -48,10 +54,23 @@
 			this.pivotY = 282;
 			this.body = new Hilo.Sprite().addTo(this);
 			this.body._frames = this.atlas.getSprite('idle');
+			this.body.interval = 10;
 			this.nametxt = new Hilo.Text({
-				text: 'loading...',
+				text: '',
 				color: '#FF00FF',
 				y:-20,
+			}).addTo(this);
+			var img = game.getImg('uimap');
+			this.prop = new Hilo.Bitmap({
+				image:img,
+				rect:game.configdata.getPngRect('empty','uimap'),
+			}).addTo(this);
+			this.hand = new Hilo.Bitmap({
+				x:32,
+				y:178,
+				image:img,
+				visible:false,
+				rect:game.configdata.getPngRect('coverhand','uimap'),
 			}).addTo(this);
 		},
 		receiveMsg: function(msg) {
@@ -66,7 +85,15 @@
 					break;
 			}
 		},
-		
+		putProp:function(){
+			this.prop.visible = this.hand.visible = this.inProp = false;
+		},
+		takeProp:function(propname,x,y){
+			this.hand.visible = this.prop.visible = this.inProp = true;
+			this.prop.x = x;
+			this.prop.y = y;
+			this.prop.setImage(game.getImg('uimap'),game.configdata.getPngRect(propname,'uimap'));
+		},
 		turnleft:function(){
 			this.scaleX = -1;
 			//this.offsetx = this.offsetxLeft;
@@ -83,7 +110,29 @@
 			//this.switchState('idle',6);
 		},
 		onUpdate: function() {
+			if(this.preFrame != this.body.currentFrame){
+				this.preFrame = this.body.currentFrame;
+				this.isFirstcirle = true;
+			}else{
+				this.isFirstcirle = false;
+			}
+			
+			
 			this.atLastFrame();
+			if(this.framename =='upladder'){
+				if(this.isFirstcirle){
+					if(this.body.currentFrame == 2 || this.body.currentFrame ==5){
+						this.posy -= 40;
+					}
+				}
+			}
+			if(this.framename =='downladder'){
+				if(this.isFirstcirle){
+					if(this.body.currentFrame == 2 || this.body.currentFrame ==5){
+						this.posy += 40;
+					}
+				}
+			}
 			if(this.framename =='jump'){
 				this.posy += this.jumpspeed;
 				if(this.posy >= this.floory){
@@ -148,21 +197,23 @@
 		atLastFrame: function() {
 			if (this.body.currentFrame == this.body.getNumFrames() - 1) {
 				switch (this.framename) {
-					case 'fallhit':
-						if(this.isRunaway){
-							this.switchState('run',7);
-						}else{
-							this.regainIdle();
-						}
-						break;
-					case 'behit':
+					case 'fallladder':
 						this.regainIdle();
 						break;
-					case 'attack':
+					case 'onTopladder':
 						this.regainIdle();
-						this.isActionFirst = true;
+						this.posy -= 90;
 						break;
-					case 'shield':
+					case 'nocan':
+						this.regainIdle();
+						break;
+					case 'downTopladder':
+						this.switchState('downladder',10);
+						break;
+					case 'takebackput':
+						this.regainIdle();
+						break;
+					case 'takebackputjack':
 						this.regainIdle();
 						break;
 					case 'handon':
@@ -270,6 +321,57 @@
 			
 			this.body.interval = 5;
 			this.x = this.initx;
+		},
+	});
+
+})(window.game);
+
+(function(ns) {
+	var Bee = ns.Bee = Hilo.Class.create({
+		Extends: Hilo.Sprite,
+		name: 'bee',
+		atlas: null,
+		offsetx:0,
+		offsety:0,
+		offsetxRight:0,
+		offsetxLeft:0,
+		posx:0,
+		posy:0,
+		speed:3.0,
+		speedx:0,
+		speedy:0,
+		targetx:0,
+		targety:0,
+		
+		constructor: function(properties) {
+			Bee.superclass.constructor.call(this, properties);
+			this.init(properties);
+			this.initx = this.x;
+		},
+		init: function(properties) {
+			console.log('%s init', this);
+			this.pivotX = 30;
+		},
+		turnleft:function(){
+			this.scaleX = 1;
+			//this.offsetx = this.offsetxLeft;
+		},
+		turnright:function(){
+			this.scaleX = -1;
+			//this.offsetx = this.offsetxRight;
+		},
+		onUpdate: function() {
+			if(Math.abs(this.posx -this.targetx) <5 && Math.abs(this.posy-this.targety) <5 && (this.speedx != 0 || this.speedy != 0)){
+				this.posx = this.targetx;
+				this.posy = this.targety;
+				this.speedx = 0;
+				this.speedy = 0;
+			}else{
+				this.posx += this.speedx;
+				this.posy += this.speedy;
+			}
+			this.x = this.posx + this.offsetx ;
+			this.y = this.posy + this.offsety;
 		},
 	});
 

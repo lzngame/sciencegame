@@ -122,6 +122,7 @@
 	
 	var ActiveObject = ns.ActiveObject = Hilo.Class.create({
 		Extends: Hilo.Container,
+		name:'',
 		img:null,
 		state:0,
 		status:0,    //0 未激活 1激活 2完成

@@ -275,6 +275,9 @@ game.sounds = new function(){
 	'ting.mp3',//19
 	'passbg.mp3',//20
 	'dang.mp3',//21
+	'dog.mp3',//22,
+	'knock.mp3',//23
+	'fallbone.mp3',//24
 	];
 	this.play = function(index,loop){
 		if(game.configdata.MUTE)

@@ -49,7 +49,7 @@
 				posy: y,
 				atlas:game.monsterdata.soliderhero_atlas,
 				once: false,
-				interval: 5,
+				interval: 10,
 				alpha:1,
 			}).addTo(this);
 			if(dir == 'left'){
@@ -243,8 +243,10 @@
 			var scene = this;
 			game.stage.off();
 			game.stage.on(Hilo.event.POINTER_MOVE, function(e) {
-				if(scene.ignoreTouch)
+				if(scene.ignoreTouch){
 					return;
+				}
+					
 				var stagex = e.stageX;
 				var stagey = e.stageY;
 				var targetx = stagex - scene.x;
@@ -263,20 +265,30 @@
 				}
 			});
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
-				if(scene.ignoreTouch)
-					return;
-				var stagex = e.stageX;
-				var stagey = e.stageY;
-				var targetx = stagex - scene.x;
-				var targety = stagey - scene.y;
+				scene.onTouchStart(e);
+			});
+		},
+		onTouchMove:function(e){
+			
+		},
+		onTouchStart:function(e){
+			var  scene = this;
+			if(scene.ignoreTouch)
+				return;
+			var stagex = e.stageX;
+			var stagey = e.stageY;
+			var targetx = stagex - scene.x;
+			var targety = stagey - scene.y;
+			
+			if(scene.checkActiveObjects(targetx,targety)){
+				console.log('on active obj');
+			}else{
 				if(!scene.checkInBlocks(targetx,targety)){
 					if(scene.hero){
 						scene.herowalk(targetx,targety);
 					}
 				}
-				
-				scene.checkActiveObjects(targetx,targety);
-			});
+			}
 		},
 	});
 })(window.game);
