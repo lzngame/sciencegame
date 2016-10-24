@@ -93,6 +93,7 @@
 			this.initFingerMouse();
 			this.layoutUI();
 			this.layoutPassPanel();
+			game.sounds.play(14,true);
 			game.boydata.currentHp = 4;
 			game.headPanel.setHp(game.boydata.currentHp);
 		},
@@ -218,7 +219,7 @@
 							duration:10,
 							delay:500,
 							onComplete:function(){
-								
+								game.sounds.play(6,false);
 								scene.car.tyreimg.visible = true;
 								new Hilo.Tween.to(scene.hero,{
 									posx:355,
@@ -358,6 +359,7 @@
 					duration: 120,
 					onComplete: function() {
 						scene.hero.switchState('idleback',10);
+						game.sounds.play(6,false);
 					}
 				}).link(
 					new Hilo.Tween.to(scene.hero,{
@@ -444,6 +446,7 @@
 							duration:10,
 							delay:500,
 							onComplete:function(){
+								game.sounds.play(30,false);
 								scene.hero.switchState('prybox',20);
 								scene.jackcover.isOpen = true;
 								new Hilo.Tween.to(scene.hero,{
@@ -511,6 +514,7 @@
 								this.isUpladder = true;
 								this.hero.switchState('upladder',6);
 							}else if(this.hero.posx > 570){
+								game.sounds.play(25,false);
 								this.hero.switchState('fallladder',10);
 								if(this.ladderState == 1){
 									this.ladderpart.visible = false;
@@ -605,6 +609,7 @@
 				
 				if(this.workjackObj.state == 1){
 					if(this.currentOnhandObj && this.currentOnhandObj.name == 'crowfoot'){
+						game.sounds.play(26,true);
 						this.ignoreTouch = true;
 						this.hero.switchState('upjack',10);
 						this.car.isUp = true;
@@ -722,6 +727,7 @@
 				if(!this.checkFinger(-1)){
 					return false;
 				}
+				game.sounds.play(27,false);
 				this.targets = [[661,205],[640,305],[600,405],[640,524]];
 				this.currentTarget = [661,205];
 				
@@ -741,7 +747,7 @@
 				if(!this.checkFinger(-1)){
 					return false;
 				}
-				
+				game.sounds.play(29,false);
 				this.passPaneleBg.visible = true;	
 				this.ignoreTouch = true;
 				return true;
@@ -1009,6 +1015,17 @@
 				y:434
 			}).addTo(this);
 		},
+		showNote:function(){
+			var scene = this;
+			var img = new Hilo.Bitmap({
+				image:'img/note04.png',
+				x:scene.passPaneleBg.x,
+				y:scene.passPaneleBg.y,
+			}).addTo(this);
+			img.on(Hilo.event.POINTER_START, function(e) {
+				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+			});
+		},
 		layoutPassPanel:function(){
 			this.picbg = new Hilo.Bitmap({ 
 				image:'img/picbg.png',
@@ -1054,6 +1071,7 @@
 				visible:false,
 			}).addTo(this.passPaneleBg);
 			
+			var scene = this;
 			this.passPaneleBg.on(Hilo.event.POINTER_START, function(e) {
 				if(e.stageY < 300 && this.visible){
 					this.visible = false;
@@ -1063,7 +1081,23 @@
 				var stagey = e.stageY;
 				if(game.checkInRect(stagex,stagey,690,526,60,100)){
 					if(this.parent.checkPass() && this.parent.car.isTyreOncar && this.parent.car.index ==0){
-						game.headPanel.sayYes();
+						//game.headPanel.sayYes();
+						game.sounds.play(15,false);
+						game.sounds.play(28,false);
+						
+						new Hilo.Tween.to(this,{
+								alpha:1
+							},{
+								duration:1300,
+								delay:100,
+								onComplete:function(){
+									//scene.ignoreTouch = false;
+									//scene.hero.visible = true;
+									//scene.fingerMouse.visible = true;
+									console.log('end');
+									scene.showNote();
+							}
+						});
 					}else{
 						game.headPanel.sayNo();
 					}
@@ -1192,7 +1226,7 @@
 			
 			if(this.car.index == 8 && !this.isworkjack){
 				this.isworkjack = true;
-				
+				game.sounds.stop(26);
 				this.hero.switchState('idle',10);
 				this.crowfoot.x = this.hero.posx-100;
 				this.crowfoot.y = this.hero.posy -30;

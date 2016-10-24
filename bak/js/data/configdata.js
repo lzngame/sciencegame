@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = true;
+	self.NOLINE = false;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -275,9 +275,16 @@ game.sounds = new function(){
 	'ting.mp3',//19
 	'passbg.mp3',//20
 	'dang.mp3',//21
-	'dog.mp3',//22,
+	
+	'dog.mp3',//22,  
 	'knock.mp3',//23
 	'fallbone.mp3',//24
+	'aiyou.mp3',//25 哎呦喂
+	'upjack.mp3',//压千斤顶 26
+	'bee.mp3',//蜜蜂 27
+	'carstart.mp3',//汽车发动 28
+	'opencardoor.mp3',//开车门 29
+	'grybox.mp3',//撬箱子
 	];
 	this.play = function(index,loop){
 		if(game.configdata.MUTE)
