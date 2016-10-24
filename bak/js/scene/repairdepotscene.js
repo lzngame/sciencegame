@@ -328,7 +328,7 @@
 									onComplete:function(){
 										scene.hero.switchState('idle',10);
 										scene.ignoreTouch = false;
-										scene.putProp();
+										//scene.putProp();
 										obj.visible = true;
 										obj.status = 1;
 										obj.x = x;
@@ -569,6 +569,7 @@
 					return false;
 				}
 				this.carForjack.status = 2;
+				this.workjackObj.status = 1;
 				this.putProp();
 				this.hero.switchState('takebackput',6);
 				var scene = this;
@@ -588,7 +589,10 @@
 				if(!this.checkFinger(-1)){
 					return false;
 				}
-				if(this.hero.posx > 700){
+				if(this.currentOnhandObj){
+					this.putdownProp(this.currentOnhandObj,this.hero.posx+50,this.hero.posy-50);
+				}
+				if(this.hero.posx > 700 && this.isSecondfloor){
 					this.swapChildren(this.hero,this.railing);
 					this.pickProp('crowfootonhand',this.crowfoot,50,184,function(){scene.swapChildren(scene.railing,scene.hero);});
 				}else{
@@ -838,7 +842,7 @@
 				finishedImgUrl:'empty',
 				clickArea:[30,0,40,40],
 				state:1,
-				status:1,
+				status:2,
 			}).addTo(this);
 			
 			this.picclickobj  = new game.ActiveObject({
@@ -948,7 +952,7 @@
 				targety:80,
 				readyImgUrl:'jackinbox',
 				finishedImgUrl:'jackemptybox',
-				clickArea:[40,20,80,50],
+				clickArea:[40,0,80,70],
 				status:1,
 			}).addTo(this);
 			
