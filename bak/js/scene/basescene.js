@@ -62,7 +62,8 @@
 			this.destory();
 		},
 		destory: function() {
-			this.hero.removeFromParent();
+			if(this.hero)
+				this.hero.removeFromParent();
 			this.removeAllChildren();
 			this.removeFromParent();
 			game.stage.off();
@@ -187,6 +188,11 @@
 		},
 		initUI:function(){
 			game.uiscene = new Hilo.Container({}).addTo(game.stage);
+			game.drdialog = new game.DrDialog({
+				x:180,
+				y:150,
+				visible:false,
+			}).addTo(game.uiscene);
 			game.headPanel = new game.TopHeadPanel({
 				healthValue:game.configdata.DEFAULTHEROHP,
 				headImgUrl:'headicon2',
@@ -195,10 +201,10 @@
 				x:20,
 				y:20,
 			}).addTo(game.uiscene);
-			game.starscore = new game.StarScore({
+			/*game.starscore = new game.StarScore({
 				x:150,
 				y:95,
-			}).addTo(game.uiscene);
+			}).addTo(game.uiscene);*/
 			game.notepanel = new game.DrNote({
 				txt:game.configdata.GAMETXTS.pass01_notestart,
 				x:-700,

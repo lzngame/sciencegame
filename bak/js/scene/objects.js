@@ -137,10 +137,17 @@
 			this.init(properties);
 		},
 		init: function(properties) {
-			this.img = new Hilo.Bitmap({
-				image: game.getImg('uimap'),
-				rect:game.configdata.getPngRect(this.readyImgUrl,'uimap'),
-			}).addTo(this);
+			if(this.readyImgUrl.indexOf('.') == -1){
+				this.img = new Hilo.Bitmap({
+					image: game.getImg('uimap'),
+					rect:game.configdata.getPngRect(this.readyImgUrl,'uimap'),
+				}).addTo(this);
+			}else{
+				this.img = new Hilo.Bitmap({
+					image:this.readyImgUrl
+				}).addTo(this);
+			}
+			
 			var x = this.clickArea[0];
 			var y = this.clickArea[1];
 			var w = this.clickArea[2];
@@ -220,7 +227,7 @@
 			this.hpContainer = new Hilo.Container({
 				x:130,
 				y:50,
-			}).addTo(this);
+			});
 			
 			this.setHp(0);
 		},
@@ -1201,6 +1208,103 @@
 					this.y += this.speed;
 				}
 			}
+		},
+	});
+	
+	
+	var Runbus = ns.Runbus = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'runbus',
+		speed:0,
+		body:null,
+		tyre1:null,
+		tyre2:null,
+		bodyname:'',
+		tyrename:'',
+		tyre1x:0,
+		tyre2x:0,
+		tyrey:0,
+		tyrepivotx:0,
+		tyrepivoty:0,
+		pause:false,
+		constructor: function(properties) {
+			Runbus.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.body = new Hilo.Bitmap({
+				image:game.getImg(this.bodyname),
+			}).addTo(this);
+			this.tyre1 = new Hilo.Bitmap({
+				image:this.tyrename,
+				x:this.tyre1x,
+				y:this.tyrey,
+				pivotX:this.tyrepivotx,
+				pivotY:this.tyrepivoty
+			}).addTo(this);
+			this.tyre2 = new Hilo.Bitmap({
+				image:this.tyrename,
+				x:this.tyre2x,
+				y:this.tyrey,
+				pivotX:this.tyrepivotx,
+				pivotY:this.tyrepivoty
+			}).addTo(this);
+		},
+		onUpdate:function(){
+			if(!this.pause){
+				this.tyre1.rotation += 10;
+				this.tyre2.rotation += 10;
+				this.x += this.speed;
+			}
+		},
+	});
+	
+	
+	var DrDialog = ns.DrDialog = Hilo.Class.create({
+		Extends: Hilo.Container,
+		name:'drdialog',
+		head:null,
+		dialogbg:null,
+		contentimg:null,
+		constructor: function(properties) {
+			Runbus.superclass.constructor.call(this, properties);
+			this.init(properties);
+		},
+		init: function(properties) {
+			this.dialogbg = new Hilo.Bitmap({
+				image:'img/dialogbg.png',
+			}).addTo(this);
+			this.head = new Hilo.Bitmap({
+				image:'img/drhead.png',
+				x:-80,
+				y:-74,
+			}).addTo(this);
+			this.contentimg = new Hilo.Bitmap({
+				x:210,
+				y:70,
+			}).addTo(this);
+		},
+		showTxt:function(sturl){
+			this.visible = true;
+			this.alpha = 1;
+			this.contentimg.removeFromParent();
+			this.contentimg = new Hilo.Bitmap({
+				image:sturl,
+				x:210,
+				y:70,
+			}).addTo(this);
+		},
+		hide:function(){
+			new Hilo.Tween.to(this,{
+				alpha:0,
+			},{
+				duration:400,
+				onComplete:function(){
+					
+				}
+			})
+		},
+		onUpdate:function(){
 		},
 	});
 	

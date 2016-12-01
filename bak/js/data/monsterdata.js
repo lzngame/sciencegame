@@ -164,6 +164,10 @@ game.monsterdata = new function(){
 			//-1 No start 0:doing -1:finished
 			this.passdata = [
 			[0,'pass01',game.configdata.SCENE_NAMES.repairdepot],
+			//[0,'pass01',game.configdata.SCENE_NAMES.escapebus],
+			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_room],
+			[0,'pass01',game.configdata.SCENE_NAMES.typhoon_cave],
+			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[-1,'pass02',game.configdata.SCENE_NAMES.firecorridor],
 			[-1,'pass03',game.configdata.SCENE_NAMES.depot],
 			[-1,'pass04',''],

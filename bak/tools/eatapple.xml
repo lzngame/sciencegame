@@ -1,0 +1,9 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="eatapple1.png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="eatapple2.png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="eatapple3.png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="eatapple4.png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="eatapple5.png" x="636" y="0" width="210" height="310"/>
+	<SubTexture name="eatapple6.png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="eatapple7.png" x="0" y="312" width="210" height="310"/>
+</TextureAtlas>

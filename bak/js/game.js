@@ -25,6 +25,7 @@
 		winHeight:0,
 		
 		uiscene:null,
+		drdialog:null,
 		headPanel:null,
 		starscore:null,
 		notepanel:null,
@@ -56,6 +57,7 @@
 			this.initScene();
 		},
 		initstage: function() {
+			console.log('game init');
 			var gameContainer = document.getElementById("game-container");
 			/*gameContainer.style.width = this.screenWidth + 'px';
 			gameContainer.style.height = this.screenHeight + 'px';
@@ -117,6 +119,10 @@
 			this.scenes[game.configdata.SCENE_NAMES.depot]        = new game.DepotScene();
 			this.scenes[game.configdata.SCENE_NAMES.incar]        = new game.IncarScene();
 			this.scenes[game.configdata.SCENE_NAMES.repairdepot]  = new game.RepairScene();
+			this.scenes[game.configdata.SCENE_NAMES.escapebus]    = new game.EscapebusScene();
+			this.scenes[game.configdata.SCENE_NAMES.typhoon_room]    = new game.TyphoonRoomScene();
+			this.scenes[game.configdata.SCENE_NAMES.typhoon_cave]    = new game.TyphoonCaveScene();
+			this.scenes[game.configdata.SCENE_NAMES.typhoon_out]    = new game.TyphoonOutScene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

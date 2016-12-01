@@ -59,5 +59,7 @@ def parsefile(filename):
 	parser = make_parser()
 	parser.setContentHandler(tempHandler())
 	parser.parse(filename)
+
 if __name__ == '__main__':
-	parsefile('uimap.xml')
+	inputpath = raw_input()
+	parsefile(inputpath)

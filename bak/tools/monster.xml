@@ -1,0 +1,11 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="怪_0000_9.png" x="0" y="711" width="357" height="235"/>
+	<SubTexture name="怪_0001_8.png" x="359" y="237" width="357" height="235"/>
+	<SubTexture name="怪_0002_7.png" x="0" y="711" width="357" height="235"/>
+	<SubTexture name="怪_0003_6.png" x="359" y="0" width="357" height="235"/>
+	<SubTexture name="怪_0004_5.png" x="359" y="474" width="357" height="235"/>
+	<SubTexture name="怪_0005_4.png" x="359" y="0" width="357" height="235"/>
+	<SubTexture name="怪_0006_3.png" x="0" y="474" width="357" height="235"/>
+	<SubTexture name="怪_0007_2.png" x="0" y="237" width="357" height="235"/>
+	<SubTexture name="怪_0008_1.png" x="0" y="0" width="357" height="235"/>
+</TextureAtlas>

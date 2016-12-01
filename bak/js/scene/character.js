@@ -122,14 +122,14 @@
 			if(this.framename =='upladder'){
 				if(this.isFirstcirle){
 					if(this.body.currentFrame == 2 || this.body.currentFrame ==5){
-						this.posy -= 40;
+						//this.posy -= 40;
 					}
 				}
 			}
 			if(this.framename =='downladder'){
 				if(this.isFirstcirle){
 					if(this.body.currentFrame == 2 || this.body.currentFrame ==5){
-						this.posy += 40;
+						//this.posy += 40;
 					}
 				}
 			}
@@ -208,7 +208,8 @@
 						this.regainIdle();
 						break;
 					case 'downTopladder':
-						this.switchState('downladder',10);
+						this.switchState('downladder',6);
+						this.speedy = 1.5;
 						break;
 					case 'takebackput':
 						this.regainIdle();

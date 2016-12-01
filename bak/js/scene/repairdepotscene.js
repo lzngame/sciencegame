@@ -36,6 +36,8 @@
 		topladderY:812,
 		topMoveladderX:943,
 		topMoveladderY:830,
+		leftjackposx:355,
+		leftjackposy:1260,
 		targets:[],
 		currentTarget:null,
 		dog:null,
@@ -62,6 +64,8 @@
 		leftLamp:null,
 		rightLamp:null,
 		carfinger:null,
+		noteimgsIndex:0,
+		noteimgs:null,
 		constructor: function(properties) {
 			RepairScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -75,6 +79,8 @@
 			this.background = '#1A0A04';
 			this.initx = this.x;
 			this.inity = this.y;
+			
+			
 		},
 		active: function(passdata) {
 			console.log('%s active:', this.name);
@@ -93,6 +99,8 @@
 			this.initFingerMouse();
 			this.layoutUI();
 			this.layoutPassPanel();
+			
+			
 			game.sounds.play(14,true);
 			game.boydata.currentHp = 4;
 			game.headPanel.setHp(game.boydata.currentHp);
@@ -138,6 +146,27 @@
 			//scene.putProp();
 			var targetx = this.ladderObj.x + 60;
 			var targety = this.ladderObj.y + 576;
+			new Hilo.Tween.to(scene.hero, {
+					posx:targetx,
+					posy:targety,
+				}, {
+					duration: 120,
+					onComplete: function() {
+						scene.hero.switchState('idle',10);
+						scene.ignoreTouch = false;
+					}
+				});
+		},
+		gotoLeft:function(){
+			this.ignoreTouch = true;
+			var targetx = this.leftjackposx;
+			var targety = this.leftjackposy;
+			if(this.hero.posx == targetx && this.hero.posy == targety){
+				return;
+			}
+			var scene = this;
+			scene.hero.switchState('turn180',10);
+			
 			new Hilo.Tween.to(scene.hero, {
 					posx:targetx,
 					posy:targety,
@@ -512,7 +541,8 @@
 						}else{
 							if(this.ladderState ==2 && this.hero.posx > 570){
 								this.isUpladder = true;
-								this.hero.switchState('upladder',6);
+								this.hero.switchState('upladder',4);
+								this.hero.speedy = -1.5;
 							}else if(this.hero.posx > 570){
 								game.sounds.play(25,false);
 								this.hero.switchState('fallladder',10);
@@ -607,8 +637,13 @@
 					return false;
 				}
 				if(this.hero.posx > 570){
-					this.sayNo();
-					return true;
+					if(this.workjackObj.state != 2){
+						this.sayNo();
+						return true;
+					}else{
+						this.gotoLeft();
+						return true;
+					}
 				}
 				
 				if(this.workjackObj.state == 1){
@@ -991,10 +1026,15 @@
 				interval:148,
 				pivotY:38
 			}).addTo(this);
+			this.snail.state = 0;
 			this.snail.on(Hilo.event.POINTER_START, function(e) {
-				this._frames = game.monsterdata.soliderhero_atlas.getSprite('snailtouch');
-				this.loop = false;
-				this.speed = 0;
+				if(this.state == 0){
+					this._frames = game.monsterdata.soliderhero_atlas.getSprite('snailtouch');
+					this.loop = false;
+					this.state = 1;
+					this.speed = 0;
+					console.log('touch');
+				}
 			});
 			this.snail.speed = 0.09;
 			this.snail.sumtime = 0;
@@ -1018,6 +1058,29 @@
 				x:662,
 				y:434
 			}).addTo(this);
+		},
+		showImgAndTxt:function(){
+			if(this.noteimgsIndex > this.noteimgs.length -1){
+				this.noteimgsIndex = 0;
+				this.showNote();
+			}else{
+				var scene = this;
+				var item = this.noteimgs[this.noteimgsIndex];
+				var img = new Hilo.Bitmap({
+					image:'img/note04bg.png',
+					x:scene.passPaneleBg.x,
+					y:scene.passPaneleBg.y,
+				}).addTo(this);
+				var content = new Hilo.Bitmap({
+					image:item[0],
+					x:scene.passPaneleBg.x+334,
+					y:scene.passPaneleBg.y+185,
+				}).addTo(this);
+				img.on(Hilo.event.POINTER_START, function(e) {
+					scene.showImgAndTxt();
+				});
+				this.noteimgsIndex++;
+			}
 		},
 		showNote:function(){
 			var scene = this;
@@ -1099,7 +1162,9 @@
 									//scene.hero.visible = true;
 									//scene.fingerMouse.visible = true;
 									console.log('end');
-									scene.showNote();
+									//scene.showImgAndTxt();
+									//scene.showNote();
+									game.switchScene(game.configdata.SCENE_NAMES.escapebus);
 							}
 						});
 					}else{
@@ -1205,6 +1270,7 @@
 				if(this.hero.posy <= 856){
 					this.isUpladder = false;
 					this.hero.switchState('onTopladder',10);
+					this.hero.speedy = 0;
 					this.isSecondfloor = true;
 					this.hero.posx = this.topladderX;
 					this.hero.posy = this.topladderY;
@@ -1216,6 +1282,7 @@
 				if(this.hero.posy >= this.ladderFloorY){
 					this.isDownladder = false;
 					this.hero.switchState('idle',10);
+					this.hero.speedy = 0;
 					this.hero.posx = this.ladderFloorX;
 					this.hero.posy = this.ladderFloorY;
 					this.isSecondfloor = false;
@@ -1283,6 +1350,8 @@
 					this.snail.sumtime = 0;
 					this.snail.speed = 0.09;
 					this.snail.loop = true;
+					this.snail.state = 0;
+					var tmp = game.monsterdata.soliderhero_atlas.getSprite('snailidle');
 					this.snail._frames = game.monsterdata.soliderhero_atlas.getSprite('snailidle');
 				}
 			}

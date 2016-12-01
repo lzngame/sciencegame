@@ -1,0 +1,9 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="戴帽子1.png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="戴帽子2.png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="戴帽子3.png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="戴帽子4.png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="戴帽子5.png" x="636" y="0" width="210" height="310"/>
+	<SubTexture name="戴帽子6.png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="戴帽子7.png" x="0" y="312" width="210" height="310"/>
+</TextureAtlas>

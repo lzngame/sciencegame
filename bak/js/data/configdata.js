@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = true;
+	self.NOLINE = false;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -72,6 +72,10 @@ game.configdata = new function(){
 		depot:'DEPOT_SCENE',
 		incar:'INCAR_SCENE',
 		repairdepot:'REPAIRDEPOT_SCENE',
+		escapebus:'ESCAPEBUS_SCENE',
+		typhoon_cave:'TYPHOON_SCENE_CAVE',
+		typhoon_room:'TYPHOON_SCENE_ROOM',
+		typhoon_out:'TYPHOON_SCENE_OUT',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
@@ -284,7 +288,12 @@ game.sounds = new function(){
 	'bee.mp3',//蜜蜂 27
 	'carstart.mp3',//汽车发动 28
 	'opencardoor.mp3',//开车门 29
-	'grybox.mp3',//撬箱子
+	'grybox.mp3',//撬箱子 30
+	'busrun.mp3',//开汽车 31
+	'busbump.mp3',//车碰撞 32
+	'openbusdoor.mp3',//气动阀门放气33
+	'duanqiao.mp3',//一下敲击 34
+	'water3.mp3',//水龙头35
 	];
 	this.play = function(index,loop){
 		if(game.configdata.MUTE)
@@ -323,6 +332,116 @@ game.clock = new function(){
 		return self.framecount;
 	};
 }
+
+game.drawdata = new function(){
+	var self = this;
+	this.layoutType = {
+		BMP_ATLAS:'LAYOUT_BITMAP_ATLAS',
+		BMP_URL:'LAYOUT_BITMAP_URL',
+		TXT:'LAYOUT_TEXT',
+		RECT:'LAYOUT_RECT',
+		ROUNDRECT:'LAYOUT_ROUND_RECT',
+		CIRCLE:'LAYOUT_CIRCLE',
+	};
+	
+	this.layoutUiWithData = function(dataArray,elementParent){
+		for(var i=0;i<dataArray.length;i++){
+			var item = dataArray[i];
+			var elementType = item[0];
+			switch(elementType){
+				case this.layoutType.BMP_ATLAS:
+					var atlas = game.getImg(item[1]);
+					var rect = game.configdata.getPngRect(item[2],'uimap');
+					var x = item[3];
+					var y = item[4];
+					this.drawBmoOfAtlas(atlas,rect,x,y,elementParent);
+					break;
+				case this.layoutType.BMP_URL:
+					var imgurl = item[1];
+					var x = item[2];
+					var y = item[3];
+					this.drawBmpOfUrl(imgurl,x,y,elementParent);
+					break;
+				case this.layoutType.TXT:
+					var content = item[1];
+					var font = item[2];
+					var clr = item[3];
+					var x = item[4];
+					var y = item[5];
+					this.drawItemTxt(content,font,clr,x,y,elementParent);
+				case this.layoutType.RECT:
+					var linesize = item[1];
+					var lineclr = item[2];
+					var fillclr = item[3];
+					var x = item[4];
+					var y = item[5];
+					var w = item[6];
+					var h = item[7];
+					this.drawItemRect(linesize,lineclr,fillclr,x,y,w,h,elementParent);
+					break;
+				case this.layoutType.ROUNDRECT:
+					var linesize = item[1];
+					var lineclr = item[2];
+					var fillclr = item[3];
+					var x = item[4];
+					var y = item[5];
+					var w = item[6];
+					var h = item[7];
+					var cornersize = item[8];
+					this.drawItemRoundrect(linesize,lineclr,fillclr,x,y,w,h,cornersize,elementParent);
+					break;
+				case this.layoutType.CIRCLE:
+					var linesize = item[1];
+					var lineclr = item[2];
+					var fillclr = item[3];
+					var x = item[4];
+					var y = item[5];
+					var r = item[6];
+					this.drawItemCircle(linesize,lineclr,fillclr,x,y,r,elementParent);
+					break;
+			}
+		}
+	};
+	this.drawBmoOfAtlas = function(atlas,rect,x,y,parent){
+		return new Hilo.Bitmap({
+			image:atlas,
+			rect:rect,
+			x:x,
+			y:y
+		}).addTo(parent);
+	},
+	this.drawBmpOfUrl = function(imgurl,x,y,parent){
+		return new Hilo.Bitmap({
+			image:imgurl,
+			x:x,
+			y:y
+		}).addTo(parent);
+	};
+	this.drawItemTxt = function(txt,font,clr,x,y,parent){
+		return new Hilo.Text({
+			text:txt,
+			font:font,
+			color:clr,
+			x: x,
+			y: y,
+		}).addTo(parent);
+	};
+	this.drawItemRect = function(linesize,lineclr,fillclr,x,y,w,h,parent){
+		 var g1 = new Hilo.Graphics({x:x, y:y});
+         g1.lineStyle(linesize,lineclr).beginFill(fillclr).drawRect(0, 0, w, h).endFill().addTo(parent);
+         return g1;
+	};
+	this.drawItemRoundrect = function(linesize,lineclr,fillclr,x,y,w,h,r,parent){
+		 var g1 = new Hilo.Graphics({x:x, y:y});
+         g1.lineStyle(linesize,lineclr).beginFill(fillclr).drawRoundRect(0, 0, w, h,r).endFill().addTo(parent);
+         return g1;
+	};
+	this.drawItemCircle = function(linesize,lineclr,fillclr,x,y,r,parent){
+		var g1 = new Hilo.Graphics({x:x, y:y});
+		g1.lineStyle(linesize, lineclr).beginFill(fillclr).drawCircle(0, 0, r).endFill().addTo(parent);
+        return g1;
+	};
+};
 
 function layoutImgs(arrayList,img,parent){
 	var re = [];
