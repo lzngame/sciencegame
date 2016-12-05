@@ -76,6 +76,10 @@ game.configdata = new function(){
 		typhoon_cave:'TYPHOON_SCENE_CAVE',
 		typhoon_room:'TYPHOON_SCENE_ROOM',
 		typhoon_out:'TYPHOON_SCENE_OUT',
+		confusion_switchbox:'CONFUSION_SWITCHBOX_SCENE',
+		confusion_cinema:'CONFUSION_CINEMA_SCENE',
+		confusion_doorway:'CONFUSION_DOORWAY_SCENE',
+		
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',

@@ -203,7 +203,7 @@
                 frames:[[428, 542, 426, 540], [856, 542, 426, 540], [856, 0, 426, 540], [428, 1084, 426, 540], [856, 1084, 426, 540], [428, 0, 426, 540], [0, 1084, 426, 540], [0, 542, 426, 540], [0, 0, 426, 540]],
                 sprites: {
                 	idle:[7,7],
-                    eat: [7,6,5,4,3,2,1,0],
+                    eat: [7,6,5,4,7,6,5,4,7,6,5,4,3,2,1,0],
                     spit:{from:5,to:8}
                 }
             });
@@ -218,17 +218,13 @@
             });
             this.monsteratlas = new Hilo.TextureAtlas({
                 image:'img/typhoon/monsters.png',
-                //width: 718,
-                //height: 948,
                 width: 1077,
-                height: 948,
-                frames:[[0, 0, 357, 235], [0, 0, 357, 235], [718, 474, 357, 235], [359, 237, 357, 235], [718, 474, 357, 235], [718, 237, 357, 235], [359, 237, 357, 235], [718, 0, 357, 235], [359, 711, 357, 235], [359, 474, 357, 235], [359, 711, 357, 235], [718, 711, 357, 235], [359, 0, 357, 235], [718, 711, 357, 235], [0, 711, 357, 235], [0, 474, 357, 235], [0, 237, 357, 235]],
-
-                //frames:[[0, 711, 357, 235], [359, 237, 357, 235], [0, 711, 357, 235], [359, 0, 357, 235], [359, 474, 357, 235], [359, 0, 357, 235], [0, 474, 357, 235], [0, 237, 357, 235], [0, 0, 357, 235]],
+                height: 1422,
+                frames:[[359, 474, 357, 235], [359, 237, 357, 235], [359, 237, 357, 235], [718, 948, 357, 235], [359, 711, 357, 235], [359, 0, 357, 235], [718, 711, 357, 235], [718, 474, 357, 235], [718, 237, 357, 235], [718, 0, 357, 235], [359, 1185, 357, 235], [359, 948, 357, 235], [359, 711, 357, 235], [718, 948, 357, 235], [0, 1185, 357, 235], [0, 1185, 357, 235], [0, 948, 357, 235], [0, 711, 357, 235], [0, 474, 357, 235], [0, 237, 357, 235], [0, 711, 357, 235], [0, 0, 357, 235]],
                 sprites: {
-                	idle:[0,0],
-                	eat:[14,15,16,13,12,11,10,9,8],
-                	angry:[0,1,2],
+                	idle:[14,14],
+                	eat:[0,6,7,8,9,10,11,12,13,1,2,3,4,5],
+                	angry:{from:14,to:21},
                 	idle2:[14,14,14,14,14,14,14,14,14,14,14],
                 }
             });
@@ -394,7 +390,7 @@
 		},
 		angry:function(){
 			this.monster._frames = this.monsteratlas.getSprite('angry');
-			this.currentFrame = 0;
+			this.monster.currentFrame = 0;
 			this.isangry = true;
 			this.angrytime = 0;
 			//this.monster.play();
@@ -408,13 +404,13 @@
 			if(this.isbugfall){
 				this.flowbug.y += 2;
 			}
-			if(this.chomper.currentFrame == 7){
+			if(this.chomper.currentFrame == 12){
 				this.monster.loop = false;
 				this.apple.status = 1;
 				this.apple.state = 1;
 				
 				this.monster._frames = this.monsteratlas.getSprite('eat');
-				this.currentFrame = 0;
+				this.monster.currentFrame = 0;
 			}
 			if(this.isangry){
 				if(this.angrytime > 120){
@@ -423,7 +419,7 @@
 					//this.monster.stop();
 					console.log('stop');
 					this.monster._frames = this.monsteratlas.getSprite('idle');
-					this.currentFrame = 0;
+					this.monster.currentFrame = 0;
 				}
 				this.angrytime++;
 			}

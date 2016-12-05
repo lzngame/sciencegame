@@ -123,6 +123,9 @@
 			this.scenes[game.configdata.SCENE_NAMES.typhoon_room]    = new game.TyphoonRoomScene();
 			this.scenes[game.configdata.SCENE_NAMES.typhoon_cave]    = new game.TyphoonCaveScene();
 			this.scenes[game.configdata.SCENE_NAMES.typhoon_out]    = new game.TyphoonOutScene();
+			this.scenes[game.configdata.SCENE_NAMES.confusion_switchbox]    = new game.ConfusionSwitchboxscene();
+			this.scenes[game.configdata.SCENE_NAMES.confusion_cinema]    = new game.ConfusionCinemascene();
+			this.scenes[game.configdata.SCENE_NAMES.confusion_doorway]    = new game.ConfusionDoorwayscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

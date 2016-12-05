@@ -375,7 +375,14 @@
 		cloud2:null,
 		cloud3:null,
 		cloud4:null,
-		overPasses:['passover01','passover02','passover03','passover04','passover05','passover06'],
+		overPasses:[
+		[[184, 198, 171, 196], [184, 0, 171, 196], [184, 396, 171, 196], [184, 594, 171, 196]],
+		[[522, 406, 163, 196], [357, 406, 163, 196], [524, 604, 163, 196], [524, 802, 163, 196]],
+		[[689, 792, 156, 198], [689, 0, 156, 198], [847, 792, 156, 198], [847, 0, 156, 198]],
+		[[0, 202, 182, 200], [0, 0, 182, 200], [0, 606, 182, 200], [0, 404, 182, 200]],
+		[[527, 198, 160, 196], [687, 396, 160, 196], [689, 594, 160, 196], [527, 0, 160, 196]],
+		[[354, 792, 168, 201], [184, 792, 168, 201], [357, 203, 168, 201], [357, 0, 168, 201]]
+		],
 		constructor: function(properties) {
 			PassChoiceScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -439,6 +446,7 @@
 				y:0,
 			}).addTo(this);
 			
+			var passimg = game.getImg('passimgs');
 			var passdata = game.boydata.passdata;
 			for(var i=0;i<passdata.length;i++){
 				var item = passdata[i];
@@ -447,23 +455,23 @@
 				var inity = 155;
 				var offsetx = (i % 3) * 220;
 				var offsety = Math.floor(i/3) * 250;
+				var islock = (item[0]==-1);
+				var rect = this.overPasses[i][0];
+				if(islock){
+					rect = this.overPasses[i][2];
+				}
 				var btn = new Hilo.Bitmap({
-					image:img,
-					rect:game.configdata.getPngRect(passname,'uimap'),
+					image:passimg,
+					rect:rect,
 					x:initx + offsetx,
 					y:inity + offsety
 				}).addTo(this.btnsPanel);
 				btn.imgdex = i;
 				btn.initname = passname;
 				btn.extendname = item[2];
-				btn.islock = item[0];
+				btn.islock = islock;
 				if(item[0] == -1){
-					new Hilo.Bitmap({
-						image:img,
-						rect:game.configdata.getPngRect('suo','uimap'),
-						x:btn.x + btn.width -45,
-						y:btn.y + btn.height -68
-					}).addTo(this.btnsPanel);
+					
 				}
 				if(item[0] == 0){
 					btn.on(Hilo.event.POINTER_START, function(e) {
@@ -472,13 +480,7 @@
 				}
 				
 				if(item[0] == 1){
-					new Hilo.Bitmap({
-						image:game.getImg('uimap'),
-						rect:game.configdata.getPngRect('right'),
-						x:btn.x + btn.width -45,
-						y:btn.y + btn.height -68
-					}).addTo(this);
-					btn.alpha = 0.5;
+					
 				}
 			}
 			
@@ -509,18 +511,18 @@
 				var btns = scene.btnsPanel.children;
 				for(var i=0;i<btns.length;i++){
 					var btn = btns[i];
-					if(true){
-					//if(btn.islock == 0){
-						if(game.checkInRect(targetx,targety,btn.x,btn.y,btn.width,btn.height)){
-							//btn.scaleX = btn.scaleY = 0.9;
-							var rect = game.configdata.getPngRect(scene.overPasses[btn.imgdex],'uimap');
-							btn.setImage(game.getImg('uimap'),rect);
+					var rect = scene.overPasses[i][1];
+					var rect2 = scene.overPasses[i][0]
+					if(btn.islock){
+						rect = scene.overPasses[i][3];
+						rect2 = scene.overPasses[i][2];
+					}
+					if(game.checkInRect(targetx,targety,btn.x,btn.y,btn.width,btn.height)){
+							btn.setImage(game.getImg('passimgs'),rect);
 							scene.fingerMouse.visible = true;
 							break;
-						}else{
-							var rect = game.configdata.getPngRect(btn.initname,'uimap');
-							btn.setImage(game.getImg('uimap'),rect);
-						}
+					}else{
+							btn.setImage(game.getImg('passimgs'),rect2);
 					}
 				}
 				

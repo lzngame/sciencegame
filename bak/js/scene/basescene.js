@@ -216,7 +216,7 @@
 			game.toolspanel = new game.ToolsIconPanel({
 				initx:784,
 				inity:-395,
-			}).addTo(game.uiscene);
+			});
 			game.soundmute = new game.SwitchBtn({
 				x:500,
 				y:10,

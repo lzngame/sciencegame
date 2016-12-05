@@ -106,7 +106,8 @@
 							duration:10,
 							delay:200,
 							onComplete:function(){
-								scene.hero.switchState('backpick',8);
+								if(obj.name != 'putplate')
+									scene.hero.switchState('backpick',8);
 								new Hilo.Tween.to(scene.hero,{
 									posx:initx,
 									posy:inity,
@@ -369,10 +370,14 @@
 			this.bench.scaleFact = 1;
 			this.rod.scaleFact = 1;
 			this.putBenchobj = this.createActiveObj('putbench',417,454,0,80,'empty','empty',[0,0,100,50],2);
-			this.putPlateobj = this.createActiveObj('putplate',690,480,-50,40,'empty','empty',[0,0,100,50],2);
+			this.putPlateobj = this.createActiveObj('putplate',693,327,-50,230,'empty','empty',[0,0,60,60],2);
 			this.doorobj = this.createActiveObj('door',723,100,-50,40,'empty','empty',[0,0,150,250],1);
 			
 			this.showflashEffect();
+			
+			new Hilo.Bitmap({
+				image:'img/typhoon/holder.png',x:524+128,y:390-44
+			}).addTo(this);
 			
 			this.rodatlas = new Hilo.TextureAtlas({
                 image:'img/typhoon/backonrod.png',
@@ -405,8 +410,8 @@
 			
 			this.warnplateImg = new Hilo.Bitmap({
 				image:'img/typhoon/warnplate1.png',
-				x:690,
-				y:430,
+				x:723-60,
+				y:316,
 				visible:false,
 			}).addTo(this);
 			

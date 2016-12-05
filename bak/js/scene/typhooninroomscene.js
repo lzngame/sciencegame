@@ -81,7 +81,18 @@
 			this.boardTime = 0;
 		},
 		checkFinishedAllTask:function(){
-			return (this.isFlower_l && this.isFlower_m && this.isFlower_s && this.isFullbucket && this.isClosewindow && this.isRepairwindow);
+			var scene = this;
+			if(this.isFlower_l && this.isFlower_m && this.isFlower_s && this.isFullbucket && this.isClosewindow && this.isRepairwindow){
+				new Hilo.Tween.to(this,{
+					alpha:1,
+				},{
+					duration:100,
+					delay:3000,
+					onComplete:function(){
+						game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+					}
+				})
+			}
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -241,6 +252,8 @@
 									onComplete:function(){
 										scene.hero.switchState('idle',10);
 										scene.ignoreTouch = false;
+										scene.isClosewindow = true; 
+										scene.checkFinishedAllTask();
 										//scene.hero.takeProp(pickProp,x,y);
 										//scene.handonProp(propimg,scene.hero.posx+x,scene.hero.posy+y);
 										
@@ -298,6 +311,8 @@
 										scene.hero.switchState('idle',10);
 										scene.ignoreTouch = false;
 										game.sounds.stop(35);
+										scene.isFullbucket = true;
+										scene.checkFinishedAllTask();
 										//scene.hero.takeProp(pickProp,x,y);
 										//scene.handonProp(propimg,scene.hero.posx+x,scene.hero.posy+y);
 										
@@ -556,12 +571,20 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.thewindow)){
-				this.gotoClosewindow(this.thewindow,0,0);
+				if(this.currentOnhandObj){
+					this.sayNo();
+				}else{
+					this.gotoClosewindow(this.thewindow,0,0);
+				}
 				return true;
 			}
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.bucket)){
-				this.gotoClosewindow2(this.bucket,0,0);
+				if(!this.currentOnhandObj){
+					this.gotoClosewindow2(this.bucket,0,0);
+				}else{
+					this.sayNo();
+				}
 				return true;
 			}
 			
@@ -855,6 +878,8 @@
 										scene.hammer.x = scene.hero.posx -30;
 										scene.hammer.y = scene.hero.posy +30;
 										scene.breakwindow.status = 2; 
+										scene.isRepairwindow = true;
+										scene.checkFinishedAllTask();
 									}
 								});
 							}
