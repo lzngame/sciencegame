@@ -14,9 +14,11 @@
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		
-		boxclose:null,
-		boxopen:null,
-		boxempty:null,
+		speakerinbox:null,
+		glass:null,
+		breakglass:null,
+		glassonfloor:null,
+		
 		
 		public1:null,
 		public2:null,
@@ -120,13 +122,12 @@
 							duration:10,
 							delay:200,
 							onComplete:function(){
-								scene.hero.switchState('backpick',10);
+								//scene.hero.switchState('backpick',10);
 								new Hilo.Tween.to(scene.hero,{
 									posx:initx,
 									posy:inity,
 									scaleX:1,
 									scaleY:1,
-									
 								},{
 									duration:120,
 									delay:320,
@@ -151,7 +152,7 @@
 				if(!this.currentOnhandObj){
 					this.hammer.scaleFact = 1;
 					this.currentOnhandObj = this.hammer;	
-					this.pickPropQuick('hammer','img/confusion/hammeronhand.png',this.hammer,-62,-145);
+					this.pickPropQuick('hammer','img/confusion/extinguisherhand.png',this.hammer,-62+18,-145+34);
 				}
 				return true;
 			}
@@ -182,11 +183,9 @@
 			
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.speakerobj)){
-				this.speakerobj.scaleFact = 1;
+				this.speakerobj.scaleFact = 0.8;
 				var scene = this;
 				this.pickPropQuick('speak','empty',this.speakerobj,-80,-103,function(){
-					scene.boxempty.visible = true;
-					scene.boxopen.visible = false;
 					scene.putProp();
 					scene.handonProp('img/confusion/speakeronhand.png',544,214);
 					game.drdialog.showTxt('img/confusion/notecheli.png');
@@ -195,7 +194,10 @@
 						scene.knockman.visible = true;
 						scene.knockman.x = 529;
 						scene.knockman.y = 66;
+						scene.knockman.scaleX = 1;
+						scene.knockman.scaleY = 1;
 						scene.hero.visible = false;
+						scene.speakerinbox.visible = false;
 						scene.currentOnhandImg.removeFromParent();
 						scene.callpublic();
 					});
@@ -208,12 +210,17 @@
 				if(this.currentOnhandObj && this.currentOnhandObj.name == 'hammer'){
 					var scene = this;
 					this.gotoOpenswitch(this.boxobj,0,0,function(){
-						scene.boxclose.visible = false;
-						scene.boxopen.visible = true;
 						scene.hammer.visible = true;
-						scene.hammer.x = 1127-50;
-						scene.hammer.y = 315;
+						scene.hammer.x = 279;
+						scene.hammer.y = 247;
+						scene.hammer.scaleX = 0.8;
+						scene.hammer.scaleY = 0.8;
+						scene.hero.scaleX = 1;
+						scene.hero.scaleY = 1;
 						scene.speakerobj.status = 1;
+						scene.glass.visible = false;
+						scene.glassonfloor.visible = true;
+						scene.breakglass.visible = true;
 					});
 					this.boxobj.status = 2;
 				}else{
@@ -279,7 +286,34 @@
 			var scene = this;
 			
 			new Hilo.Bitmap({
-				image:'img/confusion/cinemabg.png',
+				image:'img/confusion/dy.png',
+			}).addTo(this);
+			
+			this.speakerinbox = new Hilo.Bitmap({
+				image:'img/confusion/speakinbox.png',
+				x:182,
+				y:122
+			}).addTo(this);
+			
+			this.glass = new Hilo.Bitmap({
+				image:'img/confusion/glass01.png',
+				x:178,
+				y:104,
+				alpha:0.8
+			}).addTo(this);
+			
+			this.breakglass = new Hilo.Bitmap({
+				image:'img/confusion/glassbreak.png',
+				x:178,
+				y:104,
+				visible:false,
+			}).addTo(this);
+			
+			this.glassonfloor = new Hilo.Bitmap({
+				image:'img/confusion/glassonfloor.png',
+				x:192,
+				y:296,
+				visible:false
 			}).addTo(this);
 			
 			this.helpatlas = new Hilo.TextureAtlas({
@@ -292,6 +326,9 @@
                 	up:[0,1,2,3,4]
                 }
             });
+            
+			this.hammer  = this.createActiveObj('hammer',1093,176,0,140,'img/confusion/extinguisher.png','',[10,0,30,130],1);
+            
             
             this.help1 = new Hilo.Sprite({
 				frames:this.helpatlas.getSprite('idle'),
@@ -309,13 +346,8 @@
 				visible:false
 			}).addTo(this);
 			
-			this.boxclose = new Hilo.Bitmap({image:'img/confusion/boxclose.png',x:907,y:140}).addTo(this);
-			this.boxopen = new Hilo.Bitmap({image:'img/confusion/boxopen.png',x:907,y:140,visible:false}).addTo(this);
-			this.boxempty = new Hilo.Bitmap({image:'img/confusion/boxempty.png',x:907,y:140,visible:false}).addTo(this);
 			
 
-			new Hilo.Bitmap({image:'img/confusion/chair2.png',x:167,y:360}).addTo(this);
-			new Hilo.Bitmap({image:'img/confusion/chair1.png',x:0,y:536}).addTo(this);
 			
 			this.public1 = new Hilo.Bitmap({image:'img/confusion/public.png',x:0,y:360}).addTo(this);
 			this.public2 = new Hilo.Bitmap({image:'img/confusion/public.png',x:700,y:360}).addTo(this);
@@ -334,21 +366,21 @@
 			
 			this.atlas = new Hilo.TextureAtlas({
                 image:'img/confusion/boyactions_cinema.png',
-                width: 1060,
-                height: 1248,
-                frames:[[424, 0, 210, 310], [636, 936, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [636, 0, 210, 310], [636, 312, 210, 310], [636, 624, 210, 310], [424, 0, 210, 310], [424, 936, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [848, 0, 210, 310], [212, 936, 210, 310], [424, 936, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 936, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310]],
+                width: 848,
+                height: 936,
+                frames:[[212, 624, 210, 310], [212, 624, 210, 310], [636, 312, 210, 310], [636, 0, 210, 310], [636, 0, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [636, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [424, 312, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310]],
                 sprites: {
                 	idle:[0,0],
                 	openswitch:[0,1,2,3,4],
-                	knockandopen:[14,15,16,17,0,1,2,3,4,5,6,7],
-                	speak:[18,19,20],
-                	help:[8,9,10,11,12,13]
+                	knockandopen:[0,1,2,3,4,5],
+                	speak:[12,13,14],
+                	help:[6,7,8,9,10,11]
                 }
             });
             
             
             
-            new Hilo.Bitmap({image:'img/confusion/chair2.png',x:167,y:360}).addTo(this);
+            new Hilo.Bitmap({image:'img/confusion/chair2.png',x:376,y:467}).addTo(this);
             new Hilo.Sprite({
 				frames:this.effectatlas.getSprite('smoke'),
 				interval:10,
@@ -357,7 +389,7 @@
 				scaleX:3,
 				scaleY:3,
 			}).addTo(this);
-			new Hilo.Bitmap({image:'img/confusion/chair1.png',x:0,y:536}).addTo(this);
+			new Hilo.Bitmap({image:'img/confusion/chair1.png',x:172,y:552}).addTo(this);
 			
             
             this.knockman = new Hilo.Sprite({
@@ -368,11 +400,11 @@
 				visible:false,
 			}).addTo(this);
 			
-			this.hammer  = this.createActiveObj('hammer',253,300,0,30,'img/confusion/hammer.png','',[0,0,80,30],1);
-			this.boxobj  = this.createActiveObj('box',1002,220,0,130,'empty','empty',[0,0,40,40],1);
-			this.helpobj1  = this.createActiveObj('help1',360,120,190,160,'empty','empty',[0,0,70,140],1);
-			this.helpobj2 = this.createActiveObj('help2',456,210,190,160,'empty','empty',[0,0,70,140],1);
-			this.speakerobj  = this.createActiveObj('speakerobj',1002,220,0,130,'empty','empty',[0,-30,60,90],2);
+
+			this.boxobj  = this.createActiveObj('box',180,110,50,180,'empty','empty',[0,0,40,40],1);
+			this.helpobj1  = this.createActiveObj('help1',360,120,160,210,'empty','empty',[0,0,70,140],1);
+			this.helpobj2 = this.createActiveObj('help2',456,210,160,160,'empty','empty',[0,0,70,140],1);
+			this.speakerobj  = this.createActiveObj('speakerobj',180,110,0,130,'empty','empty',[0,-30,60,90],2);
 			
 			
 			
@@ -446,18 +478,21 @@
 			new Hilo.Tween.to(scene.hero, {
 					posx:targetx,
 					posy:targety,
-					scaleX:1,
-					scaleY:1,
+					scaleX:0.8,
+					scaleY:0.8,
 				}, {
 					duration: 120,
 					onComplete: function() {
 						scene.hero.visible = false;
 						scene.knockman.visible = true;
 						scene.knockman.loop = false;
-						scene.knockman.x = scene.hero.x -113;
-						scene.knockman.y = scene.hero.y-285;
+						scene.knockman.x = scene.hero.x -153;
+						scene.knockman.y = scene.hero.y-245;
 						scene.knockman.currentFrame = 0;
+						scene.knockman.scaleX = 0.8;
+						scene.knockman.scaleY = 0.8;
 						scene.knockman._frames = scene.atlas.getSprite('knockandopen');
+						game.sounds.play(10,false);
 					}
 				}).link(
 					new Hilo.Tween.to(scene.hero,{
