@@ -172,7 +172,7 @@ game.monsterdata = new function(){
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
 			
-			[-1,'pass02',game.configdata.SCENE_NAMES.confusion_cinema],
+			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			
 			];
 		},

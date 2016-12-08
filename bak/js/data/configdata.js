@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = false;
+	self.NOLINE = true;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -79,6 +79,7 @@ game.configdata = new function(){
 		confusion_switchbox:'CONFUSION_SWITCHBOX_SCENE',
 		confusion_cinema:'CONFUSION_CINEMA_SCENE',
 		confusion_doorway:'CONFUSION_DOORWAY_SCENE',
+		plane_board:'PLANE_BOARD_SCENE',
 		
 		
 		load:'LOAD_SCENE_NAME',

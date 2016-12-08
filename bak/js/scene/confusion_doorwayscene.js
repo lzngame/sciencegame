@@ -31,6 +31,7 @@
 		public3:null,
 		
 		atlas:null,
+		sumtime:0,
 		constructor: function(properties) {
 			ConfusionDoorwayscene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -55,6 +56,7 @@
 			this.addHero(null,this.initPosx,this.initPosy);
 			this.isdoorflash = false;
 			this.flashtime = 0;
+			this.sumtime = 0;
 			
 			this.hero.posx = this.initPosx;
 			this.hero.posy = this.initPosy;
@@ -64,6 +66,7 @@
 			this.isHelp1 = false;
 			this.isHelp2 = false;
 			game.sounds.play(14,true);
+			game.drdialog.showTxt('img/confusion/note3.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -391,6 +394,10 @@
 		
 		
 		onUpdate:function(){
+			this.sumtime++;
+			if(this.sumtime == 200){
+				game.drdialog.hide();
+			}
 			if(this.isdoorflash){
 				this.flashtime ++;
 				if(this.flashtime > 30){
