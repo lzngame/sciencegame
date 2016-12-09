@@ -80,6 +80,7 @@ game.configdata = new function(){
 		confusion_cinema:'CONFUSION_CINEMA_SCENE',
 		confusion_doorway:'CONFUSION_DOORWAY_SCENE',
 		plane_board:'PLANE_BOARD_SCENE',
+		plane_cabin:'PLANE_CABIN_SCENE',
 		
 		
 		load:'LOAD_SCENE_NAME',
@@ -299,6 +300,7 @@ game.sounds = new function(){
 	'openbusdoor.mp3',//气动阀门放气33
 	'duanqiao.mp3',//一下敲击 34
 	'water3.mp3',//水龙头35
+	'dididi.mp3',//滴滴警报36
 	];
 	this.play = function(index,loop){
 		if(game.configdata.MUTE)

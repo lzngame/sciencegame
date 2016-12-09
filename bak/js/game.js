@@ -127,6 +127,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.confusion_cinema]    = new game.ConfusionCinemascene();
 			this.scenes[game.configdata.SCENE_NAMES.confusion_doorway]    = new game.ConfusionDoorwayscene();
 			this.scenes[game.configdata.SCENE_NAMES.plane_board]    = new game.PlaneBoardscene();
+			this.scenes[game.configdata.SCENE_NAMES.plane_cabin]    = new game.PlaneCabinscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

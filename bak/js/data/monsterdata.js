@@ -166,11 +166,11 @@ game.monsterdata = new function(){
 			[0,'chehuo',game.configdata.SCENE_NAMES.repairdepot],
 			//[0,'pass01',game.configdata.SCENE_NAMES.escapebus],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_room],
-			[-1,'pass02',game.configdata.SCENE_NAMES.firecorridor],
+			[0,'planecabin',game.configdata.SCENE_NAMES.plane_cabin],
 			[-1,'pass03',game.configdata.SCENE_NAMES.confusion_doorway],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
-			[0,'confusion',game.configdata.SCENE_NAMES.confusion_cinema],
+			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
 			
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			
