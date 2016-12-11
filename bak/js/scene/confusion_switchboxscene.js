@@ -757,7 +757,7 @@
 			this.extinguisher = this.createActiveObj('extinguisher',982,400,0,150,'img/confusion/extinguisher.png','',[0,0,60,100],1);
 			this.redobj = this.createActiveObj('redobj',411,357,86,314,'empty','empty',[0,0,60,60],2);
 			this.blueobj = this.createActiveObj('blueobj',684,428,86,314,'empty','empty',[0,0,60,60],2);
-			this.yellowobj = this.createActiveObj('yellowobj',500,440,86,314,'empty','empty',[0,0,80,50],2);
+			this.yellowobj = this.createActiveObj('yellowobj',500,440,86,314,'empty','empty',[-30,-30,120,70],2);
 			this.exitboxobj1 = this.createActiveObj('exitboxobj1',0,40,86,314,'empty','empty',[0,0,180,600],2);
 			this.exitboxobj2 = this.createActiveObj('exitboxobj2',994,40,86,314,'empty','empty',[0,0,180,600],2);
 			this.drawerobj = this.createActiveObj('drawobj',238,400,86,134,'empty','empty',[0,0,140,40],1);
@@ -767,7 +767,7 @@
 			this.yellowmackintoshobj = this.createActiveObj('yellowmackintoshobj',480,400,86,134,'empty','empty',[0,0,30,30],2);
 			
 			this.mackintoshObj1 = this.createActiveObj('mackintoshObj1',590,350,86,134,'empty','empty',[0,0,240,140],2);
-			this.mackintoshObj2 = this.createActiveObj('mackintoshObj2',798,46,86,134,'empty','empty',[0,0,50,50],2);
+			this.mackintoshObj2 = this.createActiveObj('mackintoshObj2',848,246,86,134,'empty','empty',[0,0,50,50],2);
 			
 			this.exitdoor = this.createActiveObj('exitdoor',1117,205,86,134,'empty','empty',[0,0,80,550],1);
 			
@@ -836,8 +836,8 @@
 			}).addTo(this.boxpanel);
 			this.mackintoshImg2 = new Hilo.Bitmap({
 				image:'img/confusion/mackintosh2.png',
-				x:800,
-				y:40,
+				x:848,
+				y:246,
 				visible:false,
 			}).addTo(this.boxpanel);
 			
