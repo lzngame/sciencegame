@@ -79,6 +79,7 @@
 			this.ticker.addTick(this.stage);
 			this.ticker.addTick(Hilo.Tween);
 			this.ticker.start();
+			
 		},
 		initEvent: function() {
 			this.stage.enableDOMEvent(Hilo.event.POINTER_START, true);
@@ -126,8 +127,9 @@
 			this.scenes[game.configdata.SCENE_NAMES.confusion_switchbox]    = new game.ConfusionSwitchboxscene();
 			this.scenes[game.configdata.SCENE_NAMES.confusion_cinema]    = new game.ConfusionCinemascene();
 			this.scenes[game.configdata.SCENE_NAMES.confusion_doorway]    = new game.ConfusionDoorwayscene();
-			this.scenes[game.configdata.SCENE_NAMES.plane_board]    = new game.PlaneBoardscene();
-			this.scenes[game.configdata.SCENE_NAMES.plane_cabin]    = new game.PlaneCabinscene();
+			this.scenes[game.configdata.SCENE_NAMES.plane_board]      = new game.PlaneBoardscene();
+			this.scenes[game.configdata.SCENE_NAMES.plane_cabin]      = new game.PlaneCabinscene();
+			this.scenes[game.configdata.SCENE_NAMES.plane_outside]    = new game.PlaneOutsidescene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

@@ -15,6 +15,7 @@
 			this.fingerMouse = new game.FingerMouse({
 				visible:false,
 			}).addTo(this);
+			
 		},
 		initkeyevent:function(){
 			var scene = this;

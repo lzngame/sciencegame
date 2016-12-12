@@ -42,6 +42,7 @@
 		isflash:false,
 		flashtime:0,
 		ischange:false,
+		sitman:null,
 		constructor: function(properties) {
 			PlaneCabinscene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -200,7 +201,7 @@
 						duration:1100,
 						delay:3500,
 						onComplete:function(){
-							game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+							game.switchScene(game.configdata.SCENE_NAMES.plane_outside);
 						}
 					});
 					return true;

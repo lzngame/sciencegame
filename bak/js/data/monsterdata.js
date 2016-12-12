@@ -167,7 +167,7 @@ game.monsterdata = new function(){
 			//[0,'pass01',game.configdata.SCENE_NAMES.escapebus],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_room],
 			[0,'planecabin',game.configdata.SCENE_NAMES.plane_cabin],
-			[-1,'pass03',game.configdata.SCENE_NAMES.confusion_doorway],
+			[0,'planeout',game.configdata.SCENE_NAMES.plane_outside],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],

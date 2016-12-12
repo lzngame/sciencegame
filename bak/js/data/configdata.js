@@ -81,7 +81,7 @@ game.configdata = new function(){
 		confusion_doorway:'CONFUSION_DOORWAY_SCENE',
 		plane_board:'PLANE_BOARD_SCENE',
 		plane_cabin:'PLANE_CABIN_SCENE',
-		
+		plane_outside:'PLANE_OUTSIDE_SCENE',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',

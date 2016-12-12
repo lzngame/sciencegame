@@ -37,7 +37,8 @@
 		isDesk:false,
 		isBelt:false,
 		
-		
+		desktime:0,
+		isupdesk:false,
 		
 		sitman:null,
 		
@@ -98,6 +99,8 @@
 			this.isSunvisor = false;
 			this.isDesk = false;
 			this.isBelt = false;
+			this.desktime = 0;
+			this.isupdesk = false;
 			
 			this.initFingerMouse();
 			this.showMask();
@@ -107,7 +110,7 @@
 				game.drdialog.showTxt('img/plane/note2.png');
 				game.drdialog.on(Hilo.event.POINTER_START,function(e){
 					game.drdialog.hide();
-					game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+					game.switchScene(game.configdata.SCENE_NAMES.plane_cabin);
 				});
 			}
 		},
@@ -179,6 +182,7 @@
 				var scene = this;
 				this.lockimg1.visible = false;
 				this.lockimg2.visible = true;
+				this.lockdesk.state = 2;
 				
 				new Hilo.Tween.to(this,{
 					alpha:1,
@@ -208,6 +212,7 @@
 				var scene = this;
 				this.closedeskobj.status = 1;
 				this.deskobj.status = 2;
+				this.isupdesk = true;
 				new Hilo.Tween.to(this,{
 					alpha:1,
 				},{
@@ -275,6 +280,11 @@
 				this.beltsprite.play();
 				this.beltstep2.status = 2;
 				this.beltexit.status = 1;
+				this.beltimg1.visible = false;
+				this.beltimg2.visible = true;
+				this.beltobj.status = 2;
+				this.isBelt = true;
+				this.checkAll();
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.beltexit)){
@@ -367,7 +377,7 @@
                 	closefail:[0,0,0,0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,5],
                 	closeok:[5,6,7,8,9],
                 	step1:[6,6],
-                	step2:[6,7,8]
+                	step2:[6,7,8,9]
                 }
             });
             
@@ -465,7 +475,17 @@
 		
 		
 		onUpdate:function(){
-			
+			if(this.isupdesk && this.lockdesk.state == 0){
+				this.desktime++;
+				if(this.desktime > 300){
+					this.desktime = 0;
+					this.isupdesk = false;
+					this.deskimg1.visible = true;
+					this.deskimg2.visible = false;
+					this.lockdesk.status = 2;
+					this.deskobj.status = 1;
+				}
+			}
 		},
 	});
 })(window.game);
