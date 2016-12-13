@@ -82,6 +82,11 @@ game.configdata = new function(){
 		plane_board:'PLANE_BOARD_SCENE',
 		plane_cabin:'PLANE_CABIN_SCENE',
 		plane_outside:'PLANE_OUTSIDE_SCENE',
+		water_intopipe:'WATER_INTOPIPE_SCENE',
+		water_openvalue:'WATER_OPENVALUE_SCENE',
+		water_repairmachine:'WATER_REPAIRMACHINE_SCENE',
+		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',
+		
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
@@ -100,6 +105,11 @@ game.configdata = new function(){
 		point:'POINT_SCENE',
 		
 	};
+	
+	self.LAYOUTTEYP = {
+		img:'IMAGE_TYPE',
+		activeobj:'ACTIVEOBJECT_TYPE',
+	},
 	
 	self.MSAGE_TYPE ={
 		idle:'IDLE',

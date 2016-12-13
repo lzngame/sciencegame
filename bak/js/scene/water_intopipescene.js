@@ -1,5 +1,5 @@
 (function(ns) {
-	var ConfusionCinemascene = ns.ConfusionCinemascene = Hilo.Class.create({
+	var WaterIntopipescene = ns.WaterIntopipescene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.confusion_cinema,
 		hammer:null,
@@ -34,7 +34,7 @@
 		
 		atlas:null,
 		constructor: function(properties) {
-			ConfusionCinemascene.superclass.constructor.call(this, properties);
+			WaterIntopipescene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -281,7 +281,31 @@
 				status:status,
 			}).addTo(this);
 		},
-		
+		layoutUIElement:function(arraydata){
+			for(var i=0;i<arraydata.length;i++){
+				var item = arraydata[i];
+				var itemtype = item[0];
+				if(itemtype == game.configdata.LAYOUTTEYP.activeobj){
+					var obj = item[1];
+					var name = item[2];
+					var img = item[3];
+					var x = item[4];
+					var y = item[5];
+					var targetx = item[6];
+					var targety = item[7];
+					var clickrect = item[8];
+					var status = item[9];
+					obj = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
+				}
+				if(itemtype == game.configdata.LAYOUTTEYP.img){
+					var obj = item[1];
+					var img = item[2];
+					var x = item[3];
+					var y = item[4];
+					obj = new Hilo.Bitmap({image:img,x:x,y:y}).addTo(this);
+				}
+			}
+		},
 		layoutBgMap:function(){
 			var scene = this;
 			
@@ -333,7 +357,7 @@
             this.help1 = new Hilo.Sprite({
 				frames:this.helpatlas.getSprite('idle'),
 				interval:10,
-				x:300,
+				x:329,
 				y:302-270,
 				visible:false
 			}).addTo(this);
@@ -341,7 +365,7 @@
 			this.help2 = new Hilo.Sprite({
 				frames:this.helpatlas.getSprite('idle'),
 				interval:10,
-				x:400,
+				x:429,
 				y:334-270,
 				visible:false
 			}).addTo(this);
@@ -374,7 +398,7 @@
                 	openswitch:[0,1,2,3,4],
                 	knockandopen:[0,1,2,3,4,5],
                 	speak:[12,13,14],
-                	help:[6,7,7,8,9,10,11]
+                	help:[6,7,8,9,10,11]
                 }
             });
             
@@ -433,15 +457,13 @@
 						scene.knockman.y = scene.hero.y-285;
 						scene.knockman.currentFrame = 0;
 						scene.knockman._frames = scene.atlas.getSprite('help');
-						if(onCall)
-							onCall();
 					}
 				}).link(
 					new Hilo.Tween.to(scene.hero,{
 							alpha:1,
 						},{
-							duration:210,
-							delay:210,
+							duration:310,
+							delay:110,
 							onComplete:function(){
 								scene.hero.visible = true;
 								scene.knockman.visible = false;
@@ -460,7 +482,8 @@
 										scene.knockman.loop = true;
 										scene.knockman.play();
 										scene.knockman._frames = scene.atlas.getSprite('speak');
-										
+										if(onCall)
+											onCall();
 									}
 								});
 							}

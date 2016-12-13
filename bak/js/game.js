@@ -59,6 +59,7 @@
 		initstage: function() {
 			console.log('game init');
 			var gameContainer = document.getElementById("game-container");
+			
 			/*gameContainer.style.width = this.screenWidth + 'px';
 			gameContainer.style.height = this.screenHeight + 'px';
 			gameContainer.style.background = 'red';*/
@@ -130,6 +131,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.plane_board]      = new game.PlaneBoardscene();
 			this.scenes[game.configdata.SCENE_NAMES.plane_cabin]      = new game.PlaneCabinscene();
 			this.scenes[game.configdata.SCENE_NAMES.plane_outside]    = new game.PlaneOutsidescene();
+			this.scenes[game.configdata.SCENE_NAMES.water_intopipe]   = new game.WaterIntopipescene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);
