@@ -2,37 +2,18 @@
 	var WaterIntopipescene = ns.WaterIntopipescene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.confusion_cinema,
-		hammer:null,
-		boxobj:null,
-		speaker:null,
-		speakerobj:null,
-		door:null,
-		liedownman1:null,
-		liedownman2:null,
+		
 		initPosx:650,
-		initPosy:350,
+		initPosy:630,
 		currentOnhandObj:null,
 		currentOnhandImg:null,
-		
-		speakerinbox:null,
-		glass:null,
-		breakglass:null,
-		glassonfloor:null,
-		
-		
-		public1:null,
-		public2:null,
-		help1:null,
-		help2:null,
-		helpobj1:null,
-		helpobj2:null,
-		isHelp1:false,
-		isHelp2:false,
-		
-		knockman:null,
-		effectatlas:null,
-		
+		activeobjs:null,
 		atlas:null,
+		wateratlas:null,
+		items:null,
+		playboy:null,
+		currentkey:'empty',
+		keydises:null,
 		constructor: function(properties) {
 			WaterIntopipescene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -53,33 +34,34 @@
 			this.currentIndex = 0;
 			this.blocks = [];
 			this.initBlocks(this.blocks);
+			this.items = {};
 			this.layoutBgMap();
 			this.addHero(null,this.initPosx,this.initPosy);
 			
+			this.currentkey = 'empty';
 			this.hero.posx = this.initPosx;
 			this.hero.posy = this.initPosy;
 			this.initTouchEvent();
 			this.initFingerMouse();
 			this.layoutUI();
-			this.isHelp1 = false;
-			this.isHelp2 = false;
+			this.keydises = {
+				bluekey:60,
+				yellowkey:100,
+				pinkkey:140,
+				purplekey:180
+			};
 			game.sounds.play(14,true);
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
-			if(
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.door)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.hammer)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.boxobj)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.speakerobj)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.liedownman1)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.helpobj1)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.helpobj2)||
-				this.checkActiveItemWithoutPos(mouseX,mouseY,this.liedownman2)
-			){
-				return true;
-			}else{
-				return false;
+			for(var i in this.items){
+				var obj = this.items[i];
+				if(obj.status != null){
+					if(this.checkActiveItemWithoutPos(mouseX,mouseY,obj)){
+						return true;
+					}
+				}
 			}
+			return false;
 		},
 		receiveMsg: function(msg) {
 			
@@ -95,178 +77,291 @@
 				y:y
 			}).addTo(this);
 		},
-		pickPropQuick:function(pickProp,propimg,obj,x,y,onCall){
+		
+		checkActiveObjects:function(mouseX,mouseY){
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pinklock'])){
+				var obj = this.items['pinklock'];
+				if(this.currentkey == 'pinkkey'){
+					var scene = this;
+					this.currentOnhandImg.removeFromParent();
+					obj.removeFromParent();
+					this.items['closerailimg'].visible = false;
+					this.items['openrailimg'].visible = true;
+				}
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pinkexit'])){
+				var obj = this.items['pinkexit'];
+				var scene = this;
+				scene.gotoDosomething(obj,0.9,0,0,'goexit',1800,function(){
+						scene.hero.alpha = 0;
+					},function(){
+						game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+					});
+				return true;
+			}
+			
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['bluekey'])){
+				var obj = this.items['bluekey'];
+				this.takeKey('bluekey');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pinkkey'])){
+				var obj = this.items['pinkkey'];
+				this.takeKey('pinkkey');
+				
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['yellowkey'])){
+				var obj = this.items['yellowkey'];
+				this.takeKey('yellowkey');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['purplekey'])){
+				var obj = this.items['purplekey'];
+				this.takeKey('purplekey');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['onecheckpoint'])){
+				this.checkwater('onecheckpoint');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['twocheckpoint'])){
+				this.checkwater('twocheckpoint');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['threecheckpoint'])){
+				this.checkwater('threecheckpoint');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['fourcheckpoint'])){
+				this.checkwater('fourcheckpoint');
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['branch'])){
+				var obj = this.items['branch'];
+				var scene = this;
+				if(obj.state == 0){
+					this.gotoDosomething(obj,1,0,0,'breakoffbranch',800,function(){
+					
+					},function(){
+						obj.visible = false;
+						obj.status = 2;
+						scene.handonProp('img/water/branchonhand.png',scene.hero.posx-44,scene.hero.posy-149);
+					});
+				}else{
+					scene.currentOnhandImg.removeFromParent();
+					this.gotoDosomething(obj,1,0,0,'onshoestake',800,function(){
+						
+					},function(){
+						obj.visible = false;
+						obj.status = 2;
+						new Hilo.Bitmap({image:'img/water/instrumentonfloor.png',x:obj.x,y:obj.y}).addTo(scene);
+						scene.handonProp('img/water/branchonhand.png',scene.hero.posx-44,scene.hero.posy-149);
+					});
+				}
+				
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['instrumentinbox'])){
+				var obj = this.items['instrumentinbox'];
+				var scene = this;
+				this.gotoDosomething(obj,1,0,0,'onshoestake',800,function(){
+					
+				},function(){
+					obj.visible = false;
+					obj.status = 2;
+					scene.handonProp('img/water/instrumentonhand.png',scene.hero.posx-44,scene.hero.posy-100);
+				});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['shoesinbox'])){
+				var obj = this.items['shoesinbox'];
+				var scene = this;
+				this.gotoDosomething(obj,1,0,0,'wareshoes',1800,function(){
+					obj.visible = false;
+					obj.status = 2;
+					obj.removeFromParent();
+				},function(){
+					scene.boyidleshoes();
+				});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['closebox'])){
+				var obj = this.items['closebox'];
+				var scene = this;
+				this.currentOnhandImg.removeFromParent();
+				this.gotoDosomething(obj,1,0,0,'prybox',1800,function(){
+					
+				},function(){
+					obj.visible = false;
+					obj.status = 2;
+					scene.items['branch'].visible = true;
+					scene.items['branch'].x = 886;
+					scene.items['branch'].y = 555;
+					scene.items['branch'].status = 1;
+					scene.items['branch'].state = 2;
+					scene.items['branch'].targety = 50;
+				});
+				return true;
+			}
+			
+			return false;
+		},
+		takeKey:function(keyname){
+			var obj = this.items[keyname];
+			var scene = this;
+			this.currentOnhandImg.visible = false;
+			
+			if(this.currentkey != 'empty'){
+					var proobj = this.items[this.currentkey];
+					proobj.status = 1;
+					proobj.state = 2;
+					proobj.targety = 40;
+					proobj.targetx = -10;
+					var dis = scene.keydises[proobj.name];
+					proobj.x = this.hero.posx + dis;
+					proobj.y = this.hero.posy -60;
+					console.log('%s--%d',proobj.name,dis);
+				}
+			var action = 'upbranch';
+			if(obj.state != 0){
+				action = 'onshoestake';
+			}
+			this.gotoDosomething(obj,1,0,0,action,800,function(){
+					
+				},function(){
+					scene.currentOnhandImg.visible = true;
+					scene.currentkey = obj.name;
+					obj.x = scene.hero.posx + 38;
+					obj.y = scene.hero.posy - 92;
+					obj.status = 2;
+				});
+		},
+		
+		checkwater:function(pointname){
+			var obj = this.items[pointname];
+			var scene = this;
+			scene.currentOnhandImg.visible = false;
+			this.gotoDosomething(obj,1,0,0,'checkwater',1000,function(){
+					scene.items['greenlamp'].visible = true;
+					scene.items['redlamp'].visible = false;
+					if(pointname == 'twocheckpoint'){
+						scene.items['greenlamp'].visible = false;
+						scene.items['redlamp'].visible = true;
+						game.sounds.play(36,false);
+					}
+					scene.items['redlamp'].x = scene.items['greenlamp'].x = scene.playboy.x + 160;
+					scene.items['redlamp'].y = scene.items['greenlamp'].y = scene.playboy.y + 30;
+				},function(){
+					scene.currentOnhandImg.visible = true;
+					scene.items['greenlamp'].visible = false;
+					scene.items['redlamp'].visible = false;
+				});
+		},
+		boyidleshoes:function(){
+			new Hilo.Bitmap({
+				image:'img/water/shoesidle.png',
+				x:35,
+				y:240,
+			}).addTo(this.hero);
+		},
+		gotoExit:function(targetobj,scaleFact,x,y,playaction,delay,onCall1,onCall2){
 			var scene = this;
 			scene.ignoreTouch = true;
-			scene.hero.switchState('turn180',10);
-			scene.currentOnhandObj = obj;
-			var targetx = obj.x + obj.targetx;
-			var targety = obj.y + obj.targety;
+			var targetx = targetobj.x + targetobj.targetx;
+			var targety = targetobj.y + targetobj.targety;
 			var initx = this.hero.posx;
 			var inity = this.hero.posy;
 			new Hilo.Tween.to(scene.hero, {
 					posx:targetx,
 					posy:targety,
-					scaleX:obj.scaleFact,
-					scaleY:obj.scaleFact,
+					scaleX:scaleFact,
+					scaleY:scaleFact,
 				}, {
 					duration: 120,
 					onComplete: function() {
-						scene.hero.switchState('idleback',10);
-						game.sounds.play(6,false);
+						scene.hero.visible = false;
+						scene.playboy.visible = true;
+						scene.playboy.loop = false;
+						scene.playboy.x = scene.hero.posx -115;
+						scene.playboy.y = scene.hero.posy -283;
+						scene.playboy.currentFrame = 0;
+						scene.playboy.scaleX = scaleFact;
+						scene.playboy.scaleY = scaleFact;
+						scene.playboy._frames = scene.atlas.getSprite(playaction);
+						scene.playboy.play();
+						if(onCall1){
+							onCall1();
+						}
+						game.sounds.play(19,false);
+					}
+				});
+		},
+		gotoDosomething:function(targetobj,scaleFact,x,y,playaction,delay,onCall1,onCall2){
+			var scene = this;
+			scene.ignoreTouch = true;
+			var targetx = targetobj.x + targetobj.targetx;
+			var targety = targetobj.y + targetobj.targety;
+			var initx = this.hero.posx;
+			var inity = this.hero.posy;
+			new Hilo.Tween.to(scene.hero, {
+					posx:targetx,
+					posy:targety,
+					scaleX:scaleFact,
+					scaleY:scaleFact,
+				}, {
+					duration: 120,
+					onComplete: function() {
+						scene.hero.visible = false;
+						scene.playboy.visible = true;
+						scene.playboy.loop = false;
+						scene.playboy.x = scene.hero.posx -115;
+						scene.playboy.y = scene.hero.posy -283;
+						scene.playboy.currentFrame = 0;
+						scene.playboy.scaleX = scaleFact;
+						scene.playboy.scaleY = scaleFact;
+						scene.playboy._frames = scene.atlas.getSprite(playaction);
+						scene.playboy.play();
+						if(onCall1){
+							onCall1();
+						}
+						game.sounds.play(19,false);
 					}
 				}).link(
-					new Hilo.Tween.to(scene.hero,{
+					new Hilo.Tween.to(scene,{
 							alpha:1,
 						},{
-							duration:10,
-							delay:200,
+							duration:310,
+							delay:delay,
 							onComplete:function(){
-								//scene.hero.switchState('backpick',10);
-								new Hilo.Tween.to(scene.hero,{
+								scene.hero.visible = true;
+								scene.playboy.visible = false;
+ 								new Hilo.Tween.to(scene.hero,{
 									posx:initx,
 									posy:inity,
 									scaleX:1,
 									scaleY:1,
 								},{
 									duration:120,
-									delay:320,
+									delay:120,
 									onComplete:function(){
 										scene.hero.switchState('idle',10);
-										//scene.hero.takeProp(pickProp,x,y);
-										if(obj.name != 'speakerobj')
-											scene.handonProp(propimg,scene.hero.posx+x,scene.hero.posy+y);
 										scene.ignoreTouch = false;
-										obj.visible = false;
-										obj.status = 2;
-										if(onCall)
-											onCall();
+										if(onCall2)
+											onCall2();
 									}
 								});
 							}
 						})
 				);
 		},
-		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.hammer)){
-				if(!this.currentOnhandObj){
-					this.hammer.scaleFact = 1;
-					this.currentOnhandObj = this.hammer;	
-					this.pickPropQuick('hammer','img/confusion/extinguisherhand.png',this.hammer,-62+18,-145+34);
-				}
-				return true;
-			}
-			
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.helpobj1)){
-				var scene = this;
-				this.gotoHelp(this.helpobj1,0,0,function(){
-					scene.help1.currentFrame = 0;
-					scene.help1.loop = false;
-					scene.help1._frames = scene.helpatlas.getSprite('up');
-					scene.isHelp1 = true;
-					scene.isAllhelp();
-				});
-				return true;
-			}
-			
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.helpobj2)){
-				var scene = this;
-				this.gotoHelp(this.helpobj2,0,0,function(){
-					scene.help2.currentFrame = 0;
-					scene.help2.loop = false;
-					scene.help2._frames = scene.helpatlas.getSprite('up');
-					scene.isHelp2 = true;
-					scene.isAllhelp();
-				});
-				return true;
-			}
-			
-			
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.speakerobj)){
-				this.speakerobj.scaleFact = 0.8;
-				var scene = this;
-				this.pickPropQuick('speak','empty',this.speakerobj,-80,-103,function(){
-					scene.putProp();
-					scene.handonProp('img/confusion/speakeronhand.png',544,214);
-					game.drdialog.showTxt('img/confusion/notecheli.png');
-					game.drdialog.on(Hilo.event.POINTER_START, function(e) {
-						game.drdialog.hide();
-						scene.knockman.visible = true;
-						scene.knockman.x = 529;
-						scene.knockman.y = 66;
-						scene.knockman.scaleX = 1;
-						scene.knockman.scaleY = 1;
-						scene.hero.visible = false;
-						scene.speakerinbox.visible = false;
-						scene.currentOnhandImg.removeFromParent();
-						scene.callpublic();
-					});
-				});
-				this.speakerobj.status = 2;
-				return true;
-			}
-			
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.boxobj)){
-				if(this.currentOnhandObj && this.currentOnhandObj.name == 'hammer'){
-					var scene = this;
-					this.gotoOpenswitch(this.boxobj,0,0,function(){
-						scene.hammer.visible = true;
-						scene.hammer.x = 279;
-						scene.hammer.y = 247;
-						scene.hammer.scaleX = 0.8;
-						scene.hammer.scaleY = 0.8;
-						scene.hero.scaleX = 1;
-						scene.hero.scaleY = 1;
-						scene.speakerobj.status = 1;
-						scene.glass.visible = false;
-						scene.glassonfloor.visible = true;
-						scene.breakglass.visible = true;
-					});
-					this.boxobj.status = 2;
-				}else{
-					this.sayNo();
-				}
-				return true;
-			}
-			
-			
-			return false;
-		},
-		isAllhelp:function(){
-			if(this.isHelp1 && this.isHelp2){
-				new Hilo.Tween.to(this,{
-					alpha:1,
-				},{
-					duration:500,
-					delay:2000,
-					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.confusion_doorway);
-					}
-				});
-			}
-		},
-		callpublic:function(){
-			var scene = this;
-			new Hilo.Tween.to(scene.public1,{
-				x:-100,
-				y:200
-			},{
-				duration:2000,
-				delay:1000
-			});
-			new Hilo.Tween.to(scene.public2,{
-				x:-40,
-				y:250
-			},{
-				duration:2500,
-				delay:500,
-				onComplete:function(){
-					scene.knockman.visible = false;
-					scene.hero.visible = true;
-					scene.help1.visible = true;
-					scene.help2.visible = true;
-				}
-			});
+		handonProp:function(propimg,x,y){
+			this.currentOnhandImg = new Hilo.Bitmap({
+				image:propimg,
+				x:x,
+				y:y
+			}).addTo(this);
 		},
 		createActiveObj:function(objname,x,y,targetx,targety,readyImgurl,finishedImgurl,clickrect,status){
 			return new game.ActiveObject({
@@ -286,8 +381,8 @@
 				var item = arraydata[i];
 				var itemtype = item[0];
 				if(itemtype == game.configdata.LAYOUTTEYP.activeobj){
-					var obj = item[1];
-					var name = item[2];
+					var name = item[1];
+					var obj = item[2];
 					var img = item[3];
 					var x = item[4];
 					var y = item[5];
@@ -295,260 +390,108 @@
 					var targety = item[7];
 					var clickrect = item[8];
 					var status = item[9];
-					obj = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
+					this.items[obj] = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
 				}
 				if(itemtype == game.configdata.LAYOUTTEYP.img){
 					var obj = item[1];
 					var img = item[2];
 					var x = item[3];
 					var y = item[4];
-					obj = new Hilo.Bitmap({image:img,x:x,y:y}).addTo(this);
+					var isvisible = item[5];
+					this.items[obj] = new Hilo.Bitmap({image:img,x:x,y:y,visible:isvisible}).addTo(this);
 				}
 			}
 		},
 		layoutBgMap:function(){
 			var scene = this;
+			var data = [
+				[game.configdata.LAYOUTTEYP.img,'bg','img/water/waterpipelinebg.png',0,0,true],
+				[game.configdata.LAYOUTTEYP.img,'closerailimg','img/water/closerail.png',490,226,true],
+				[game.configdata.LAYOUTTEYP.img,'openrailimg','img/water/openrail.png',440,204,false],
+				[game.configdata.LAYOUTTEYP.img,'lockclose','img/water/closepinklock.png',681,320,true],
+				[game.configdata.LAYOUTTEYP.img,'lockopen','img/water/openpinklock.png',681,320,false],
+				[game.configdata.LAYOUTTEYP.activeobj,'bluekey','bluekey','img/water/bluekey.png',31,266,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'pinkkey','pinkkey','img/water/pinkkey.png',319,233,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'yellowkey','yellowkey','img/water/yellowkey.png',164,225,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'purplekey','purplekey','img/water/purplekey.png',400,251,40,280,[0,0,30,30],1],
+				
+				[game.configdata.LAYOUTTEYP.img,'openbox','img/water/openbox.png',1011,521,true],
+				[game.configdata.LAYOUTTEYP.img,'redlamp','img/water/redlamp.png',1011,521,false],
+				[game.configdata.LAYOUTTEYP.img,'greenlamp','img/water/greenlamp.png',1011,521,false],
+				[game.configdata.LAYOUTTEYP.activeobj,'shoesinbox','shoesinbox','img/water/inboxshoes.png',1028,532,0,100,[0,0,30,30],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'instrumentinbox','instrumentinbox','img/water/inboxinstrument.png',1080,532,0,130,[0,0,30,30],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'closebox','closebox','img/water/closebox.png',1011,521,-30,90,[0,0,150,100],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'branch','branch','img/water/branch.png',158,302,62,202,[0,0,150,30],1],
+				
+				[game.configdata.LAYOUTTEYP.activeobj,'onecheckpoint','onecheckpoint','empty',229,378,62,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'twocheckpoint','twocheckpoint','empty',469,378,62,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'threecheckpoint','threecheckpoint','empty',720,378,62,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'fourcheckpoint','fourcheckpoint','empty',968,378,22,202,[0,0,150,60],1],
+				
+				[game.configdata.LAYOUTTEYP.activeobj,'bluelock','bluelock','empty',433,315,62,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'pinklock','pinklock','empty',684,315,62,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'purplelock','purplelock','empty',929,315,62,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'yellowlock','yellowlock','empty',1170,315,22,202,[0,0,30,40],1],
+				
+				[game.configdata.LAYOUTTEYP.activeobj,'pinkexit','pinkexit','empty',506,229,122,342,[0,0,120,120],1],
+			];
 			
-			new Hilo.Bitmap({
-				image:'img/confusion/dy.png',
-			}).addTo(this);
+			this.layoutUIElement(data);
 			
-			this.speakerinbox = new Hilo.Bitmap({
-				image:'img/confusion/speakinbox.png',
-				x:182,
-				y:122
-			}).addTo(this);
-			
-			this.glass = new Hilo.Bitmap({
-				image:'img/confusion/glass01.png',
-				x:178,
-				y:104,
-				alpha:0.8
-			}).addTo(this);
-			
-			this.breakglass = new Hilo.Bitmap({
-				image:'img/confusion/glassbreak.png',
-				x:178,
-				y:104,
-				visible:false,
-			}).addTo(this);
-			
-			this.glassonfloor = new Hilo.Bitmap({
-				image:'img/confusion/glassonfloor.png',
-				x:192,
-				y:296,
-				visible:false
-			}).addTo(this);
-			
-			this.helpatlas = new Hilo.TextureAtlas({
-                image:'img/confusion/help.png',
-                width: 633,
-                height: 622,
-                frames:[[211, 0, 209, 309], [211, 311, 209, 309], [422, 0, 209, 309], [0, 311, 209, 309], [0, 0, 209, 309]],
+			this.wateratlas = new Hilo.TextureAtlas({
+                image:'img/water/stream.png',
+                width: 211,
+                height: 243,
+                frames:[[0, 162, 209, 79], [0, 81, 209, 79], [0, 0, 209, 79]],
                 sprites: {
-                	idle:[0,0],
-                	up:[0,1,2,3,4]
+                	idle:[0,1,2],
                 }
             });
             
-			this.hammer  = this.createActiveObj('hammer',1093,176,0,140,'img/confusion/extinguisher.png','',[10,0,30,130],1);
-            
-            
-            this.help1 = new Hilo.Sprite({
-				frames:this.helpatlas.getSprite('idle'),
-				interval:10,
-				x:329,
-				y:302-270,
-				visible:false
-			}).addTo(this);
-			
-			this.help2 = new Hilo.Sprite({
-				frames:this.helpatlas.getSprite('idle'),
-				interval:10,
-				x:429,
-				y:334-270,
-				visible:false
-			}).addTo(this);
-			
-			
+			this.createSprite(this.wateratlas,'idle',968,378,15);
+			this.createSprite(this.wateratlas,'idle',720,370,11);
+			this.createSprite(this.wateratlas,'idle',469,373,7);
+			this.createSprite(this.wateratlas,'idle',229,378,11);
 
-			
-			this.public1 = new Hilo.Bitmap({image:'img/confusion/public.png',x:0,y:360}).addTo(this);
-			this.public2 = new Hilo.Bitmap({image:'img/confusion/public.png',x:700,y:360}).addTo(this);
-			
-			this.effectatlas = new Hilo.TextureAtlas({
-                image:'img/confusion/effect.png',
-                width: 718,
-                height: 835,
-                frames:[[247, 715, 245, 118], [0, 715, 245, 118], [349, 429, 245, 118], [349, 549, 245, 118], [596, 589, 110, 78], [596, 509, 110, 78], [596, 429, 110, 78], [494, 669, 110, 78], [494, 749, 110, 78], [606, 669, 110, 78], [0, 429, 347, 141], [349, 143, 347, 141], [349, 0, 347, 141], [0, 572, 347, 141], [349, 286, 347, 141], [0, 286, 347, 141], [0, 143, 347, 141], [0, 0, 347, 141]],
+			var rippleatlas = new Hilo.TextureAtlas({
+                image:'img/water/ripple.png',
+                width: 907,
+                height: 264,
+                frames:[[0, 176, 905, 86], [0, 88, 905, 86], [0, 0, 905, 86]],
                 sprites: {
-                	boxfire:[0,1,2,3],
-                	extinguisher:[4,5,6,7,8,9],
-                	smoke:[10,11,12,13,14,15,16],
+                	idle:[0,1,2],
                 }
             });
+            
+			this.createSprite(rippleatlas,'idle',417,436,20);
 			
 			this.atlas = new Hilo.TextureAtlas({
-                image:'img/confusion/boyactions_cinema.png',
-                width: 848,
-                height: 936,
-                frames:[[212, 624, 210, 310], [212, 624, 210, 310], [636, 312, 210, 310], [636, 0, 210, 310], [636, 0, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [636, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [424, 312, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310]],
+                image:'img/water/water1boyatlas.png',
+                width: 1484,
+                height: 1560,
+                frames:[[0, 0, 210, 310], [636, 0, 210, 310], [1272, 0, 210, 310], [1060, 1248, 210, 310], [1060, 936, 210, 310], [1060, 624, 210, 310], [1060, 312, 210, 310], [1060, 0, 210, 310], [848, 1248, 210, 310], [848, 936, 210, 310], [848, 624, 210, 310], [848, 312, 210, 310], [848, 0, 210, 310], [636, 1248, 210, 310], [636, 936, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [1272, 312, 210, 310], [424, 1248, 210, 310], [424, 936, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 1248, 210, 310], [0, 936, 210, 310], [0, 1248, 210, 310], [0, 1248, 210, 310], [0, 936, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 312, 210, 310]],
                 sprites: {
                 	idle:[0,0],
-                	openswitch:[0,1,2,3,4],
-                	knockandopen:[0,1,2,3,4,5],
-                	speak:[12,13,14],
-                	help:[6,7,8,9,10,11]
+                	breakoffbranch:[0,1,2,3,4],
+                	prybox:{from:20,to:26},
+                	wareshoes:[27,28,29,30,31,32,33,34,35,8],
+                	onshoestake:[36,37,30,36,8],
+                	checkwater:[5,6,6,6],
+                	upbranch:[36,37],
+                	goexit:[8,9,10,11,12,13,14,7]
                 }
             });
             
+            this.playboy = this.createSprite(this.atlas,'idle',1023,211,10);
             
-            
-            new Hilo.Bitmap({image:'img/confusion/chair2.png',x:376,y:467}).addTo(this);
-            new Hilo.Sprite({
-				frames:this.effectatlas.getSprite('smoke'),
-				interval:10,
-				x:0,
-				y:200,
-				scaleX:3,
-				scaleY:3,
-			}).addTo(this);
-			new Hilo.Bitmap({image:'img/confusion/chair1.png',x:172,y:552}).addTo(this);
-			
-            
-            this.knockman = new Hilo.Sprite({
-				frames:this.atlas.getSprite('knockandopen'),
-				interval:10,
-				x:1023,
-				y:211,
-				visible:false,
-			}).addTo(this);
-			
-
-			this.boxobj  = this.createActiveObj('box',180,110,50,180,'empty','empty',[0,0,40,40],1);
-			this.helpobj1  = this.createActiveObj('help1',360,120,160,210,'empty','empty',[0,0,70,140],1);
-			this.helpobj2 = this.createActiveObj('help2',456,210,160,160,'empty','empty',[0,0,70,140],1);
-			this.speakerobj  = this.createActiveObj('speakerobj',180,110,0,130,'empty','empty',[0,-30,60,90],2);
-			
-			
-			
 		},
-		gotoHelp:function(obj,x,y,onCall){
-			var scene = this;
-			obj.status = 2;
-			scene.currentOnhandImg.removeFromParent();
-			scene.ignoreTouch = true;
-			var targetx = obj.x + obj.targetx;
-			var targety = obj.y + obj.targety;
-			var initx = this.hero.posx;
-			var inity = this.hero.posy;
-			new Hilo.Tween.to(scene.hero, {
-					posx:targetx,
-					posy:targety,
-					scaleX:1,
-					scaleY:1,
-				}, {
-					duration: 120,
-					onComplete: function() {
-						scene.hero.visible = false;
-						scene.knockman.visible = true;
-						scene.knockman.loop = false;
-						scene.knockman.x = scene.hero.x -113;
-						scene.knockman.y = scene.hero.y-285;
-						scene.knockman.currentFrame = 0;
-						scene.knockman._frames = scene.atlas.getSprite('help');
-					}
-				}).link(
-					new Hilo.Tween.to(scene.hero,{
-							alpha:1,
-						},{
-							duration:310,
-							delay:110,
-							onComplete:function(){
-								scene.hero.visible = true;
-								scene.knockman.visible = false;
- 								new Hilo.Tween.to(scene.hero,{
-									posx:initx,
-									posy:inity,
-									scaleX:1,
-									scaleY:1,
-								},{
-									duration:120,
-									delay:120,
-									onComplete:function(){
-										scene.hero.switchState('idle',10);
-										scene.ignoreTouch = false;
-										scene.knockman.currentFrame = 0;
-										scene.knockman.loop = true;
-										scene.knockman.play();
-										scene.knockman._frames = scene.atlas.getSprite('speak');
-										if(onCall)
-											onCall();
-									}
-								});
-							}
-						})
-				);
-		},
-		
-		gotoOpenswitch:function(obj,x,y,onCall){
-			var scene = this;
-			scene.currentOnhandImg.removeFromParent();
-			scene.ignoreTouch = true;
-			var targetx = obj.x + obj.targetx;
-			var targety = obj.y + obj.targety;
-			var initx = this.hero.posx;
-			var inity = this.hero.posy;
-			new Hilo.Tween.to(scene.hero, {
-					posx:targetx,
-					posy:targety,
-					scaleX:0.8,
-					scaleY:0.8,
-				}, {
-					duration: 120,
-					onComplete: function() {
-						scene.hero.visible = false;
-						scene.knockman.visible = true;
-						scene.knockman.loop = false;
-						scene.knockman.x = scene.hero.x -153;
-						scene.knockman.y = scene.hero.y-245;
-						scene.knockman.currentFrame = 0;
-						scene.knockman.scaleX = 0.8;
-						scene.knockman.scaleY = 0.8;
-						scene.knockman._frames = scene.atlas.getSprite('knockandopen');
-						game.sounds.play(10,false);
-					}
-				}).link(
-					new Hilo.Tween.to(scene.hero,{
-							alpha:1,
-						},{
-							duration:310,
-							delay:1200,
-							onComplete:function(){
-								scene.hero.visible = true;
-								scene.knockman.visible = false;
- 								new Hilo.Tween.to(scene.hero,{
-									posx:initx,
-									posy:inity,
-									scaleX:1,
-									scaleY:1,
-								},{
-									duration:120,
-									delay:120,
-									onComplete:function(){
-										scene.hero.switchState('idle',10);
-										scene.ignoreTouch = false;
-										scene.knockman.currentFrame = 0;
-										scene.knockman.loop = true;
-										scene.knockman.play();
-										scene.knockman._frames = scene.atlas.getSprite('speak');
-										if(onCall)
-											onCall();
-									}
-								});
-							}
-						})
-				);
+		createSprite:function(sourceatlas,defaultaction,x,y,interval){
+			return new Hilo.Sprite({
+				frames:sourceatlas.getSprite(defaultaction),
+				interval:interval,
+				x:x,
+				y:y,
+			}).addTo(this);
 		},
 		herowalk:function(targetx,targety){
 			
@@ -559,7 +502,6 @@
 				this.hero.switchState('nocan',10);
 			}
 		},
-		
 		
 		onUpdate:function(){
 			
