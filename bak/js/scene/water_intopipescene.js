@@ -14,6 +14,9 @@
 		playboy:null,
 		currentkey:'empty',
 		keydises:null,
+		
+		isbranchonhand:false,
+		isinstrumentonhand:false,
 		constructor: function(properties) {
 			WaterIntopipescene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -50,6 +53,8 @@
 				pinkkey:140,
 				purplekey:180
 			};
+			this.isbranchonhand = false;
+			this.isinstrumentonhand = false;
 			game.sounds.play(14,true);
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -79,14 +84,34 @@
 		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['bluelock'])||this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['purplelock'])||this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['yellowlock'])){
+				var obj = this.items['bluelock'];
+				this.sayNo();
+				return true;
+			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pinklock'])){
 				var obj = this.items['pinklock'];
 				if(this.currentkey == 'pinkkey'){
 					var scene = this;
 					this.currentOnhandImg.removeFromParent();
-					obj.removeFromParent();
-					this.items['closerailimg'].visible = false;
-					this.items['openrailimg'].visible = true;
+					scene.items['pinkkey'].removeFromParent();
+					obj.status = 2;
+					var scene = this;
+					scene.gotoDosomething(obj,0.8,0,0,'onshoesuptake',300,function(){
+						scene.items['branch'].visible = true;
+						scene.items['branch'].x = 586;
+						scene.items['branch'].y = 555;
+						scene.items['branch'].status = 2;
+						scene.items['branch'].state = 2;
+					},function(){
+						scene.items['closerailimg'].visible = false;
+						scene.items['openrailimg'].visible = true;
+						scene.items['lockclose'].visible = false;
+						scene.items['lockopen'].visible = true;
+						scene.items['pinkexit'].status = 1;
+					});
+				}else{
+					this.sayNo();
 				}
 				return true;
 			}
@@ -141,8 +166,9 @@
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['branch'])){
 				var obj = this.items['branch'];
 				var scene = this;
+				this.isbranchonhand = true;
 				if(obj.state == 0){
-					this.gotoDosomething(obj,1,0,0,'breakoffbranch',800,function(){
+					this.gotoDosomething(obj,1,0,0,'breakoffbranch',550,function(){
 					
 					},function(){
 						obj.visible = false;
@@ -151,11 +177,14 @@
 					});
 				}else{
 					scene.currentOnhandImg.removeFromParent();
-					this.gotoDosomething(obj,1,0,0,'onshoestake',800,function(){
+					this.gotoDosomething(obj,1,0,0,'onshoesdowntake',400,function(){
 						
 					},function(){
 						obj.visible = false;
 						obj.status = 2;
+						scene.items['instrumentinbox'].state = 1;
+						scene.isbranchonhand = true;
+						scene.isinstrumentonhand = false;
 						new Hilo.Bitmap({image:'img/water/instrumentonfloor.png',x:obj.x,y:obj.y}).addTo(scene);
 						scene.handonProp('img/water/branchonhand.png',scene.hero.posx-44,scene.hero.posy-149);
 					});
@@ -164,9 +193,14 @@
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['instrumentinbox'])){
+				if(this.items['shoesinbox'].status == 1){
+					this.sayNo();
+					return true;
+				}
 				var obj = this.items['instrumentinbox'];
 				var scene = this;
-				this.gotoDosomething(obj,1,0,0,'onshoestake',800,function(){
+				this.isinstrumentonhand = true;
+				this.gotoDosomething(obj,1,0,0,'onshoesdowntake',500,function(){
 					
 				},function(){
 					obj.visible = false;
@@ -178,7 +212,7 @@
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['shoesinbox'])){
 				var obj = this.items['shoesinbox'];
 				var scene = this;
-				this.gotoDosomething(obj,1,0,0,'wareshoes',1800,function(){
+				this.gotoDosomething(obj,1,0,0,'wareshoes',1100,function(){
 					obj.visible = false;
 					obj.status = 2;
 					obj.removeFromParent();
@@ -189,19 +223,27 @@
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['closebox'])){
 				var obj = this.items['closebox'];
+				if(!this.isbranchonhand){
+					this.sayNo();
+					return;
+				}
 				var scene = this;
 				this.currentOnhandImg.removeFromParent();
-				this.gotoDosomething(obj,1,0,0,'prybox',1800,function(){
+				this.gotoDosomething(obj,1,0,0,'prybox',400,function(){
 					
 				},function(){
 					obj.visible = false;
 					obj.status = 2;
+					scene.items['openbox'].visible = true;
 					scene.items['branch'].visible = true;
 					scene.items['branch'].x = 886;
 					scene.items['branch'].y = 555;
-					scene.items['branch'].status = 1;
+					//scene.items['branch'].status = 1;
+					scene.items['instrumentinbox'].status = 1;
+					scene.items['shoesinbox'].status = 1;
 					scene.items['branch'].state = 2;
 					scene.items['branch'].targety = 50;
+					scene.isbranchonhand = false;
 				});
 				return true;
 			}
@@ -209,6 +251,10 @@
 			return false;
 		},
 		takeKey:function(keyname){
+			if(!this.isbranchonhand || this.items['instrumentinbox'].state == 0){
+				this.sayNo();
+				return;
+			}
 			var obj = this.items[keyname];
 			var scene = this;
 			this.currentOnhandImg.visible = false;
@@ -226,9 +272,10 @@
 				}
 			var action = 'upbranch';
 			if(obj.state != 0){
-				action = 'onshoestake';
+				action = 'onshoesdowntake';
+						  
 			}
-			this.gotoDosomething(obj,1,0,0,action,800,function(){
+			this.gotoDosomething(obj,1,0,0,action,200,function(){
 					
 				},function(){
 					scene.currentOnhandImg.visible = true;
@@ -241,6 +288,10 @@
 		
 		checkwater:function(pointname){
 			var obj = this.items[pointname];
+			if(!this.isinstrumentonhand){
+				this.sayNo();
+				return;
+			}
 			var scene = this;
 			scene.currentOnhandImg.visible = false;
 			this.gotoDosomething(obj,1,0,0,'checkwater',1000,function(){
@@ -249,6 +300,7 @@
 					if(pointname == 'twocheckpoint'){
 						scene.items['greenlamp'].visible = false;
 						scene.items['redlamp'].visible = true;
+						scene.items['branch'].status = 1;
 						game.sounds.play(36,false);
 					}
 					scene.items['redlamp'].x = scene.items['greenlamp'].x = scene.playboy.x + 160;
@@ -418,9 +470,9 @@
 				[game.configdata.LAYOUTTEYP.img,'openbox','img/water/openbox.png',1011,521,true],
 				[game.configdata.LAYOUTTEYP.img,'redlamp','img/water/redlamp.png',1011,521,false],
 				[game.configdata.LAYOUTTEYP.img,'greenlamp','img/water/greenlamp.png',1011,521,false],
-				[game.configdata.LAYOUTTEYP.activeobj,'shoesinbox','shoesinbox','img/water/inboxshoes.png',1028,532,0,100,[0,0,30,30],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'instrumentinbox','instrumentinbox','img/water/inboxinstrument.png',1080,532,0,130,[0,0,30,30],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'closebox','closebox','img/water/closebox.png',1011,521,-30,90,[0,0,150,100],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'shoesinbox','shoesinbox','img/water/inboxshoes.png',1028,532,0,100,[0,0,30,30],2],
+				[game.configdata.LAYOUTTEYP.activeobj,'instrumentinbox','instrumentinbox','img/water/inboxinstrument.png',1080,532,0,130,[0,0,30,30],2],
+				[game.configdata.LAYOUTTEYP.activeobj,'closebox','closebox','img/water/closebox.png',1011,511,-30,90,[0,0,150,100],1],
 				[game.configdata.LAYOUTTEYP.activeobj,'branch','branch','img/water/branch.png',158,302,62,202,[0,0,150,30],1],
 				
 				[game.configdata.LAYOUTTEYP.activeobj,'onecheckpoint','onecheckpoint','empty',229,378,62,202,[0,0,150,60],1],
@@ -429,14 +481,15 @@
 				[game.configdata.LAYOUTTEYP.activeobj,'fourcheckpoint','fourcheckpoint','empty',968,378,22,202,[0,0,150,60],1],
 				
 				[game.configdata.LAYOUTTEYP.activeobj,'bluelock','bluelock','empty',433,315,62,202,[0,0,30,40],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pinklock','pinklock','empty',684,315,62,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'pinklock','pinklock','empty',684,315,22,202,[0,0,30,40],1],
 				[game.configdata.LAYOUTTEYP.activeobj,'purplelock','purplelock','empty',929,315,62,202,[0,0,30,40],1],
 				[game.configdata.LAYOUTTEYP.activeobj,'yellowlock','yellowlock','empty',1170,315,22,202,[0,0,30,40],1],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'pinkexit','pinkexit','empty',506,229,122,342,[0,0,120,120],1],
+				[game.configdata.LAYOUTTEYP.activeobj,'pinkexit','pinkexit','empty',466,189,122,342,[0,0,180,180],2],
 			];
 			
 			this.layoutUIElement(data);
+			this.items['openbox'].visible = false;
 			
 			this.wateratlas = new Hilo.TextureAtlas({
                 image:'img/water/stream.png',
@@ -469,20 +522,22 @@
                 image:'img/water/water1boyatlas.png',
                 width: 1484,
                 height: 1560,
-                frames:[[0, 0, 210, 310], [636, 0, 210, 310], [1272, 0, 210, 310], [1060, 1248, 210, 310], [1060, 936, 210, 310], [1060, 624, 210, 310], [1060, 312, 210, 310], [1060, 0, 210, 310], [848, 1248, 210, 310], [848, 936, 210, 310], [848, 624, 210, 310], [848, 312, 210, 310], [848, 0, 210, 310], [636, 1248, 210, 310], [636, 936, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [1272, 312, 210, 310], [424, 1248, 210, 310], [424, 936, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 1248, 210, 310], [0, 936, 210, 310], [0, 1248, 210, 310], [0, 1248, 210, 310], [0, 936, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 312, 210, 310]],
+                frames:[[636, 0, 210, 310], [1272, 0, 210, 310], [1060, 1248, 210, 310], [1060, 936, 210, 310], [1060, 624, 210, 310], [1060, 312, 210, 310], [1060, 0, 210, 310], [848, 1248, 210, 310], [848, 936, 210, 310], [848, 624, 210, 310], [848, 312, 210, 310], [848, 0, 210, 310], [636, 1248, 210, 310], [636, 936, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [1272, 312, 210, 310], [424, 1248, 210, 310], [424, 936, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 1248, 210, 310], [0, 936, 210, 310], [0, 1248, 210, 310], [0, 1248, 210, 310], [0, 936, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310]],
                 sprites: {
                 	idle:[0,0],
                 	breakoffbranch:[0,1,2,3,4],
-                	prybox:{from:20,to:26},
-                	wareshoes:[27,28,29,30,31,32,33,34,35,8],
-                	onshoestake:[36,37,30,36,8],
+                	prybox:{from:19,to:23},
+                	wareshoes:[26,27,28,29,30,31,32,33,34],
+                	onshoesdowntake:[7,8,9,10],
+                	onshoesuptake:[10,35],
                 	checkwater:[5,6,6,6],
-                	upbranch:[36,37],
-                	goexit:[8,9,10,11,12,13,14,7]
+                	upbranch:[36,36],
+                	goexit:[11,12,13,14,15,16,17,18],
                 }
             });
             
             this.playboy = this.createSprite(this.atlas,'idle',1023,211,10);
+            this.playboy.visible = false;
             
 		},
 		createSprite:function(sourceatlas,defaultaction,x,y,interval){
@@ -499,7 +554,7 @@
 		sayNo:function(){
 			game.headPanel.sayNo();
 			if(this.currentOnhandObj == null){
-				this.hero.switchState('nocan',10);
+				//this.hero.switchState('nocan',10);
 			}
 		},
 		

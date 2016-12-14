@@ -1,24 +1,23 @@
 <TextureAtlas imagePath="sprites.png">
-	<SubTexture name="branck (1).png" x="0" y="0" width="210" height="310"/>
-	<SubTexture name="branck (2).png" x="636" y="0" width="210" height="310"/>
-	<SubTexture name="branck (3).png" x="1272" y="0" width="210" height="310"/>
-	<SubTexture name="branck (4).png" x="1060" y="1248" width="210" height="310"/>
-	<SubTexture name="branck (5).png" x="1060" y="936" width="210" height="310"/>
-	<SubTexture name="check (1).png" x="1060" y="624" width="210" height="310"/>
-	<SubTexture name="check (2).png" x="1060" y="312" width="210" height="310"/>
-	<SubTexture name="incave (1).png" x="1060" y="0" width="210" height="310"/>
-	<SubTexture name="incave (2).png" x="848" y="1248" width="210" height="310"/>
-	<SubTexture name="incave (3).png" x="848" y="936" width="210" height="310"/>
-	<SubTexture name="incave (4).png" x="848" y="624" width="210" height="310"/>
-	<SubTexture name="incave (5).png" x="848" y="312" width="210" height="310"/>
-	<SubTexture name="incave (6).png" x="848" y="0" width="210" height="310"/>
-	<SubTexture name="incave (7).png" x="636" y="1248" width="210" height="310"/>
-	<SubTexture name="incave (8).png" x="636" y="936" width="210" height="310"/>
-	<SubTexture name="onshoes (1).png" x="636" y="624" width="210" height="310"/>
-	<SubTexture name="onshoes (2).png" x="636" y="312" width="210" height="310"/>
-	<SubTexture name="onshoes (3).png" x="1272" y="312" width="210" height="310"/>
-	<SubTexture name="onshoes (4).png" x="424" y="1248" width="210" height="310"/>
-	<SubTexture name="onshoes (5).png" x="424" y="936" width="210" height="310"/>
+	<SubTexture name="branck (1).png" x="636" y="0" width="210" height="310"/>
+	<SubTexture name="branck (2).png" x="1272" y="0" width="210" height="310"/>
+	<SubTexture name="branck (3).png" x="1060" y="1248" width="210" height="310"/>
+	<SubTexture name="branck (4).png" x="1060" y="936" width="210" height="310"/>
+	<SubTexture name="branck (5).png" x="1060" y="624" width="210" height="310"/>
+	<SubTexture name="check (1).png" x="1060" y="312" width="210" height="310"/>
+	<SubTexture name="check (2).png" x="1060" y="0" width="210" height="310"/>
+	<SubTexture name="dun (1).png" x="848" y="1248" width="210" height="310"/>
+	<SubTexture name="dun (2).png" x="848" y="936" width="210" height="310"/>
+	<SubTexture name="dun (3).png" x="848" y="624" width="210" height="310"/>
+	<SubTexture name="dun (4).png" x="848" y="312" width="210" height="310"/>
+	<SubTexture name="incave (1).png" x="848" y="0" width="210" height="310"/>
+	<SubTexture name="incave (2).png" x="636" y="1248" width="210" height="310"/>
+	<SubTexture name="incave (3).png" x="636" y="936" width="210" height="310"/>
+	<SubTexture name="incave (4).png" x="636" y="624" width="210" height="310"/>
+	<SubTexture name="incave (5).png" x="636" y="312" width="210" height="310"/>
+	<SubTexture name="incave (6).png" x="1272" y="312" width="210" height="310"/>
+	<SubTexture name="incave (7).png" x="424" y="1248" width="210" height="310"/>
+	<SubTexture name="incave (8).png" x="424" y="936" width="210" height="310"/>
 	<SubTexture name="pury (1).png" x="424" y="624" width="210" height="310"/>
 	<SubTexture name="pury (2).png" x="424" y="312" width="210" height="310"/>
 	<SubTexture name="pury (3).png" x="424" y="0" width="210" height="310"/>
@@ -36,5 +35,5 @@
 	<SubTexture name="rainshoes (8).png" x="0" y="936" width="210" height="310"/>
 	<SubTexture name="rainshoes (9).png" x="0" y="624" width="210" height="310"/>
 	<SubTexture name="upbranch1.png" x="0" y="312" width="210" height="310"/>
-	<SubTexture name="upbranch2.png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="upbranch2.png" x="0" y="0" width="210" height="310"/>
 </TextureAtlas>
