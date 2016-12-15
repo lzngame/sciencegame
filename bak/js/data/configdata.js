@@ -83,7 +83,7 @@ game.configdata = new function(){
 		plane_cabin:'PLANE_CABIN_SCENE',
 		plane_outside:'PLANE_OUTSIDE_SCENE',
 		water_intopipe:'WATER_INTOPIPE_SCENE',
-		water_openvalue:'WATER_OPENVALUE_SCENE',
+		water_closevalue:'WATER_CLOSEVALUE_SCENE',
 		water_repairmachine:'WATER_REPAIRMACHINE_SCENE',
 		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',
 		
