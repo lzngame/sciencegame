@@ -1,26 +1,18 @@
 <TextureAtlas imagePath="sprites.png">
-	<SubTexture name="backpick (1).png" x="424" y="312" width="210" height="310"/>
-	<SubTexture name="backpick (2).png" x="848" y="312" width="210" height="310"/>
-	<SubTexture name="backpick (3).png" x="848" y="0" width="210" height="310"/>
-	<SubTexture name="backpick (4).png" x="636" y="936" width="210" height="310"/>
-	<SubTexture name="backpick (5).png" x="636" y="624" width="210" height="310"/>
-	<SubTexture name="backpick (6).png" x="848" y="0" width="210" height="310"/>
-	<SubTexture name="backpick (7).png" x="424" y="312" width="210" height="310"/>
-	<SubTexture name="can (1).png" x="636" y="312" width="210" height="310"/>
-	<SubTexture name="can (2).png" x="636" y="0" width="210" height="310"/>
-	<SubTexture name="can (3).png" x="424" y="936" width="210" height="310"/>
-	<SubTexture name="can (4).png" x="424" y="624" width="210" height="310"/>
-	<SubTexture name="can (5).png" x="424" y="624" width="210" height="310"/>
-	<SubTexture name="can (6).png" x="424" y="936" width="210" height="310"/>
-	<SubTexture name="can (7).png" x="636" y="0" width="210" height="310"/>
-	<SubTexture name="ce (1).png" x="848" y="624" width="210" height="310"/>
-	<SubTexture name="ce (2).png" x="424" y="0" width="210" height="310"/>
-	<SubTexture name="crow (1).png" x="212" y="936" width="210" height="310"/>
-	<SubTexture name="crow (2).png" x="212" y="624" width="210" height="310"/>
-	<SubTexture name="fa (1).png" x="212" y="312" width="210" height="310"/>
-	<SubTexture name="fa (2).png" x="212" y="0" width="210" height="310"/>
-	<SubTexture name="fa (3).png" x="0" y="936" width="210" height="310"/>
-	<SubTexture name="fa (4).png" x="0" y="624" width="210" height="310"/>
-	<SubTexture name="fa (5).png" x="0" y="312" width="210" height="310"/>
-	<SubTexture name="fa (6).png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="1a+.png" x="0" y="606" width="171" height="196"/>
+	<SubTexture name="1a.png" x="184" y="400" width="171" height="196"/>
+	<SubTexture name="1b+.png" x="173" y="606" width="171" height="196"/>
+	<SubTexture name="1b.png" x="184" y="202" width="171" height="196"/>
+	<SubTexture name="2a+.png" x="357" y="202" width="163" height="196"/>
+	<SubTexture name="2a.png" x="357" y="400" width="163" height="196"/>
+	<SubTexture name="2b+.png" x="368" y="0" width="163" height="196"/>
+	<SubTexture name="2b.png" x="346" y="598" width="163" height="196"/>
+	<SubTexture name="3a+.png" x="511" y="598" width="160" height="196"/>
+	<SubTexture name="3a.png" x="522" y="396" width="160" height="196"/>
+	<SubTexture name="3b+.png" x="522" y="198" width="160" height="196"/>
+	<SubTexture name="3b.png" x="533" y="0" width="160" height="196"/>
+	<SubTexture name="4a+.png" x="184" y="0" width="182" height="200"/>
+	<SubTexture name="4a.png" x="0" y="0" width="182" height="200"/>
+	<SubTexture name="4b+.png" x="0" y="202" width="182" height="200"/>
+	<SubTexture name="4b.png" x="0" y="404" width="182" height="200"/>
 </TextureAtlas>

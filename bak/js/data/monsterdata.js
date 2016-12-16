@@ -166,14 +166,20 @@ game.monsterdata = new function(){
 			[0,'chehuo',game.configdata.SCENE_NAMES.repairdepot],
 			//[0,'pass01',game.configdata.SCENE_NAMES.escapebus],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_room],
-			[0,'planecabin',game.configdata.SCENE_NAMES.water_intopipe],
-			[0,'planeout',game.configdata.SCENE_NAMES.water_closevalue],
+			[-1,'planecabin',game.configdata.SCENE_NAMES.water_intopipe],
+			[-1,'planeout',game.configdata.SCENE_NAMES.water_closevalue],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
 			
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			
+			];
+			this.passdata2 = [
+			[0,'chehuo',game.configdata.SCENE_NAMES.water_intopipe],
+			[-1,'planecabin',game.configdata.SCENE_NAMES.water_intopipe],
+			[-1,'planeout',game.configdata.SCENE_NAMES.water_closevalue],
+			[-1,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			];
 		},
 		addHp:function(){

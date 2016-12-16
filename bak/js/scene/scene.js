@@ -176,7 +176,8 @@
 		Extends: Hilo.Container,
 		name: game.configdata.SCENE_NAMES.main,
 		fingerMouse:null,
-		btnpass01:null,
+		btnpassCalamity:null,
+		btnpassEcosystem:null,
 		btnExit:null,
 		cloud1:null,
 		cloud2:null,
@@ -207,7 +208,8 @@
 				scene.fingerMouse.x = targetx-7;
 				scene.fingerMouse.y = targety;
 				scene.fingerMouse.visible = false;
-				if(game.checkInRect(targetx,targety,scene.btnpass01.x,scene.btnpass01.y,scene.btnpass01.width,scene.btnpass01.height)||
+				if(game.checkInRect(targetx,targety,scene.btnpassCalamity.x,scene.btnpassCalamity.y,scene.btnpassCalamity.width,scene.btnpassCalamity.height)||
+				   game.checkInRect(targetx,targety,scene.btnpassEcosystem.x,scene.btnpassEcosystem.y,scene.btnpassEcosystem.width,scene.btnpassEcosystem.height)||
 				   game.checkInRect(targetx,targety,scene.btnExit.x,scene.btnExit.y,scene.btnExit.width,scene.btnExit.height)
 				){
 					scene.fingerMouse.visible = true;
@@ -215,12 +217,22 @@
 					scene.fingerMouse.visible = false;
 				}
 				
-				if(game.checkInRect(targetx,targety,scene.btnpass01.x,scene.btnpass01.y,scene.btnpass01.width,scene.btnpass01.height)
+				if(game.checkInRect(targetx,targety,scene.btnpassCalamity.x,scene.btnpassCalamity.y,scene.btnpassCalamity.width,scene.btnpassCalamity.height)
 				   )
 				{
-					scene.btnpass01.scaleX = scene.btnpass01.scaleY = 1.1;
+					scene.btnpassCalamity.scaleX = scene.btnpassCalamity.scaleY = 1.1;
 				}else{
-					scene.btnpass01.scaleX = scene.btnpass01.scaleY = 1;
+					scene.btnpassCalamity.scaleX = scene.btnpassCalamity.scaleY = 1;
+				}
+				
+				//---------------------------------
+				
+				if(game.checkInRect(targetx,targety,scene.btnpassEcosystem.x,scene.btnpassEcosystem.y,scene.btnpassEcosystem.width,scene.btnpassEcosystem.height)
+				   )
+				{
+					scene.btnpassEcosystem.scaleX = scene.btnpassEcosystem.scaleY = 1.1;
+				}else{
+					scene.btnpassEcosystem.scaleX = scene.btnpassEcosystem.scaleY = 1;
 				}
 				
 			});
@@ -264,13 +276,13 @@
 				y:70
 			}).addTo(this);
 			
-			var btn01 = new Hilo.Bitmap({
+			this.btnpassEcosystem = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('largepass01','uimap'),
 				x:400,
 				y:100
 			}).addTo(this);
-			this.btnpass01 = new Hilo.Bitmap({
+			this.btnpassCalamity = new Hilo.Bitmap({
 				image:img,
 				rect:game.configdata.getPngRect('largepass02','uimap'),
 				x:700,
@@ -288,13 +300,16 @@
 				rect:game.configdata.getPngRect('suo','uimap'),
 				x:557,
 				y:285
-			}).addTo(this);
+			});
 			
 			var scene = this;
-			this.btnpass01.on(Hilo.event.POINTER_START, function(e) {
+			this.btnpassCalamity.on(Hilo.event.POINTER_START, function(e) {
 				game.sounds.play(2,false);
-				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
-				//game.switchScene(game.configdata.SCENE_NAMES.depot,[200,600]);
+				game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
+			});
+			this.btnpassEcosystem.on(Hilo.event.POINTER_START, function(e) {
+				game.sounds.play(2,false);
+				game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 			});
 			this.btnExit.on(Hilo.event.POINTER_START, function(e) {
 				window.close();
@@ -316,7 +331,10 @@
 			}).addTo(this);
 			
 			
-			this.btnpass01.on(Hilo.event.POINTER_MOVE, function(e) {
+			this.btnpassCalamity.on(Hilo.event.POINTER_MOVE, function(e) {
+				scene.fingerMouse.visible = true;
+			});
+			this.btnpassEcosystem.on(Hilo.event.POINTER_MOVE, function(e) {
 				scene.fingerMouse.visible = true;
 			});
 			this.initTouchEvent();
@@ -371,6 +389,8 @@
 		storytxt:'',
 		fingerMouse:null,
 		btnsPanel:null,
+		passImg:null,
+		overPassData:null,
 		cloud1:null,
 		cloud2:null,
 		cloud3:null,
@@ -383,6 +403,13 @@
 		[[527, 198, 160, 196], [687, 396, 160, 196], [689, 594, 160, 196], [527, 0, 160, 196]],
 		[[354, 792, 168, 201], [184, 792, 168, 201], [357, 203, 168, 201], [357, 0, 168, 201]]
 		],
+		overPasses2:[
+		[[0, 606, 171, 196], [184, 400, 171, 196], [173, 606, 171, 196], [184, 202, 171, 196]],
+		[[357, 202, 163, 196], [357, 400, 163, 196], [368, 0, 163, 196], [346, 598, 163, 196]],
+		[[511, 598, 160, 196], [522, 396, 160, 196], [522, 198, 160, 196], [533, 0, 160, 196]],
+		[[184, 0, 182, 200], [0, 0, 182, 200], [0, 202, 182, 200], [0, 404, 182, 200]]
+		],
+
 		constructor: function(properties) {
 			PassChoiceScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -446,22 +473,31 @@
 				y:0,
 			}).addTo(this);
 			
-			var passimg = game.getImg('passimgs');
+			this.passImg = game.getImg('passimgs');
 			var passdata = game.boydata.passdata;
+			this.overPassData = this.overPasses;
+			var dis = 3;
+			if(data == game.configdata.largePassName.ecosystem){
+				this.passImg = game.getImg('passimgs2');
+				passdata = game.boydata.passdata2;
+				this.overPassData = this.overPasses2;
+				dis = 4;
+			}
+			
 			for(var i=0;i<passdata.length;i++){
 				var item = passdata[i];
 				var passname = item[1];
 				var initx = 354;
 				var inity = 155;
-				var offsetx = (i % 3) * 220;
-				var offsety = Math.floor(i/3) * 250;
+				var offsetx = (i % dis) * 220;
+				var offsety = Math.floor(i/dis) * 250;
 				var islock = (item[0]==-1);
-				var rect = this.overPasses[i][0];
+				var rect = this.overPassData[i][0];
 				if(islock){
-					rect = this.overPasses[i][2];
+					rect = this.overPassData[i][2];
 				}
 				var btn = new Hilo.Bitmap({
-					image:passimg,
+					image:this.passImg,
 					rect:rect,
 					x:initx + offsetx,
 					y:inity + offsety
@@ -483,8 +519,6 @@
 					
 				}
 			}
-			
-			
 			
 			game.sounds.stop(14);
 			game.sounds.play(20,true);
@@ -511,18 +545,18 @@
 				var btns = scene.btnsPanel.children;
 				for(var i=0;i<btns.length;i++){
 					var btn = btns[i];
-					var rect = scene.overPasses[i][1];
-					var rect2 = scene.overPasses[i][0]
+					var rect = scene.overPassData[i][1];
+					var rect2 = scene.overPassData[i][0]
 					if(btn.islock){
-						rect = scene.overPasses[i][3];
-						rect2 = scene.overPasses[i][2];
+						rect = scene.overPassData[i][3];
+						rect2 = scene.overPassData[i][2];
 					}
 					if(game.checkInRect(targetx,targety,btn.x,btn.y,btn.width,btn.height)){
-							btn.setImage(game.getImg('passimgs'),rect);
+							btn.setImage(scene.passImg,rect);
 							scene.fingerMouse.visible = true;
 							break;
 					}else{
-							btn.setImage(game.getImg('passimgs'),rect2);
+							btn.setImage(scene.passImg,rect2);
 					}
 				}
 				
