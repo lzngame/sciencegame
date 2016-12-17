@@ -176,8 +176,8 @@ game.monsterdata = new function(){
 			
 			];
 			this.passdata2 = [
-			[0,'chehuo',game.configdata.SCENE_NAMES.water_intopipe],
-			[-1,'planecabin',game.configdata.SCENE_NAMES.water_intopipe],
+			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
+			[0,'repair',game.configdata.SCENE_NAMES.water_repairmachine],
 			[-1,'planeout',game.configdata.SCENE_NAMES.water_closevalue],
 			[-1,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			];

@@ -14,7 +14,7 @@
 		playboy:null,
 		currentkey:'empty',
 		keydises:null,
-		
+		maskgraphic:null,
 		isbranchonhand:false,
 		isinstrumentonhand:false,
 		constructor: function(properties) {
@@ -56,6 +56,7 @@
 			this.isbranchonhand = false;
 			this.isinstrumentonhand = false;
 			game.sounds.play(14,true);
+			this.showMask('img/water/waterbgnote.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -121,7 +122,7 @@
 				scene.gotoDosomething(obj,0.9,0,0,'goexit',1800,function(){
 						scene.hero.alpha = 0;
 					},function(){
-						game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+						game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 					});
 				return true;
 			}
@@ -557,7 +558,47 @@
 				//this.hero.switchState('nocan',10);
 			}
 		},
-		
+		showMask:function(bgnote){
+			this.black = new Hilo.Bitmap({
+				image:'img/typhoon/black.png',
+				width:1202,
+				height:686
+			}).addTo(this);
+			this.storynote = new Hilo.Bitmap({
+				image:bgnote,
+				x:240,
+				y:240
+			}).addTo(this);
+			var scene = this;
+			this.maskgraphic = new Hilo.Graphics({width:100, height:100, x:600, y:340});
+            this.maskgraphic.beginFill("#0ff").drawCircle(0, 0, 2).endFill();
+            this.maskgraphic.pivotX = 2;
+            this.maskgraphic.pivotY = 2;
+            this.storynote.on(Hilo.event.POINTER_START, function(e){
+            	scene.startMask();
+            });
+        },
+        startMask:function(){
+            var scene = this;
+            new Hilo.Tween.to(this,{
+            	alpha:1
+            },{
+            	delay:20,
+            	duration:10,
+            	onComplete:function(){
+            		scene.mask = scene.maskgraphic;
+            		scene.storynote.removeFromParent();
+            		scene.black.removeFromParent();
+            	}
+            }).link(
+            	new Hilo.Tween.to(scene.maskgraphic,{
+            		scaleX:350,
+            		scaleY:350,
+            	},{
+            		duration:2000
+            	})
+            );
+		},
 		onUpdate:function(){
 			
 		},

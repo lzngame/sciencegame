@@ -133,6 +133,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.plane_outside]    = new game.PlaneOutsidescene();
 			this.scenes[game.configdata.SCENE_NAMES.water_intopipe]   = new game.WaterIntopipescene();
 			this.scenes[game.configdata.SCENE_NAMES.water_closevalue]   = new game.WaterClosevaluescene();
+			this.scenes[game.configdata.SCENE_NAMES.water_repairmachine]   = new game.WaterRepairmachinescene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);
