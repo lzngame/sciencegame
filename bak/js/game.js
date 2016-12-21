@@ -132,8 +132,9 @@
 			this.scenes[game.configdata.SCENE_NAMES.plane_cabin]      = new game.PlaneCabinscene();
 			this.scenes[game.configdata.SCENE_NAMES.plane_outside]    = new game.PlaneOutsidescene();
 			this.scenes[game.configdata.SCENE_NAMES.water_intopipe]   = new game.WaterIntopipescene();
-			this.scenes[game.configdata.SCENE_NAMES.water_closevalue]   = new game.WaterClosevaluescene();
-			this.scenes[game.configdata.SCENE_NAMES.water_repairmachine]   = new game.WaterRepairmachinescene();
+			this.scenes[game.configdata.SCENE_NAMES.water_closevalue]       = new game.WaterClosevaluescene();
+			this.scenes[game.configdata.SCENE_NAMES.water_repairmachine]    = new game.WaterRepairmachinescene();
+			this.scenes[game.configdata.SCENE_NAMES.water_clarifyingpool]   = new game.WaterClarifypoolscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

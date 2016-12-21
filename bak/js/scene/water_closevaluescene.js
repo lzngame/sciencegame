@@ -190,6 +190,8 @@
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['bigvalue'])){
 				var obj = this.items['bigvalue'];
+				this.currentOnhandImg.removeFromParent();
+				
 				if(obj.state == 0){
 					this.sayNo();
 					return true;
@@ -203,6 +205,9 @@
 						duration:800,
 					});
 				},function(){
+					scene.items['crowbar'].visible = true;
+					scene.items['crowbar'].y = 408;
+					scene.items['crowbar'].x = 326;
 					new Hilo.Tween.to(scene.sewage,{
 						alpha:0
 					},{

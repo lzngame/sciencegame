@@ -1,23 +1,18 @@
 <TextureAtlas imagePath="sprites.png">
-	<SubTexture name="_0000_图层-0-副本.png" x="424" y="624" width="210" height="310"/>
-	<SubTexture name="_0001_1-副本-2.png" x="636" y="0" width="210" height="310"/>
-	<SubTexture name="_0002_1-副本-3.png" x="636" y="312" width="210" height="310"/>
-	<SubTexture name="_0003_1-副本.png" x="212" y="624" width="210" height="310"/>
-	<SubTexture name="_0004_1-副本-5.png" x="636" y="312" width="210" height="310"/>
-	<SubTexture name="_0005_1-副本-6.png" x="636" y="312" width="210" height="310"/>
-	<SubTexture name="_0006_1-副本-4.png" x="636" y="0" width="210" height="310"/>
-	<SubTexture name="_0007_图层-0-副本-2.png" x="424" y="624" width="210" height="310"/>
-	<SubTexture name="pick (1).png" x="424" y="312" width="210" height="310"/>
-	<SubTexture name="pick (2).png" x="424" y="312" width="210" height="310"/>
-	<SubTexture name="pick (3).png" x="424" y="0" width="210" height="310"/>
-	<SubTexture name="pick (4).png" x="636" y="624" width="210" height="310"/>
-	<SubTexture name="pick (5).png" x="212" y="312" width="210" height="310"/>
-	<SubTexture name="pick (6).png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="1.png" x="848" y="0" width="210" height="310"/>
+	<SubTexture name="2.png" x="212" y="624" width="210" height="310"/>
+	<SubTexture name="3.png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="6.png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="7.png" x="848" y="0" width="210" height="310"/>
+	<SubTexture name="knock (1).png" x="0" y="624" width="210" height="310"/>
+	<SubTexture name="knock (2).png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="knock (3).png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="knock (4).png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="pick (1).png" x="636" y="624" width="210" height="310"/>
+	<SubTexture name="pick (2).png" x="636" y="312" width="210" height="310"/>
+	<SubTexture name="pick (3).png" x="636" y="0" width="210" height="310"/>
+	<SubTexture name="pick (4).png" x="424" y="624" width="210" height="310"/>
+	<SubTexture name="pick (5).png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="pick (6).png" x="636" y="0" width="210" height="310"/>
 	<SubTexture name="pick (7).png" x="636" y="624" width="210" height="310"/>
-	<SubTexture name="spanner (1).png" x="0" y="624" width="210" height="310"/>
-	<SubTexture name="spanner (2).png" x="0" y="624" width="210" height="310"/>
-	<SubTexture name="spanner (3).png" x="0" y="312" width="210" height="310"/>
-	<SubTexture name="spanner (4).png" x="0" y="312" width="210" height="310"/>
-	<SubTexture name="spanner (5).png" x="0" y="0" width="210" height="310"/>
-	<SubTexture name="spanner (6).png" x="0" y="0" width="210" height="310"/>
 </TextureAtlas>
