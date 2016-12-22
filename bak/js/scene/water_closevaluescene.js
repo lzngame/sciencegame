@@ -400,7 +400,7 @@
 			for(var i=0;i<arraydata.length;i++){
 				var item = arraydata[i];
 				var itemtype = item[0];
-				if(itemtype == game.configdata.LAYOUTTEYP.activeobj){
+				if(itemtype == game.configdata.LAYOUTTYPE.activeobj){
 					var name = item[1];
 					var obj = item[2];
 					var img = item[3];
@@ -412,7 +412,7 @@
 					var status = item[9];
 					this.items[obj] = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
 				}
-				if(itemtype == game.configdata.LAYOUTTEYP.img){
+				if(itemtype == game.configdata.LAYOUTTYPE.img){
 					var obj = item[1];
 					var img = item[2];
 					var x = item[3];
@@ -425,22 +425,22 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-				[game.configdata.LAYOUTTEYP.img,'bg','img/water/2/water2bg.jpg',0,0,true],
-				[game.configdata.LAYOUTTEYP.activeobj,'jerrican','jerrican','img/water/2/jerrican.png',987,485,0,90,[0,0,60,80],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'crowbar','crowbar','img/water/2/crowbar.png',126,442,100,200,[0,0,110,190],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'instruction','instruction','empty',1028,343,22,202,[0,0,56,50],1],
+				[game.configdata.LAYOUTTYPE.img,'bg','img/water/2/water2bg.jpg',0,0,true],
+				[game.configdata.LAYOUTTYPE.activeobj,'jerrican','jerrican','img/water/2/jerrican.png',987,485,0,90,[0,0,60,80],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'crowbar','crowbar','img/water/2/crowbar.png',126,442,100,200,[0,0,110,190],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'instruction','instruction','empty',1028,343,22,202,[0,0,56,50],1],
 				
-				[game.configdata.LAYOUTTEYP.img,'bigvalueimg','img/water/2/bigvalue.png',321+85,273+88,true],
-				[game.configdata.LAYOUTTEYP.img,'valueimg1','img/water/2/value.png',608,355,true],
-				[game.configdata.LAYOUTTEYP.img,'valueimg2','img/water/2/value.png',697,355,true],
-				[game.configdata.LAYOUTTEYP.img,'valueimg3','img/water/2/value.png',787,355,true],
-				[game.configdata.LAYOUTTEYP.img,'valueimg4','img/water/2/value.png',881,355,true],
+				[game.configdata.LAYOUTTYPE.img,'bigvalueimg','img/water/2/bigvalue.png',321+85,273+88,true],
+				[game.configdata.LAYOUTTYPE.img,'valueimg1','img/water/2/value.png',608,355,true],
+				[game.configdata.LAYOUTTYPE.img,'valueimg2','img/water/2/value.png',697,355,true],
+				[game.configdata.LAYOUTTYPE.img,'valueimg3','img/water/2/value.png',787,355,true],
+				[game.configdata.LAYOUTTYPE.img,'valueimg4','img/water/2/value.png',881,355,true],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'bigvalue','bigvalue','empty',321,273,172,252,[0,0,171,150],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'value1','value1','empty',568,315,122,202,[0,0,81,73],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'value2','value2','empty',657,315,122,202,[0,0,81,73],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'value3','value3','empty',747,315,122,202,[0,0,81,73],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'value4','value4','empty',841,315,122,202,[0,0,81,73],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'bigvalue','bigvalue','empty',321,273,172,252,[0,0,171,150],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'value1','value1','empty',568,315,122,202,[0,0,81,73],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'value2','value2','empty',657,315,122,202,[0,0,81,73],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'value3','value3','empty',747,315,122,202,[0,0,81,73],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'value4','value4','empty',841,315,122,202,[0,0,81,73],1],
 				
 			];
 			

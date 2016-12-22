@@ -433,7 +433,7 @@
 			for(var i=0;i<arraydata.length;i++){
 				var item = arraydata[i];
 				var itemtype = item[0];
-				if(itemtype == game.configdata.LAYOUTTEYP.activeobj){
+				if(itemtype == game.configdata.LAYOUTTYPE.activeobj){
 					var name = item[1];
 					var obj = item[2];
 					var img = item[3];
@@ -445,7 +445,7 @@
 					var status = item[9];
 					this.items[obj] = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
 				}
-				if(itemtype == game.configdata.LAYOUTTEYP.img){
+				if(itemtype == game.configdata.LAYOUTTYPE.img){
 					var obj = item[1];
 					var img = item[2];
 					var x = item[3];
@@ -458,35 +458,35 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-				[game.configdata.LAYOUTTEYP.img,'bg','img/water/waterpipelinebg.png',0,0,true],
-				[game.configdata.LAYOUTTEYP.img,'closerailimg','img/water/closerail.png',490,226,true],
-				[game.configdata.LAYOUTTEYP.img,'openrailimg','img/water/openrail.png',440,204,false],
-				[game.configdata.LAYOUTTEYP.img,'lockclose','img/water/closepinklock.png',681,320,true],
-				[game.configdata.LAYOUTTEYP.img,'lockopen','img/water/openpinklock.png',681,320,false],
-				[game.configdata.LAYOUTTEYP.activeobj,'bluekey','bluekey','img/water/bluekey.png',31,266,40,280,[0,0,30,30],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pinkkey','pinkkey','img/water/pinkkey.png',319,233,40,280,[0,0,30,30],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'yellowkey','yellowkey','img/water/yellowkey.png',164,225,40,280,[0,0,30,30],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'purplekey','purplekey','img/water/purplekey.png',400,251,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.img,'bg','img/water/waterpipelinebg.png',0,0,true],
+				[game.configdata.LAYOUTTYPE.img,'closerailimg','img/water/closerail.png',490,226,true],
+				[game.configdata.LAYOUTTYPE.img,'openrailimg','img/water/openrail.png',440,204,false],
+				[game.configdata.LAYOUTTYPE.img,'lockclose','img/water/closepinklock.png',681,320,true],
+				[game.configdata.LAYOUTTYPE.img,'lockopen','img/water/openpinklock.png',681,320,false],
+				[game.configdata.LAYOUTTYPE.activeobj,'bluekey','bluekey','img/water/bluekey.png',31,266,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pinkkey','pinkkey','img/water/pinkkey.png',319,233,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'yellowkey','yellowkey','img/water/yellowkey.png',164,225,40,280,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'purplekey','purplekey','img/water/purplekey.png',400,251,40,280,[0,0,30,30],1],
 				
-				[game.configdata.LAYOUTTEYP.img,'openbox','img/water/openbox.png',1011,521,true],
-				[game.configdata.LAYOUTTEYP.img,'redlamp','img/water/redlamp.png',1011,521,false],
-				[game.configdata.LAYOUTTEYP.img,'greenlamp','img/water/greenlamp.png',1011,521,false],
-				[game.configdata.LAYOUTTEYP.activeobj,'shoesinbox','shoesinbox','img/water/inboxshoes.png',1028,532,0,100,[0,0,30,30],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'instrumentinbox','instrumentinbox','img/water/inboxinstrument.png',1080,532,0,130,[0,0,30,30],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'closebox','closebox','img/water/closebox.png',1011,511,-30,90,[0,0,150,100],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'branch','branch','img/water/branch.png',158,302,62,202,[0,0,150,30],1],
+				[game.configdata.LAYOUTTYPE.img,'openbox','img/water/openbox.png',1011,521,true],
+				[game.configdata.LAYOUTTYPE.img,'redlamp','img/water/redlamp.png',1011,521,false],
+				[game.configdata.LAYOUTTYPE.img,'greenlamp','img/water/greenlamp.png',1011,521,false],
+				[game.configdata.LAYOUTTYPE.activeobj,'shoesinbox','shoesinbox','img/water/inboxshoes.png',1028,532,0,100,[0,0,30,30],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'instrumentinbox','instrumentinbox','img/water/inboxinstrument.png',1080,532,0,130,[0,0,30,30],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'closebox','closebox','img/water/closebox.png',1011,511,-30,90,[0,0,150,100],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'branch','branch','img/water/branch.png',158,302,62,202,[0,0,150,30],1],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'onecheckpoint','onecheckpoint','empty',229,378,62,202,[0,0,150,60],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'twocheckpoint','twocheckpoint','empty',469,378,62,202,[0,0,150,60],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'threecheckpoint','threecheckpoint','empty',720,378,62,202,[0,0,150,60],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'fourcheckpoint','fourcheckpoint','empty',968,378,22,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'onecheckpoint','onecheckpoint','empty',229,378,62,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'twocheckpoint','twocheckpoint','empty',469,378,62,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'threecheckpoint','threecheckpoint','empty',720,378,62,202,[0,0,150,60],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'fourcheckpoint','fourcheckpoint','empty',968,378,22,202,[0,0,150,60],1],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'bluelock','bluelock','empty',433,315,62,202,[0,0,30,40],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pinklock','pinklock','empty',684,315,22,202,[0,0,30,40],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'purplelock','purplelock','empty',929,315,62,202,[0,0,30,40],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'yellowlock','yellowlock','empty',1170,315,22,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'bluelock','bluelock','empty',433,315,62,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pinklock','pinklock','empty',684,315,22,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'purplelock','purplelock','empty',929,315,62,202,[0,0,30,40],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'yellowlock','yellowlock','empty',1170,315,22,202,[0,0,30,40],1],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'pinkexit','pinkexit','empty',466,189,122,342,[0,0,180,180],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'pinkexit','pinkexit','empty',466,189,122,342,[0,0,180,180],2],
 			];
 			
 			this.layoutUIElement(data);

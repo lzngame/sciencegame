@@ -464,7 +464,7 @@
 			for(var i=0;i<arraydata.length;i++){
 				var item = arraydata[i];
 				var itemtype = item[0];
-				if(itemtype == game.configdata.LAYOUTTEYP.activeobj){
+				if(itemtype == game.configdata.LAYOUTTYPE.activeobj){
 					var name = item[1];
 					var obj = item[2];
 					var img = item[3];
@@ -476,7 +476,7 @@
 					var status = item[9];
 					this.items[obj] = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
 				}
-				if(itemtype == game.configdata.LAYOUTTEYP.img){
+				if(itemtype == game.configdata.LAYOUTTYPE.img){
 					var obj = item[1];
 					var img = item[2];
 					var x = item[3];
@@ -489,36 +489,36 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-				[game.configdata.LAYOUTTEYP.img,'bg','img/water/3/water3bg.jpg',0,0,true],
-				[game.configdata.LAYOUTTEYP.img,'lamp','img/water/3/lamp.png',1021,266,true],
-				[game.configdata.LAYOUTTEYP.img,'pipe1','img/water/3/pipe1.png',288,362,false],
-				[game.configdata.LAYOUTTEYP.img,'pipe2','img/water/3/pipe2.png',344,279,false],
-				[game.configdata.LAYOUTTEYP.img,'pipe3','img/water/3/pipe3.png',458,362,false],
-				[game.configdata.LAYOUTTEYP.img,'pipe4','img/water/3/pipe4.png',619,427,false],
-				[game.configdata.LAYOUTTEYP.img,'pipe5','img/water/3/pipe5.png',712,313,false],
-				[game.configdata.LAYOUTTEYP.img,'screwdown1','img/water/3/screw1_down.png',1105,308,true],
-				[game.configdata.LAYOUTTEYP.img,'screwdown2','img/water/3/screw1_down.png',1164,308,true],
-				[game.configdata.LAYOUTTEYP.img,'redlamp','img/water/3/redlamp.png',1112,351,true],
+				[game.configdata.LAYOUTTYPE.img,'bg','img/water/3/water3bg.jpg',0,0,true],
+				[game.configdata.LAYOUTTYPE.img,'lamp','img/water/3/lamp.png',1021,266,true],
+				[game.configdata.LAYOUTTYPE.img,'pipe1','img/water/3/pipe1.png',288,362,false],
+				[game.configdata.LAYOUTTYPE.img,'pipe2','img/water/3/pipe2.png',344,279,false],
+				[game.configdata.LAYOUTTYPE.img,'pipe3','img/water/3/pipe3.png',458,362,false],
+				[game.configdata.LAYOUTTYPE.img,'pipe4','img/water/3/pipe4.png',619,427,false],
+				[game.configdata.LAYOUTTYPE.img,'pipe5','img/water/3/pipe5.png',712,313,false],
+				[game.configdata.LAYOUTTYPE.img,'screwdown1','img/water/3/screw1_down.png',1105,308,true],
+				[game.configdata.LAYOUTTYPE.img,'screwdown2','img/water/3/screw1_down.png',1164,308,true],
+				[game.configdata.LAYOUTTYPE.img,'redlamp','img/water/3/redlamp.png',1112,351,true],
 				
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'spanner','spanner','img/water/3/spanner.png',126,542,20,50,[0,0,87,33],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'instruction','instruction','empty',794,238,22,202,[0,0,56,50],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'greenlamp','greenlamp','img/water/3/greenstartbtn.png',1112,351,22,202,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'spanner','spanner','img/water/3/spanner.png',126,542,20,50,[0,0,87,33],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'instruction','instruction','empty',794,238,22,202,[0,0,56,50],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'greenlamp','greenlamp','img/water/3/greenstartbtn.png',1112,351,22,202,[0,0,30,30],1],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'pipeobj1','pipeobj1','img/water/3/pipeonfloor1.png',0,510,22,102,[0,0,90,90],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pipeobj2','pipeobj2','img/water/3/pipeonfloor2.png',332,471,102,122,[40,0,150,80],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pipeobj3','pipeobj3','img/water/3/pipeonfloor3.png',142,496,112,122,[90,40,100,80],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pipeobj4','pipeobj4','img/water/3/pipeonfloor4.png',519,518,82,52,[40,0,100,40],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'pipeobj5','pipeobj5','img/water/3/pipeonfloor5.png',703,470,122,92,[50,20,180,90],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pipeobj1','pipeobj1','img/water/3/pipeonfloor1.png',0,510,22,102,[0,0,90,90],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pipeobj2','pipeobj2','img/water/3/pipeonfloor2.png',332,471,102,122,[40,0,150,80],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pipeobj3','pipeobj3','img/water/3/pipeonfloor3.png',142,496,112,122,[90,40,100,80],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pipeobj4','pipeobj4','img/water/3/pipeonfloor4.png',519,518,82,52,[40,0,100,40],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'pipeobj5','pipeobj5','img/water/3/pipeonfloor5.png',703,470,122,92,[50,20,180,90],1],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'putpipeobj1','putpipeobj1','empty',288,362,22,202,[0,0,90,90],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'putpipeobj2','putpipeobj2','empty',344,279,22,202,[0,0,150,80],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'putpipeobj3','putpipeobj3','empty',458,362,22,202,[0,20,180,80],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'putpipeobj4','putpipeobj4','empty',619,427,22,202,[40,0,100,40],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'putpipeobj5','putpipeobj5','empty',712,313,22,202,[50,20,180,90],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'putpipeobj1','putpipeobj1','empty',288,362,22,202,[0,0,90,90],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'putpipeobj2','putpipeobj2','empty',344,279,22,202,[0,0,150,80],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'putpipeobj3','putpipeobj3','empty',458,362,22,202,[0,20,180,80],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'putpipeobj4','putpipeobj4','empty',619,427,22,202,[40,0,100,40],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'putpipeobj5','putpipeobj5','empty',712,313,22,202,[50,20,180,90],2],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'screw1','screw1','img/water/3/screw1_up.png',1105,307,-70,232,[0,0,30,30],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'screw2','screw2','img/water/3/screw1_up.png',1156,307,-70,232,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'screw1','screw1','img/water/3/screw1_up.png',1105,307,-70,232,[0,0,30,30],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'screw2','screw2','img/water/3/screw1_up.png',1156,307,-70,232,[0,0,30,30],1],
 			];
 			
 			this.layoutUIElement(data);

@@ -342,7 +342,7 @@
 			for(var i=0;i<arraydata.length;i++){
 				var item = arraydata[i];
 				var itemtype = item[0];
-				if(itemtype == game.configdata.LAYOUTTEYP.activeobj){
+				if(itemtype == game.configdata.LAYOUTTYPE.activeobj){
 					var name = item[1];
 					var obj = item[2];
 					var img = item[3];
@@ -354,12 +354,12 @@
 					var status = item[9];
 					this.items[obj] = this.createActiveObj(name,x,y,targetx,targety,img,img,clickrect,status);
 				}
-				if(itemtype == game.configdata.LAYOUTTEYP.img){
+				if(itemtype == game.configdata.LAYOUTTYPE.img){
 					var obj = item[1];
 					var img = item[2];
 					var x = item[3];
 					var y = item[4];
-					var isvisible = item[5];
+					var isvisible = item[5]; 
 					this.items[obj] = new Hilo.Bitmap({image:img,x:x,y:y,visible:isvisible}).addTo(this);
 				}
 			}
@@ -367,27 +367,27 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-				[game.configdata.LAYOUTTEYP.img,'bg','img/water/4/water4bg.jpg',0,0,true],
-				[game.configdata.LAYOUTTEYP.img,'rubbish1','img/water/4/rubbish1.png',452,486,true],
-				[game.configdata.LAYOUTTEYP.img,'rubbish2','img/water/4/rubbish2.png',539,473,true],
-				[game.configdata.LAYOUTTEYP.img,'rubbish3','img/water/4/rubbish3.png',600,429,true],
-				[game.configdata.LAYOUTTEYP.img,'straineronpipe','img/water/4/strainer.png',211,214,true],
-				[game.configdata.LAYOUTTEYP.img,'boardonpipe1','img/water/4/boardonpipe1.png',213,226,true],
-				[game.configdata.LAYOUTTEYP.img,'boardonpipe2','img/water/4/boardonpipe2.png',217,222,true],
-				[game.configdata.LAYOUTTEYP.img,'boardonwall1','img/water/4/boardonwall1.png',931,104,true],
-				[game.configdata.LAYOUTTEYP.img,'boardonwall2','img/water/4/boardonwall2.png',935,105,true],
-				[game.configdata.LAYOUTTEYP.img,'hookonfloor','img/water/4/hookonfloor.png',1032,415,true],
+				[game.configdata.LAYOUTTYPE.img,'bg','img/water/4/water4bg.jpg',0,0,true],
+				[game.configdata.LAYOUTTYPE.img,'rubbish1','img/water/4/rubbish1.png',452,486,true],
+				[game.configdata.LAYOUTTYPE.img,'rubbish2','img/water/4/rubbish2.png',539,473,true],
+				[game.configdata.LAYOUTTYPE.img,'rubbish3','img/water/4/rubbish3.png',600,429,true],
+				[game.configdata.LAYOUTTYPE.img,'straineronpipe','img/water/4/strainer.png',211,214,true],
+				[game.configdata.LAYOUTTYPE.img,'boardonpipe1','img/water/4/boardonpipe1.png',213,226,true],
+				[game.configdata.LAYOUTTYPE.img,'boardonpipe2','img/water/4/boardonpipe2.png',217,222,true],
+				[game.configdata.LAYOUTTYPE.img,'boardonwall1','img/water/4/boardonwall1.png',931,104,true],
+				[game.configdata.LAYOUTTYPE.img,'boardonwall2','img/water/4/boardonwall2.png',935,105,true],
+				[game.configdata.LAYOUTTYPE.img,'hookonfloor','img/water/4/hookonfloor.png',1032,415,true],
 				
-				[game.configdata.LAYOUTTEYP.activeobj,'hammer','hammer','img/water/4/hammer.png',989,464,40,50,[0,0,73,35],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'straineronfloor','straineronfloor','img/water/4/straineronfloor.png',710,460,22,202,[0,0,97,63],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'hook','hook','img/water/4/hook.png',995,348,22,52,[0,0,88,37],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'rope','rope','img/water/4/rope.png',1035,396,22,102,[0,0,80,50],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'boardfall1','boardfall1','img/water/4/boardonfloor1.png',1015,264,22,52,[0,0,120,30],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'boardfall2','boardfall2','img/water/4/boardonfloor2.png',1004,264,102,122,[0,0,120,30],2],
-				[game.configdata.LAYOUTTEYP.activeobj,'pipe','pipe','empty',211,214,25,157,[0,0,40,120],1],
-				[game.configdata.LAYOUTTEYP.activeobj,'boardobj','boardobj','empty',931,104,52,199,[0,0,100,90],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'hammer','hammer','img/water/4/hammer.png',989,464,40,50,[0,0,73,35],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'straineronfloor','straineronfloor','img/water/4/straineronfloor.png',710,460,22,202,[0,0,97,63],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'hook','hook','img/water/4/hook.png',995,348,22,52,[0,0,88,37],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'rope','rope','img/water/4/rope.png',1035,396,22,102,[0,0,80,50],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'boardfall1','boardfall1','img/water/4/boardonfloor1.png',1015,264,22,52,[0,0,120,30],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'boardfall2','boardfall2','img/water/4/boardonfloor2.png',1004,264,102,122,[0,0,120,30],2],
+				[game.configdata.LAYOUTTYPE.activeobj,'pipe','pipe','empty',211,214,25,157,[0,0,40,120],1],
+				[game.configdata.LAYOUTTYPE.activeobj,'boardobj','boardobj','empty',931,104,52,199,[0,0,100,90],1],
 				
-				[game.configdata.LAYOUTTEYP.img,'waterface','img/water/4/waterface.png',105,325,true],
+				[game.configdata.LAYOUTTYPE.img,'waterface','img/water/4/waterface.png',105,325,true],
 			];
 		
 			this.layoutUIElement(data);

@@ -90,7 +90,7 @@ game.configdata = new function(){
 		water_closevalue:'WATER_CLOSEVALUE_SCENE',
 		water_repairmachine:'WATER_REPAIRMACHINE_SCENE',
 		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',
-		
+		water_filterpool:'WATER_FILTERPOOL_SCENE',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
@@ -110,7 +110,7 @@ game.configdata = new function(){
 		
 	};
 	
-	self.LAYOUTTEYP = {
+	self.LAYOUTTYPE = {
 		img:'IMAGE_TYPE',
 		activeobj:'ACTIVEOBJECT_TYPE',
 	},
