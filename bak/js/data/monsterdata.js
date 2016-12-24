@@ -171,14 +171,12 @@ game.monsterdata = new function(){
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
-			
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
-			
 			];
 			this.passdata2 = [
 			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
 			[0,'repair',game.configdata.SCENE_NAMES.water_closevalue],
-			[0,'planeout',game.configdata.SCENE_NAMES.water_clarifyingpool],
+			[0,'planeout',game.configdata.SCENE_NAMES.water_disinfector],
 			[0,'typhoon',game.configdata.SCENE_NAMES.water_filterpool],
 			];
 		},

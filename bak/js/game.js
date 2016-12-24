@@ -136,6 +136,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.water_repairmachine]    = new game.WaterRepairmachinescene();
 			this.scenes[game.configdata.SCENE_NAMES.water_clarifyingpool]   = new game.WaterClarifypoolscene();
 			this.scenes[game.configdata.SCENE_NAMES.water_filterpool]   = new game.WaterFilterpoolscene();
+			this.scenes[game.configdata.SCENE_NAMES.water_disinfector]   = new game.WaterDisinfectorscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

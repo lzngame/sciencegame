@@ -91,6 +91,7 @@ game.configdata = new function(){
 		water_repairmachine:'WATER_REPAIRMACHINE_SCENE',
 		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',
 		water_filterpool:'WATER_FILTERPOOL_SCENE',
+		water_disinfector:'WATER_DISINFECTOR_SCENE',
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',

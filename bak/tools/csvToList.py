@@ -33,4 +33,7 @@ def getCsvToArray(filename):
 def parsefile(filename):
 	result = getCsvToArray(filename)
 	print result
-
+def printcsv(filename):
+	l = getCsvToArray(filename)
+	for row in l:
+		print '%s,' % row

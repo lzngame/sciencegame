@@ -1295,6 +1295,7 @@
 			}).addTo(this);
 		},
 		hide:function(){
+			this.off();
 			new Hilo.Tween.to(this,{
 				alpha:0,
 			},{

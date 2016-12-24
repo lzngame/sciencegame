@@ -86,12 +86,19 @@
 		checkActiveObjects:function(mouseX,mouseY){
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['filteronfloor1'])){
 				var obj = this.items['filteronfloor1'];
+				if(this.isonhandfilter){
+					this.sayNo();
+					return true;
+				}
 				this.isonhandfilter = true;
 				this.pickSomething(obj,'backpick',-60,-150,'img/water/5/filteronfloor2.png');
-
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['filteronfloor2'])){
+				if(this.isonhandfilter){
+					this.sayNo();
+					return true;
+				}
 				var obj = this.items['filteronfloor2'];
 				this.isonhandfilter = true;
 				this.pickSomething(obj,'backpick',-60,-150,'img/water/5/filteronfloor2.png');
@@ -99,40 +106,12 @@
 			}
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['filteronwaterobj1'])){
-				if(!this.isonhandfilter){
-					this.sayNo();
-					return true;
-				}
-				this.isonhandfilter = false;
-				var obj = this.items['filteronwaterobj1'];
-				var scene = this;
-				scene.currentOnhandImg.removeFromParent();
-				scene.gotoDosomething(obj,1,0,0,'putdown',500,function(){
-					obj.status = 2;
-					scene.items['filteronwater1'].visible = true;
-				},function(){
-					if(scene.items['filteronwaterobj1'].status == 2 && scene.items['filteronwaterobj2'].status == 2){
-						scene.isfinishfilter = true;
-					}
-				});
+				this.putFilterIntoWater('filteronwaterobj1');
+				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['filteronwaterobj2'])){
-				if(!this.isonhandfilter){
-					this.sayNo();
-					return true;
-				}
-				this.isonhandfilter = false;
-				var obj = this.items['filteronwaterobj2'];
-				var scene = this;
-				scene.currentOnhandImg.removeFromParent();
-				scene.gotoDosomething(obj,1,0,0,'putdown',500,function(){
-					obj.status = 2;
-					scene.items['filteronwater2'].visible = true;
-				},function(){
-					if(scene.items['filteronwaterobj1'].status == 2 && scene.items['filteronwaterobj2'].status == 2){
-						scene.isfinishfilter = true;
-					}
-				});
+				this.putFilterIntoWater('filteronwaterobj2');
+				return true;
 			}
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['yellowkey'])){
@@ -149,7 +128,6 @@
 					scene.iskeyonhand = true;
 					scene.handonProp('img/water/5/yellowkey.png',scene.hero.posx+30,scene.hero.posy-92);
 				});
-				
 				return true;
 			}
 			
@@ -225,9 +203,30 @@
 			
 			return false;
 		},
-		
+		putFilterIntoWater:function(filtername){
+			if(!this.isonhandfilter){
+					this.sayNo();
+					return true;
+				}
+			this.isonhandfilter = false;
+			var obj = this.items[filtername];
+			var scene = this;
+			scene.currentOnhandImg.removeFromParent();
+			var waterimg = 'filteronwater1';
+			if(filtername == 'filteronwaterobj2')
+					waterimg = 'filteronwater2';
+			scene.gotoDosomething(obj,1,0,0,'putdown',500,function(){
+					obj.status = 2;
+					scene.items[waterimg].visible = true;
+				},function(){
+					if(scene.items['filteronwaterobj1'].status == 2 && scene.items['filteronwaterobj2'].status == 2){
+						scene.isfinishfilter = true;
+					}
+				});
+		},
 		pickSomething:function(obj,action,offsetx,offsety,onhandimg){
 			var scene = this;
+			
 			scene.gotoDosomething(obj,1,0,0,action,800,function(){
 
 					},function(){
@@ -296,7 +295,7 @@
 				);
 		},
 		receiveMsg: function(msg) {
-			
+			console.log('Not Remove');	
 		},
 		handonProp:function(propimg,x,y){
 			this.currentOnhandImg = new Hilo.Bitmap({
@@ -355,7 +354,6 @@
 [1, 'bg', 'water5bg.jpg', 0, 0, 't'],
 [2, 'filteronfloor1', 'filteronfloor1.png', 1, 104, 444, 50, 40, [0, 0, 180, 50], 't'],
 [2, 'filteronfloor2', 'filteronfloor2.png', 1, 1025, 337, 50, 90, [0, 0, 160, 90], 't'],
-
 [2, 'yellowkey', 'yellowkey.png', 1, 997, 261, 10, 200, [0, 0, 40, 40], 't'],
 [2, 'brownkey', 'brownkey.png', 1, 1077, 260, 0, 0, [0, 0, 40, 40], 't'],
 [2, 'scissor', 'scissor.png', 1, 336, 258, 30, 150, [0, 0, 60, 80], 't'],
@@ -377,7 +375,7 @@
 			];
 		
 			this.layoutUIElement(data);
-			game.sounds.play(17,true);
+			//game.sounds.play(17,true);
             
 			this.atlas = new Hilo.TextureAtlas({
                 image:'img/water/5/water5boyatlas.png',
@@ -395,9 +393,7 @@
             
             this.playboy = this.createSprite(this.atlas,'putdown',1023,211,10,this);
             this.playboy.visible = false;
-            
-            
-            
+         
 		},
 		
 		createSprite:function(sourceatlas,defaultaction,x,y,interval,parent){

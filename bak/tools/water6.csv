@@ -1,21 +1,7 @@
 pos,id,url,type,visible,status,targetx,targety,rectx,recty,rectw,recth
-"0,0",bg ,water5bg.jpg,1,t,,,,,,,
-"104,444",filteronfloor1,filteronfloor1.png,2,t,1,0,0,0,0,0,0
-"1025,337",filteronfloor2,filteronfloor2.png,2,t,1,0,0,0,0,0,0
-"378,375",openbag,openbag.png,1,f,,,,,,,
-"997,261",yellowkey,yellowkey.png,2,t,1,0,0,0,0,0,0
-"1077,260",brownkey,brownkey.png,2,t,1,0,0,0,0,0,0
-"336,258",scissor,scissor.png,2,t,1,0,0,0,0,0,0
-"485,119",boxbodybg,boxbodybg.png,1,t,,,,,,,
-"897,509",filteronwater2,filteronwater2.png,1,t,,,,,,,
-"603,302",bag,bag.png,2,t,1,0,0,0,0,0,0
-"408,501",filteronwater1,filteronwater1.png,1,t,,,,,,,
-"671,273",closedoorright,closedoorright.png,1,t,,,,,,,
-"570,272",closedoorleft,closedoorleft.png,1,t,,,,,,,
-"519,249",opendoorleft,opendoorleft.png,1,f,,,,,,,
-"759,253",opendoorright,opendoorright.png,1,f,,,,,,,
-"637,321",bolt,bolt.png,1,t,,,,,,,
-"662,342",closelock,closelock.png,2,t,1,0,0,0,0,0,0
-"662,342",openlock,openlock.png,1,f,,,,,,,
-"408,501",filteronwaterobj1,empty,2,t,1,0,0,0,0,0,0
-"897,509",filteronwaterobj2,empty,2,t,1,0,0,0,0,0,0
+"0,0",bg,water6bg.jpg,1,t,,,,,,,
+"770,334",watervalue,empty,2,t,1,100,100,0,0,100,90
+"130,327",bluewatersurface,bluewatersurface.png,2,f,1,400,150,0,0,740,130
+"129,327",blackwatersurface,blackwatersurface.png,1,f,,,,,,,
+"69,407",brownbotle,brownbotle.png,2,t,1,0,150,0,0,30,30
+"46,564",bluebotle,bluebotle.png,2,t,1,0,150,0,0,30,30
