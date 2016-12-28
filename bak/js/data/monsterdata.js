@@ -174,10 +174,10 @@ game.monsterdata = new function(){
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			];
 			this.passdata2 = [
-			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
+			[0,'intopipe',game.configdata.SCENE_NAMES.sky_knockshrew],
 			[0,'repair',game.configdata.SCENE_NAMES.water_closevalue],
-			[0,'planeout',game.configdata.SCENE_NAMES.water_disinfector],
-			[0,'typhoon',game.configdata.SCENE_NAMES.water_filterpool],
+			[0,'planeout',game.configdata.SCENE_NAMES.water_filterpool],
+			[0,'typhoon',game.configdata.SCENE_NAMES.water_disinfector],
 			];
 		},
 		addHp:function(){

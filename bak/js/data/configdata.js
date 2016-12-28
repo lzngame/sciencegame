@@ -86,12 +86,19 @@ game.configdata = new function(){
 		plane_board:'PLANE_BOARD_SCENE',
 		plane_cabin:'PLANE_CABIN_SCENE',
 		plane_outside:'PLANE_OUTSIDE_SCENE',
-		water_intopipe:'WATER_INTOPIPE_SCENE',
-		water_closevalue:'WATER_CLOSEVALUE_SCENE',
-		water_repairmachine:'WATER_REPAIRMACHINE_SCENE',
-		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',
-		water_filterpool:'WATER_FILTERPOOL_SCENE',
-		water_disinfector:'WATER_DISINFECTOR_SCENE',
+		water_intopipe:'WATER_INTOPIPE_SCENE', //1
+		water_closevalue:'WATER_CLOSEVALUE_SCENE',//2
+		water_repairmachine:'WATER_REPAIRMACHINE_SCENE',//3
+		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',//4
+		water_filterpool:'WATER_FILTERPOOL_SCENE',//5
+		water_disinfector:'WATER_DISINFECTOR_SCENE',//6
+		sky_knockshrew:'SKY_KNOCKSHREW',
+		sky_repairairclearn:'SKY_REPAIRAIRCLEARN',
+		sky_closecoalgenerator:'SKY_CLOSECOALGENERATORY',
+		sky_startwindgenerator:'SKY_WINDGENERATOR',
+		sky_startsungengerator:'SKY_SUNGENERATOR',
+		sky_saveplant:'SKY_SAVEPLANT',
+		
 		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
