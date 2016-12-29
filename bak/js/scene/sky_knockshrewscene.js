@@ -42,7 +42,7 @@
 			
 			game.sounds.play(14,true);
 			this.poses = [[166,395],[484,395],[796,395]];
-			this.question = [['question1.png','a'],['question2.png','a'],['question3.png','a'],['question4.png','a'],['question5.png','a']];
+			this.question = [['question1.png','b'],['question2.png','c'],['question3.png','a'],['question4.png','c'],['question5.png','b']];
 			this.showShrew();
 			this.showQuestion(1);
 		},
@@ -132,11 +132,13 @@
 				new Hilo.Tween.to(this,{alpha:1},{duration:100,delay:1000,onComplete:function(){
 							game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 				}});
+				return;
 			}
 			var right = this.question[this.currentQuestionIndex-1][1];
 			if(right == answer){
 				this.currentQuestionIndex++;
 				this.showQuestion(this.currentQuestionIndex);
+				this.items['besom'].visible = false;
 				this.showShrew();
 				return true;
 			}else{

@@ -41,7 +41,16 @@
                 }            
          	}; 
 		},
-		
+		showDialog:function(noteurl){
+			game.drdialog.showTxt(noteurl);
+			this.ignoreTouch = true;
+			var scene = this;
+			game.drdialog.on(Hilo.event.POINTER_START,function(e){
+				game.drdialog.hide(function(){
+					scene.ignoreTouch = false;
+				});
+			});
+		},
 		addHero:function(x,y,dir){
 			this.hero = new game.Hero({
 				name: 'Hero',

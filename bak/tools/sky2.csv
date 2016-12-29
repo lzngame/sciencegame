@@ -1,0 +1,10 @@
+pos,id,url,type,visible,status,targetx,targety,rectx,recty,rectw,recth
+"0,0",bg,sky2bg.jpg,1,t,0,0,0,0,0,0,0
+"1130,295",strainer2,strainer2.png,2,t,0,0,0,0,0,0,0
+"362,390",strainer1,strainer1.png,2,t,0,0,0,0,0,0,0
+"342,382",sofacushion,sofacushion.png,2,f,0,0,0,0,0,0,0
+"132,377",irongate2,irongate3.png,2,t,0,0,0,0,0,0,0
+"59,395",irongate,irongate.png,2,t,0,0,0,0,0,0,0
+"132,383",electricwire2,electricwire2.png,1,t,0,0,0,0,0,0,0
+"138,318",electricwire1,electricwire1.png,2,t,0,0,0,0,0,0,0
+"75,393",button,button.png,2,t,0,0,0,0,0,0,0

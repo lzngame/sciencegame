@@ -138,6 +138,8 @@
 			this.scenes[game.configdata.SCENE_NAMES.water_filterpool]   = new game.WaterFilterpoolscene();
 			this.scenes[game.configdata.SCENE_NAMES.water_disinfector]   = new game.WaterDisinfectorscene();
 			this.scenes[game.configdata.SCENE_NAMES.sky_knockshrew]   = new game.SkyKnockshrewscene();
+			this.scenes[game.configdata.SCENE_NAMES.sky_repairairclearn]   = new game.SkyRepairairclearnscene();
+			this.scenes[game.configdata.SCENE_NAMES.sky_closecoalgenerator]   = new game.SkyClosecoalgeneratorscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

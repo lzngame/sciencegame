@@ -256,7 +256,7 @@
 						duration:1000,
 						delay:1500,
 						onComplete:function(){
-							game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
+							game.switchScene(game.configdata.SCENE_NAMES.water_clarifyingpool);
 						}
 					});
 				});

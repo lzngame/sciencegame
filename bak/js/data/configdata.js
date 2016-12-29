@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = true;
+	self.NOLINE = false;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -92,12 +92,12 @@ game.configdata = new function(){
 		water_clarifyingpool:'WATER_CLARIFYINGPOOL_SCENE',//4
 		water_filterpool:'WATER_FILTERPOOL_SCENE',//5
 		water_disinfector:'WATER_DISINFECTOR_SCENE',//6
-		sky_knockshrew:'SKY_KNOCKSHREW',
-		sky_repairairclearn:'SKY_REPAIRAIRCLEARN',
-		sky_closecoalgenerator:'SKY_CLOSECOALGENERATORY',
-		sky_startwindgenerator:'SKY_WINDGENERATOR',
-		sky_startsungengerator:'SKY_SUNGENERATOR',
-		sky_saveplant:'SKY_SAVEPLANT',
+		sky_knockshrew:'SKY_KNOCKSHREW',  //1
+		sky_repairairclearn:'SKY_REPAIRAIRCLEARN',//2
+		sky_closecoalgenerator:'SKY_CLOSECOALGENERATORY',//3
+		sky_startwindgenerator:'SKY_WINDGENERATOR',//4
+		sky_startsungengerator:'SKY_SUNGENERATOR',//5
+		sky_saveplant:'SKY_SAVEPLANT',//6
 		
 		
 		load:'LOAD_SCENE_NAME',

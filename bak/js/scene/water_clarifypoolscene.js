@@ -233,7 +233,7 @@
 			new Hilo.Tween.to(rubbish1,{alpha:0},{duration:2000});
 			new Hilo.Tween.to(rubbish2,{alpha:0},{duration:2000});
 			new Hilo.Tween.to(rubbish3,{alpha:0},{duration:2200,onComplete:function(){
-				game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
+				game.switchScene(game.configdata.SCENE_NAMES.water_filterpool);
 			}});
 		},
 		pickHook:function(obj,offsetx,offsety,onhandimg,x,y){

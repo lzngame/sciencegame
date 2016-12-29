@@ -122,7 +122,7 @@
 				scene.gotoDosomething(obj,0.9,0,0,'goexit',1800,function(){
 						scene.hero.alpha = 0;
 					},function(){
-						game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
+						game.switchScene(game.configdata.SCENE_NAMES.water_closevalue);
 					});
 				return true;
 			}

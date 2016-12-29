@@ -197,6 +197,9 @@
 				},function(){
 					obj.status = 2;
 					scene.items['openbag'].visible = true;
+					new Hilo.Tween.to(this,{alpha:1},{duration:100,delay:1000,onComplete:function(){
+						game.switchScene(game.configdata.SCENE_NAMES.water_disinfector);
+					}});
 				});
 				return true;
 			}

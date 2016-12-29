@@ -1294,14 +1294,16 @@
 				y:70,
 			}).addTo(this);
 		},
-		hide:function(){
+		hide:function(oncall){
 			this.off();
 			new Hilo.Tween.to(this,{
 				alpha:0,
 			},{
 				duration:400,
 				onComplete:function(){
-					
+					if(oncall){
+						oncall();
+					}
 				}
 			})
 		},

@@ -1,0 +1,26 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="move (1).png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="move (2).png" x="0" y="624" width="210" height="310"/>
+	<SubTexture name="move (3).png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="move (4).png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="move (5).png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="move (6).png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="move (7).png" x="0" y="624" width="210" height="310"/>
+	<SubTexture name="move (8).png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="open (1).png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="open (2).png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="open (3).png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="open (4).png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="open (5).png" x="424" y="624" width="210" height="310"/>
+	<SubTexture name="open (6).png" x="424" y="624" width="210" height="310"/>
+	<SubTexture name="open (7).png" x="424" y="624" width="210" height="310"/>
+	<SubTexture name="open (8).png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="open (9).png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="strainer (1).png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="strainer (2).png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="strainer (3).png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="strainer (4).png" x="212" y="624" width="210" height="310"/>
+	<SubTexture name="strainer (5).png" x="636" y="0" width="210" height="310"/>
+	<SubTexture name="strainer (6).png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="strainer (7).png" x="424" y="312" width="210" height="310"/>
+</TextureAtlas>
