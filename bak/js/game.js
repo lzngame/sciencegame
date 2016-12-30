@@ -140,6 +140,8 @@
 			this.scenes[game.configdata.SCENE_NAMES.sky_knockshrew]   = new game.SkyKnockshrewscene();
 			this.scenes[game.configdata.SCENE_NAMES.sky_repairairclearn]   = new game.SkyRepairairclearnscene();
 			this.scenes[game.configdata.SCENE_NAMES.sky_closecoalgenerator]   = new game.SkyClosecoalgeneratorscene();
+			this.scenes[game.configdata.SCENE_NAMES.sky_startwindgenerator]   = new game.SkyStartwindgeneratorscene();
+			this.scenes[game.configdata.SCENE_NAMES.sky_startsungengerator]   = new game.Skystartsungengeratorscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

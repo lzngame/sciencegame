@@ -1266,6 +1266,8 @@
 		head:null,
 		dialogbg:null,
 		contentimg:null,
+		passoverbg:null,
+		passovercontent:null,
 		constructor: function(properties) {
 			Runbus.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -1283,8 +1285,19 @@
 				x:210,
 				y:70,
 			}).addTo(this);
+			this.passovercontent = new Hilo.Bitmap({
+				x:340,
+				y:168,
+				visible:false,
+			}).addTo(this);
+			this.passoverbg = new Hilo.Bitmap({
+				image:'img/note04bg.png',
+				visible:false,
+			}).addTo(this);
 		},
 		showTxt:function(sturl){
+			this.x = 180;
+			this.y = 150;
 			this.visible = true;
 			this.alpha = 1;
 			this.contentimg.removeFromParent();
@@ -1293,6 +1306,11 @@
 				x:210,
 				y:70,
 			}).addTo(this);
+			this.contentimg.visible = true;
+			this.dialogbg.visible = true;
+			this.head.visible = true;
+			this.passoverbg.visible = false;
+			this.passovercontent.visible = false;
 		},
 		hide:function(oncall){
 			this.off();
@@ -1307,6 +1325,25 @@
 				}
 			})
 		},
+		showPassover:function(sturl){
+			this.x = 0;
+			this.y = 0;
+			this.visible = true;
+			this.alpha = 1;
+			this.contentimg.visible = false;
+			this.dialogbg.visible = false;
+			this.head.visible = false;
+			this.passoverbg.visible = true;
+			this.passovercontent.visible = true;
+			
+			this.passovercontent.removeFromParent();
+			this.passovercontent = new Hilo.Bitmap({
+				image:sturl,
+				x:340,
+				y:168,
+			}).addTo(this);
+		},
+		
 		onUpdate:function(){
 		},
 	});

@@ -176,8 +176,8 @@ game.monsterdata = new function(){
 			this.passdata2 = [
 			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
 			[0,'repair',game.configdata.SCENE_NAMES.sky_repairairclearn],
-			[0,'planeout',game.configdata.SCENE_NAMES.sky_knockshrew],
-			[0,'typhoon',game.configdata.SCENE_NAMES.sky_closecoalgenerator],
+			[0,'planeout',game.configdata.SCENE_NAMES.sky_startwindgenerator],
+			[0,'typhoon',game.configdata.SCENE_NAMES.sky_startsungengerator],
 			];
 		},
 		addHp:function(){

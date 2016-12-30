@@ -43,6 +43,8 @@
 		},
 		showDialog:function(noteurl){
 			game.drdialog.showTxt(noteurl);
+			game.drdialog.x = 180;
+			game.drdialog.y = 150;
 			this.ignoreTouch = true;
 			var scene = this;
 			game.drdialog.on(Hilo.event.POINTER_START,function(e){
@@ -50,6 +52,25 @@
 					scene.ignoreTouch = false;
 				});
 			});
+		},
+		showPassover:function(noteurl,next,data){
+			game.drdialog.x = 0;
+			game.drdialog.y = 0;
+			game.drdialog.showPassover(noteurl);
+			this.ignoreTouch = true;
+			var scene = this;
+			game.drdialog.on(Hilo.event.POINTER_START,function(e){
+				game.drdialog.hide(function(){
+					scene.ignoreTouch = false;
+					game.switchScene(next,data);
+				});
+			});
+		},
+		passoverReady:function(noteurl,delaytime,next,data){
+			var scene = this;
+			new Hilo.Tween.to(this,{alpha:1},{delay:delaytime,duration:100,onComplete:function(){
+					scene.showPassover(noteurl,next,data);
+				}});
 		},
 		addHero:function(x,y,dir){
 			this.hero = new game.Hero({
