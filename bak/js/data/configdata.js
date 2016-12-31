@@ -5,7 +5,7 @@ game.configdata = new function(){
 	var self = this;
 	// 配置信息    只读属性
 	self.CANVASID = 'CANVAS_ID';
-	self.NOLINE = false;
+	self.NOLINE = true;
 	self.BGCOLOR ='#000000';
 	self.FPS = 60;
 	self.RESOURCE_BASEDIR = 'img';
@@ -98,6 +98,12 @@ game.configdata = new function(){
 		sky_startwindgenerator:'SKY_WINDGENERATOR',//4
 		sky_startsungengerator:'SKY_SUNGENERATOR',//5
 		sky_saveplant:'SKY_SAVEPLANT',//6
+		earth_roadbattery:'EARCH_ROADBATTERY',//1
+		earth_farmlandbattery:'EARCH_FARMLANDBATTERY',//2
+		earth_handlebattery:'EARCH_HANDLEBATTERY',//3
+		earth_changeplant:'EARCH_CHANGEPLANT',//4
+		earth_fertilizer:'EARCH_FERTILIZER',//5
+		earth_mendrubbishmachine:'EARCH_MENDRUBBISHMACHINE',//6
 		
 		
 		load:'LOAD_SCENE_NAME',
