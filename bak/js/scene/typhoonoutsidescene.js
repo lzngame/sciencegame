@@ -54,8 +54,6 @@
 			game.sounds.play(14,true);
 			//game.boydata.currentHp = 4;
 			//game.headPanel.setHp(game.boydata.currentHp);
-
-			
 		},
 		checkFinishedAllTask:function(){
 			return (this.isFlower_l && this.isFlower_m && this.isFlower_s && this.isFullbucket && this.isClosewindow && this.isRepairwindow);

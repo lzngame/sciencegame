@@ -143,6 +143,8 @@
 			this.scenes[game.configdata.SCENE_NAMES.sky_startwindgenerator]   = new game.SkyStartwindgeneratorscene();
 			this.scenes[game.configdata.SCENE_NAMES.sky_startsungengerator]   = new game.Skystartsungengeratorscene();
 			this.scenes[game.configdata.SCENE_NAMES.sky_saveplant]   = new game.SkySaveplantscene();
+			this.scenes[game.configdata.SCENE_NAMES.earth_roadbattery]   = new game.EarthRoadbatteryscene();
+			this.scenes[game.configdata.SCENE_NAMES.earth_farmlandbattery]   = new game.EarthFarmlandbatteryscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);
