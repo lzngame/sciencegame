@@ -1,24 +1,24 @@
 (function(ns) {
-	var EarthChangeplantscene = ns.EarthChangeplantscene = Hilo.Class.create({
+	var EarthFertilizerscene = ns.EarthFertilizerscene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.earth_changeplant,
+		name: game.configdata.SCENE_NAMES.earth_fertilizer,
 		
-		initPosx:360,
+		initPosx:720,
 		initPosy:630,
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		atlas:null,
 		items:null,
 		playboy:null,
-		fireeffect:null,
 		
-		step1_stone:false,
-		step2_firelime:false,
-		step3_dustpan:false,
-		step4_limeon:false,
+		step1_dialogover:false,
+		step2_takewheel:false,
+		step3_installwheel:false,
+		step4_inshovel:false,
+		step4_carleft:false,
 		
 		constructor: function(properties) {
-			EarthChangeplantscene.superclass.constructor.call(this, properties);
+			EarthFertilizerscene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -51,18 +51,11 @@
 			this.layoutUI();
 			
 			game.sounds.play(14,true);
+			this.step1_dialogover = false;
+			this.step2_takewheel = false;
+			this.step3_installwheel = false;
+			this.step4_inshovel = false;
 			
-			this.shoes = new Hilo.Bitmap({
-				image:'img/earth/2/shoesonfoot.png',
-				visible:false,
-			}).addTo(this);
-			
-			this.step1_stone = false;
-			this.step2_firelime=false;
-			this.step3_dustpan=false;
-			this.step4_limeon=false;
-			
-            this.showDialog('img/earth/4/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -85,96 +78,129 @@
 		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['stone'])){
-				var obj = this.items['stone'];
-				var stonecopy = this.items['stone1'];
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['farmer'])){
+				var obj = this.items['farmer'];
 				var scene = this;
-				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
-						
-					},function(){
-					    scene.handonProp('img/earth/4/stoneonhand.png',330,520);
-					    obj.visible = false;
-						stonecopy.visible = false;
-					    obj.status = 2;
-					    scene.step1_stone = true;
-					});
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['dustpan'])){
-				if(!this.step2_firelime){
-					this.sayNo();
-					return true;
-				}
-				var obj = this.items['dustpan'];
-				var scene = this;
-				scene.step3_dustpan = true;
-				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
-						
-					},function(){
-					    scene.handonProp('img/earth/4/dustpan.png',306,500);
-					    obj.visible = false;
-					    obj.status = 2;
-					});
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['lime'])){
-				if(!this.step3_dustpan){
-					this.sayNo();
-					return true;
-				}
-				var obj = this.items['lime'];
-				var scene = this;
-				scene.step4_limeon = true;
-				scene.currentOnhandImg.removeFromParent();
-				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
-						
-					},function(){
-					    scene.handonProp('img/earth/4/limeonhand.png',306,500);
-					    obj.visible = false;
-					    obj.status = 2;
-					});
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pollutedsoil'])){
-				if(!this.step4_limeon){
-					this.sayNo();
-					return true;
-				}
-				var obj = this.items['pollutedsoil'];
-				var scene = this;
-				scene.currentOnhandImg.removeFromParent();
 				obj.status = 2;
-				scene.gotoDosomething(obj,1,0,0,'put',800,function(){
-						
-					},function(){
-					    new Hilo.Tween.to(obj,{alpha:0},{duration:2000,delay:1000,onComplete:function(){
-							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
-					   }});
-					});
+				this.items['dialog1'].visible = true;
+				this.items['dialog1'].status = 1;
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['hay'])){
-				if(!this.step1_stone){
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['dialog1'])){
+				var obj = this.items['dialog1'];
+				obj.status = 2;
+				obj.visible = false;
+				this.items['dialog2'].visible = true;
+				this.items['dialog2'].status = 1;
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['dialog2'])){
+				var obj = this.items['dialog2'];
+				obj.status = 2;
+				obj.visible = false;
+				this.items['dialog3'].visible = true;
+				this.items['dialog3'].status = 1;
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['dialog3'])){
+				var obj = this.items['dialog3'];
+				obj.status = 2;
+				obj.visible = false;
+				this.items['shovel'].status = 1;
+				this.step1_dialogover = true;
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['wheel'])){
+				if(!this.step1_dialogover){
 					this.sayNo();
 					return true;
 				}
-				var obj = this.items['hay'];
+				var obj = this.items['wheel'];
 				var scene = this;
-				scene.currentOnhandImg.removeFromParent();
-				scene.gotoDosomething(obj,1,0,0,'fire',800,function(){
+				this.step2_takewheel = true;
+				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
 						
 					},function(){
-					   //obj.visible = false;
-					   scene.fireeffect.visible = true;
-					   obj.status = 2;
-					   scene.items['stone'].visible = true;
-					   scene.items['stone1'].visible = true;
-					   new Hilo.Tween.to(scene.fireeffect,{alpha:0},{duration:1000,delay:1000,onComplete:function(){
-					   	  obj.visible = false;
-					   	  scene.items['lime'].visible = true;
-					   	  scene.items['lime'].status  = 1;
-					   	  scene.step2_firelime = true;
-					   }});
+					    scene.handonProp('img/earth/5/wheelonfloor.png',685,508);
+					    obj.visible = false;
+					    obj.status = 2;
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['carwithnotwheel'])){
+				if(!this.step2_takewheel){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['carwithnotwheel'];
+				var scene = this;
+				scene.currentOnhandImg.removeFromParent();
+				this.step3_installwheel = true;
+				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
+						
+					},function(){
+					    obj.visible = false;
+					    obj.status = 2;
+					    scene.items['car'].visible = true;
+					    scene.items['car'].status = 1;
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['car'])){
+				if(!this.step3_installwheel){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['car'];
+				obj.status = 2;
+				var scene = this;
+				this.step4_carleft = true;
+				new Hilo.Tween.to(obj,{x:348},{duration:100});
+				new Hilo.Tween.to(scene.hero,{posx:350,posy:545},{duration:100});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['field'])){
+				var obj = this.items['field'];
+				var car = this.items['car'];
+				var scene = this;
+				new Hilo.Tween.to(car,{x:719,y:246,scaleX:0.5,scaleY:0.5},{duration:100});
+				new Hilo.Tween.to(scene.hero,{posx:834,posy:286,scaleX:0.5,scaleY:0.5},{duration:100,onComplete:function(){
+					scene.items['block'].visible = false;
+					scene.items['car'].visible = false;
+					scene.items['carput'].visible = true;
+					scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
+				}});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['shovel'])){
+				if(!this.step4_carleft){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['shovel'];
+				var scene = this;
+				obj.status = 2;
+				obj.visible = false;
+				this.step4_inshovel = true;
+				scene.gotoDosomething(obj,1,0,0,'turn',300,function(){
+						
+					},function(){
+					    scene.handonProp('img/earth/5/shovelonhand.png',333,427);
+					    scene.items['fertilizerobj'].status = 1;
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['fertilizerobj'])){
+				var obj = this.items['fertilizerobj'];
+				var scene = this;
+				obj.status = 2;
+				scene.currentOnhandImg.removeFromParent();
+				scene.gotoDosomething(obj,1,0,0,'shovel',800,function(){
+						
+					},function(){
+						scene.items['shovel'].visible = true;
+						scene.items['block'].visible = true;
+						scene.items['field'].status = 1;
 					});
 				return true;
 			}
@@ -306,40 +332,39 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-[1, 'bg', 'earth4bg.jpg', 0, 0, 't'],
-[2, 'pollutedsoil', 'pollutedsoil.png', 1,202, 383, 20,80,[70,30,400,100],'t'],
-//[1, 'fire', 'fire.png', 811, 409, 't'],
-[2, 'stone', 'stone.png', 1,953, 519, 20,40,[0,0,70,30],'t'],
-[1, 'stone1', 'stone.png', 980, 520,'t'],
-[2, 'hay', 'hay.png', 1,830, 441, 30,60,[0,0,150,60],'t'],
-[2, 'lime', 'lime.png', 2,881, 461, 20,40,[0,0,100,40],'f'],
-[2, 'dustpan', 'dustpan.png', 1,785, 515, 40,70,[0,0,120,67],'t'],
+[1, 'bg', 'earth5bg.jpg', 0, 0, 't'],
+[1, 'rice1', 'rice1.png', 334, 240, 't'],
+[1, 'rice2', 'rice2.png', 334, 240, 't'],
+[1, 'carput', 'carput.png', 720, 207, 'f'],
+
+[2, 'carwithnotwheel', 'carwithnotwheel.png', 1,784, 389, 98,130,[0,0,120,120],'t'],
+[2, 'car', 'car.png', 2,785, 390, 20,80,[0,0,120,120],'f'],
+[1, 'block', 'fertilizer1.png', 393, 400, 'f'],
+[2, 'fertilizerobj', 'empty', 2,92, 414, 276,127,[0,0,230,120],'t'],
+[2, 'field', 'empty', 2,0, 0, 276,127,[0,0,1180,370],'t'],
+[2, 'farmer', 'farmer.png', 1,76, 410,0,0,[0,0,140,140],'t'],
+[2, 'shovel', 'shovel.png', 1,278, 383, 30,150,[0,0,60,60],'t'],
+[2, 'wheel', 'wheelonfloor.png', 1,489, 391, 20,70,[0,0,90,60],'t'],
+[2, 'dialog1', 'dialog1.png', 2,283, 309, 40,70,[0,0,420,170],'f'],
+[2, 'dialog2', 'dialog2.png', 2,153, 253, 40,70,[0,0,270,150],'f'],
+[2, 'dialog3', 'dialog3.png', 2,279, 220, 40,70,[0,0,420,270],'f'],
 			];
 		
-			this.layoutUIElement('img/earth/4/',data);
+			this.layoutUIElement('img/earth/5/',data);
+			this.items['carput'].scaleX = 0.5;
+			this.items['carput'].scaleY = 0.5;
 
 			this.atlas = new Hilo.TextureAtlas({
-                image:'img/earth/4/earth4boyatlas.png',
+                image:'img/sky/6/sky6boyatlas.png',
                 width:1060,
                 height:936,
-                frames:[[0, 312, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310], [848, 0, 210, 310], [424, 0, 210, 310], [848, 0, 210, 310], [848, 0, 210, 310], [424, 0, 210, 310], [848, 0, 210, 310], [636, 0, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [848, 312, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 624, 210, 310]],
+                frames:[[424, 0, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [636, 0, 210, 310], [424, 624, 210, 310], [212, 0, 210, 310], [0, 624, 210, 310], [424, 312, 210, 310], [848, 0, 210, 310], [424, 312, 210, 310], [424, 312, 210, 310], [848, 0, 210, 310], [424, 312, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310], [0, 0, 210, 310], [0, 0, 210, 310]],
                 sprites: {
-                	pick:[0,3,4,5,6,4,3,0],
-                	fire:[0,3,4,5,6,7,8,9,10,1,2],
-                	put:{from:11,to:18},
+                	shovel:[0,0,1,1,2,2,3,3,0,0,1,1,2,2,3,3],
+                	pick:{from:4,to:14},
+                	turn:{from:15,to:18},
                 }
             });
-            var fireatlas = new Hilo.TextureAtlas({
-                image:'img/earth/4/fireatlas.png',
-                width: 247,
-                height: 480,
-                frames:[[0, 120, 245, 118], [0, 240, 245, 118], [0, 360, 245, 118], [0, 0, 245, 118]],
-                sprites: {
-                	idle:[0,1,2,3],
-                }
-            });
-            this.fireeffect = this.createSprite(fireatlas,'idle',811,409,10,this);
-            this.fireeffect.visible = false;
            
             this.playboy = this.createSprite(this.atlas,'pick',1023,211,6,this);
             this.playboy.visible = false;
