@@ -1,7 +1,7 @@
 (function(ns) {
-	var EarthFarmlandbatteryscene = ns.EarthFarmlandbatteryscene = Hilo.Class.create({
+	var EarthChangeplantscene = ns.EarthChangeplantscene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.earth_farmlandbattery,
+		name: game.configdata.SCENE_NAMES.earth_changeplant,
 		
 		initPosx:360,
 		initPosy:630,
@@ -10,18 +10,15 @@
 		atlas:null,
 		items:null,
 		playboy:null,
-		shoes:null,
-		digbatterynum:0,
-		pickbatterynum:0,
-		putbatterynum:0,
+		fireeffect:null,
 		
-		step1_branch:false,
-		step2_shoes:false,
-		step3_branch:false,
-		isonbattery:false,
+		step1_stone:false,
+		step2_firelime:false,
+		step3_dustpan:false,
+		step4_limeon:false,
 		
 		constructor: function(properties) {
-			EarthFarmlandbatteryscene.superclass.constructor.call(this, properties);
+			EarthChangeplantscene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
@@ -60,15 +57,12 @@
 				visible:false,
 			}).addTo(this);
 			
+			this.step1_stone = false;
+			this.step2_firelime=false;
+			this.step3_dustpan=false;
+			this.step4_limeon=false;
 			
-			
-			this.step1_branch = false;
-			this.step2_shoes=false;
-			this.step3_branch=false;
-			this.isonbattery=false;
-			
-			
-            this.showDialog('img/earth/2/note1.png');
+            this.showDialog('img/earth/4/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -91,147 +85,103 @@
 		},
 		
 		checkActiveObjects:function(mouseX,mouseY){
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['branch'])){
-				var obj = this.items['branch'];
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['stone'])){
+				var obj = this.items['stone'];
+				var stonecopy = this.items['stone1'];
 				var scene = this;
-				if(obj.state == 0){
-					obj.state = 1;
-					scene.step1_branch = true;
-					scene.gotoDosomething(obj,1,0,0,'branch',800,function(){
-					
-					},function(){
-					    obj.x = 984;
-					    obj.y = 450;
-						obj.targety = 50;
-					});
-				}else{
-					if(!scene.step2_shoes){
-						scene.sayNo();
-						return true;
-					}
-					scene.step3_branch = true;
-					scene.showShoes(false);
-					scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
-					
-					},function(){
-					   obj.status = 2;
-					   obj.visible = false;
-					   scene.handonProp('img/earth/2/branchonhand.png',314,483);
-					   scene.showShoes(true);
-					});
-				}
-				
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['rainshoes'])){
-				var obj = this.items['rainshoes'];
-				var scene = this;
-				if(!this.step1_branch){
-					this.sayNo();
-					return true;
-				}
-				this.step2_shoes = true;
-				scene.gotoDosomething(obj,1,0,0,'shoes',800,function(){
-					
-					},function(){
-					   scene.showShoes(true);
-					   obj.visible = false;
-					   obj.status = 2;
-					});
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['barrel'])){
-				var obj = this.items['barrel'];
-				var scene = this;
-				if(!this.isonbattery){
-					this.sayNo();
-					return true;
-				}
-				scene.putbatterynum++;
-				if(scene.currentOnhandImg){
-					scene.currentOnhandImg.removeFromParent();
-				}
-				scene.showShoes(false);
 				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
-					
+						
 					},function(){
-					   scene.showShoes(true);
-					   scene.isonbattery = false;
-					   scene.items['battery_barrel0'+scene.putbatterynum.toString()].visible = true;
-					   if(scene.putbatterynum >= 4){
+					    scene.handonProp('img/earth/4/stoneonhand.png',330,520);
+					    obj.visible = false;
+						stonecopy.visible = false;
+					    obj.status = 2;
+					    scene.step1_stone = true;
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['dustpan'])){
+				if(!this.step2_firelime){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['dustpan'];
+				var scene = this;
+				scene.step3_dustpan = true;
+				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
+						
+					},function(){
+					    scene.handonProp('img/earth/4/dustpan.png',306,500);
+					    obj.visible = false;
+					    obj.status = 2;
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['lime'])){
+				if(!this.step3_dustpan){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['lime'];
+				var scene = this;
+				scene.step4_limeon = true;
+				scene.currentOnhandImg.removeFromParent();
+				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
+						
+					},function(){
+					    scene.handonProp('img/earth/4/limeonhand.png',306,500);
+					    obj.visible = false;
+					    obj.status = 2;
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pollutedsoil'])){
+				if(!this.step4_limeon){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['pollutedsoil'];
+				var scene = this;
+				scene.currentOnhandImg.removeFromParent();
+				obj.status = 2;
+				scene.gotoDosomething(obj,1,0,0,'put',800,function(){
+						
+					},function(){
+					    new Hilo.Tween.to(obj,{alpha:0},{duration:2000,delay:1000,onComplete:function(){
 							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
-					   }
+					   }});
+					});
+				return true;
+			}
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['hay'])){
+				if(!this.step1_stone){
+					this.sayNo();
+					return true;
+				}
+				var obj = this.items['hay'];
+				var scene = this;
+				scene.currentOnhandImg.removeFromParent();
+				scene.gotoDosomething(obj,1,0,0,'fire',800,function(){
+						
+					},function(){
+					   //obj.visible = false;
+					   scene.fireeffect.visible = true;
+					   obj.status = 2;
+					   scene.items['stone'].visible = true;
+					   scene.items['stone1'].visible = true;
+					   new Hilo.Tween.to(scene.fireeffect,{alpha:0},{duration:1000,delay:1000,onComplete:function(){
+					   	  obj.visible = false;
+					   	  scene.items['lime'].visible = true;
+					   	  scene.items['lime'].status  = 1;
+					   	  scene.step2_firelime = true;
+					   }});
 					});
 				return true;
 			}
 			
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['battery1'])){
-				this.digBattery('battery1');
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['battery2'])){
-				this.digBattery('battery2');
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['battery3'])){
-				this.digBattery('battery3');
-				return true;
-			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['battery4'])){
-				this.digBattery('battery4');
-				return true;
-			}
 			return false;
 		},
-		digBattery:function(batteryname){
-			var obj = this.items[batteryname];
-			var scene = this;
-			if(!this.step3_branch){
-				this.sayNo();
-				return true;
-			}
-			if(obj.state == 1 && this.digbatterynum < 4){
-				this.sayNo();
-				return true;
-			}
-			
-			if(obj.state == 0){
-				scene.currentOnhandImg.visible = false;
-				this.showShoes(false);
-				this.digbatterynum++;
-				scene.gotoDosomething(obj,1,0,0,'dig',800,function(){
-					
-					},function(){
-					   scene.showShoes(true);
-					   obj.visible = true;
-					   obj.state  = 1;
-					   scene.currentOnhandImg.visible = true;
-					   if(scene.digbatterynum >= 4){
-					   		scene.currentOnhandImg.removeFromParent();
-					   		scene.items['branch'].visible = true;
-					   		scene.items['branch'].x = scene.hero.posx + 100;
-					   		scene.items['branch'].y = scene.hero.posy ;
-					   }
-					});
-			}else{
-				if(this.isonbattery){
-					this.sayNo();
-					return true;
-				}
-				scene.currentOnhandImg.visible = false;
-				this.showShoes(false);
-				this.pickbatterynum++;
-				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
-					
-					},function(){
-					   scene.showShoes(true);
-					   obj.visible = false;
-					   obj.status = 2;
-					   scene.handonProp('img/earth/2/batteryonhand.png',345,528);
-					   scene.isonbattery = true;
-					});
-			}
-		},
+		
 		pickSomething:function(obj,action,offsetx,offsety,onhandimg,time){
 			var scene = this;
 			scene.gotoDosomething(obj,1,0,0,action,time,function(){
@@ -356,46 +306,46 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-[1, 'bg', 'earth2bg.jpg', 0, 0, 't'],
-[2, 'barrel', 'barrel.png', 1,725, 400, 20,80,[0,0,69,67],'t'],
-[1, 'battery_barrel01', 'battery_barrel01.png', 747, 400, 'f'],
-[1, 'battery_barrel02', 'battery_barrel01.png', 740, 400, 'f'],
-[1, 'battery_barrel03', 'battery_barrel03.png', 758, 399, 'f'],
-[1, 'battery_barrel04', 'battery_barrel03.png', 756, 398, 'f'],
-[2, 'battery1', 'battery1.png', 1,184, 336, -30,40,[0,0,30,30],'f'],
-[2, 'battery2', 'battery1.png', 1,677, 334, -30,40,[0,0,30,30],'f'],
-[2, 'battery3', 'battery1.png', 1,692, 441, -30,40,[0,0,30,30],'f'],
-[2, 'battery4', 'battery1.png', 1,488, 494, -30,40,[0,0,30,30],'f'],
-
-[2, 'branch', 'branch.png', 1,924, 307, 40,180,[0,0,120,67],'t'],
-[2, 'rainshoes', 'rainshoes.png', 1,866, 393, 10,40,[0,0,60,30],'t'],
+[1, 'bg', 'earth4bg.jpg', 0, 0, 't'],
+[2, 'pollutedsoil', 'pollutedsoil.png', 1,202, 383, 20,80,[70,30,400,100],'t'],
+//[1, 'fire', 'fire.png', 811, 409, 't'],
+[2, 'stone', 'stone.png', 1,953, 519, 20,40,[0,0,70,30],'t'],
+[1, 'stone1', 'stone.png', 980, 520,'t'],
+[2, 'hay', 'hay.png', 1,830, 441, 30,60,[0,0,150,60],'t'],
+[2, 'lime', 'lime.png', 2,881, 461, 20,40,[0,0,100,40],'f'],
+[2, 'dustpan', 'dustpan.png', 1,785, 515, 40,70,[0,0,120,67],'t'],
 			];
 		
-			this.layoutUIElement('img/earth/2/',data);
-            
+			this.layoutUIElement('img/earth/4/',data);
+            [[0, 120, 245, 118], [0, 240, 245, 118], [0, 360, 245, 118], [0, 0, 245, 118]]
+
 			this.atlas = new Hilo.TextureAtlas({
-                image:'img/earth/2/earth2boyatlas.png',
-                width:1272,
-                height:1248,
-                frames:[[636, 312, 210, 310], [636, 0, 210, 310], [424, 936, 210, 310], [1060, 312, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [212, 936, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 936, 210, 310], [212, 0, 210, 310], [0, 936, 210, 310], [1060, 0, 210, 310], [0, 624, 210, 310], [424, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310], [424, 624, 210, 310], [1060, 0, 210, 310], [848, 936, 210, 310], [848, 624, 210, 310], [848, 312, 210, 310], [848, 0, 210, 310], [636, 936, 210, 310], [848, 0, 210, 310], [848, 0, 210, 310], [636, 936, 210, 310], [636, 624, 210, 310]],
+                image:'img/earth/4/earth4boyatlas.png',
+                width:1060,
+                height:936,
+                frames:[[0, 312, 210, 310], [636, 624, 210, 310], [636, 312, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310], [848, 0, 210, 310], [424, 0, 210, 310], [848, 0, 210, 310], [848, 0, 210, 310], [424, 0, 210, 310], [848, 0, 210, 310], [636, 0, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [848, 312, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 624, 210, 310]],
                 sprites: {
-                	branch:[0,1,2,3,4],
-                	pick:{from:13,to:19},
-                	dig:{from:5,to:12},
-                	shoes:[21,22,23,24,25,26,27,28,20]
+                	pick:[0,3,4,5,6,4,3,0],
+                	fire:[0,3,4,5,6,7,8,9,10,1,2],
+                	put:{from:11,to:18},
                 }
             });
+            var fireatlas = new Hilo.TextureAtlas({
+                image:'img/earth/4/fireatlas.png',
+                width: 247,
+                height: 480,
+                frames:[[0, 120, 245, 118], [0, 240, 245, 118], [0, 360, 245, 118], [0, 0, 245, 118]],
+                sprites: {
+                	idle:[0,1,2,3],
+                }
+            });
+            this.fireeffect = this.createSprite(fireatlas,'idle',811,409,10,this);
+            this.fireeffect.visible = false;
            
-            this.playboy = this.createSprite(this.atlas,'dig',1023,211,6,this);
+            this.playboy = this.createSprite(this.atlas,'pick',1023,211,6,this);
             this.playboy.visible = false;
 		},
-		showShoes:function(ishide){
-			var x= this.hero.posx-44;
-			var y = this.hero.posy-43;
-			this.shoes.x = x;
-			this.shoes.y = y;
-			this.shoes.visible = ishide;
-		},
+		
 		createSprite:function(sourceatlas,defaultaction,x,y,interval,parent){
 			return new Hilo.Sprite({
 				frames:sourceatlas.getSprite(defaultaction),

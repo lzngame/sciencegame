@@ -176,7 +176,7 @@ game.monsterdata = new function(){
 			this.passdata2 = [
 			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
 			[0,'repair',game.configdata.SCENE_NAMES.sky_knockshrew],
-			[0,'planeout',game.configdata.SCENE_NAMES.earth_roadbattery],
+			[0,'planeout',game.configdata.SCENE_NAMES.earth_changeplant],
 			[0,'typhoon',game.configdata.SCENE_NAMES.earth_farmlandbattery],
 			];
 		},

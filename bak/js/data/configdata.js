@@ -106,6 +106,7 @@ game.configdata = new function(){
 		earth_mendrubbishmachine:'EARCH_MENDRUBBISHMACHINE',//6
 		
 		
+		
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
 		main:'MAIN_SCENE_NAME',
