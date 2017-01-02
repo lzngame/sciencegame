@@ -1,6 +1,6 @@
 <TextureAtlas imagePath="sprites.png">
-	<SubTexture name="h1.png" x="0" y="120" width="245" height="118"/>
-	<SubTexture name="h2.png" x="0" y="240" width="245" height="118"/>
-	<SubTexture name="h3.png" x="0" y="360" width="245" height="118"/>
-	<SubTexture name="h4.png" x="0" y="0" width="245" height="118"/>
+	<SubTexture name="d1.png" x="63" y="0" width="61" height="145"/>
+	<SubTexture name="d2.png" x="126" y="0" width="61" height="145"/>
+	<SubTexture name="d3.png" x="189" y="0" width="61" height="145"/>
+	<SubTexture name="d5.png" x="0" y="0" width="61" height="145"/>
 </TextureAtlas>

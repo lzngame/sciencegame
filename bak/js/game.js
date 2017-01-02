@@ -147,6 +147,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.earth_farmlandbattery]   = new game.EarthFarmlandbatteryscene();
 			this.scenes[game.configdata.SCENE_NAMES.earth_changeplant]   = new game.EarthChangeplantscene();
 			this.scenes[game.configdata.SCENE_NAMES.earth_fertilizer]   = new game.EarthFertilizerscene();
+			this.scenes[game.configdata.SCENE_NAMES.earth_mendrubbishmachine]   = new game.EarthMendrubbishscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);
