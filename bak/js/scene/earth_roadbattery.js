@@ -282,7 +282,7 @@
 				if(scene.step===8){
 					scene.gotoDosomething(obj,1,0,0,'putad',800,function(){
 						scene.step=9;
-						scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.earth_roadbattery);
+						scene.passoverReady('img/earth/1/note.png',3500,game.configdata.SCENE_NAMES.earth_farmlandbattery);
 					},function(){
 						obj.status = 2;
 						obj.visible = false;

@@ -282,7 +282,7 @@
 				}, {
 					duration: 500,
 					onComplete: function() {
-						scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
+						scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 					}
 				});
 		},

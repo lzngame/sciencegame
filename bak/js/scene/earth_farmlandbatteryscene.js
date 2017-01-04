@@ -66,7 +66,10 @@
 			this.step2_shoes=false;
 			this.step3_branch=false;
 			this.isonbattery=false;
-			
+			this.digbatterynum=0;
+			this.pickbatterynum=0;
+			this.putbatterynum=0;
+		
 			
             this.showDialog('img/earth/2/note1.png');
 		},
@@ -159,7 +162,7 @@
 					   scene.isonbattery = false;
 					   scene.items['battery_barrel0'+scene.putbatterynum.toString()].visible = true;
 					   if(scene.putbatterynum >= 4){
-							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
+							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.earth_handlebattery);
 					   }
 					});
 				return true;

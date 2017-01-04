@@ -264,7 +264,7 @@
 				var obj = this.items['touchpuzzle'];
 				if(scene.step===5){
 					if (scene.touchnum>=1) {
-						scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.earth_changeplant);
+						scene.passoverReady('img/earth/1/note.png',1000,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 					}
 					else{
 						scene.items['puzzlebg'].visible=true;
