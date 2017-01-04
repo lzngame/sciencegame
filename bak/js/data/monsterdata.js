@@ -10,7 +10,6 @@ game.monsterdata = new function(){
 	self.stive_atlas = null;
 	self.updataFunc = [];
 	
-	
 	self.init = function(){
 		console.log('monster data init');
 	};
@@ -174,10 +173,10 @@ game.monsterdata = new function(){
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			];
 			this.passdata2 = [
-			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
-			[0,'repair',game.configdata.SCENE_NAMES.sky_knockshrew],
-			[0,'planeout',game.configdata.SCENE_NAMES.earth_mendrubbishmachine],
-			[0,'typhoon',game.configdata.SCENE_NAMES.earth_fertilizer],
+			[0,'intopipe',game.configdata.SCENE_NAMES.quiet_wearearplug],
+			[0,'repair',game.configdata.SCENE_NAMES.quiet_changebrokenglass],
+			[0,'planeout',game.configdata.SCENE_NAMES.quiet_addcushionblocking],
+			[0,'typhoon',game.configdata.SCENE_NAMES.quiet_enterfactory],
 			];
 		},
 		addHp:function(){

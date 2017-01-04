@@ -1,7 +1,7 @@
 (function(ns) {
-	var EarthRoadbatteryscene = ns.EarthRoadbatteryscene = Hilo.Class.create({
+	var QuietShutmachinescene = ns.QuietShutmachinescene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.earth_roadbattery,
+		name: game.configdata.SCENE_NAMES.quiet_shutmachine,
 		
 		initPosx:700,
 		initPosy:630,
@@ -15,19 +15,23 @@
 		isopen:false,
 		
 		constructor: function(properties) {
-			EarthRoadbatteryscene.superclass.constructor.call(this, properties);
+			QuietShutmachinescene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
 		init: function(properties) {
 			console.log('%s init', this.name);
 			this.x = 0;
 			this.y = 0;
+			this.pointerflag = 0;
+			this.pointer1flag = 0;
+			this.pointer2flag = 0;
+			this.pointer3flag = 0;
 			this.background = '#1A0A04';
 			this.initx = this.x;
 			this.inity = this.y;
 		},
 		active: function(passdata) {
-			console.log('%s active:', this.name);
+			console.log('%s active:', this.name); 
 			this.scene = this;
 			this.addTo(game.stage);
 			this.alpha = 1;
@@ -49,7 +53,7 @@
 			
 			game.sounds.play(14,true);
 			
-			this.ispower = false;
+			this.touchnum = 0;
 			this.isopen = false;
 			this.iskeyonhand = false;
 			this.isopenbox = false;
@@ -57,7 +61,7 @@
 			this.step =0;
 			
 			
-            this.showDialog('img/earth/1/note.png');
+            //this.showDialog('img/earth/1/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -80,36 +84,16 @@
 		},
 		checkActiveObjects:function(mouseX,mouseY){
 			var scene = this;
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['cabinet'])){
-				var obj = this.items['cabinet'];
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['box2'])){
+				var obj = this.items['box2'];
 				if (scene.step===0) {
-					scene.gotoDosomething(obj,1,0,0,'lift',800,function(){
-						scene.step=1;
-					},function(){
-						obj.visible = false
-						new Hilo.Tween.to(scene.hero,{
-							posx:317,
-							posy:492,
-							scaleX:1,
-							scaleY:1,
-						},{
-							duration:120,
-							delay:20,
-							onComplete:function(){
-								scene.hero.visible=false;
-								scene.playboy.visible=true;
-								scene.playboy.x = scene.hero.posx -115;
-								scene.playboy.y = scene.hero.posy -283;
-								scene.playboy.currentFrame = 0;
-								scene.playboy._frames = scene.atlas.getSprite('lift');
-								scene.playboy.loop = false;
-								scene.playboy.play();
-								scene.items['cabinet1'].visible=true;
-								scene.items['cabinet1'].status=1;
-							}
-						});
-						
-					});
+					scene.step=1;
+					obj.visible = false;
+					obj.status=2;
+					scene.items['box1'].visible = true;
+					scene.items['box1'].status = 1;
+					scene.items['password'].visible = true;
+					scene.items['password'].status = 1;
 				}
 				else{
 					this.sayNo();
@@ -117,64 +101,37 @@
 				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['cabinet1'])){
-				var obj = this.items['cabinet1'];
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['wrench'])){
+				var obj = this.items['wrench'];
 				if (scene.step===1) {
 					
-					scene.playboy.x=obj.x-55;
-					scene.playboy.y=obj.y-283;
-					scene.step++;
-				}
-				else if(scene.step===4){
-					
-					obj.status = 2;
-					obj.visible = false;
-					scene.items['package'].visible=true;
-					scene.items['knife'].visible=true;
-					scene.items['knife'].status=1;
-					scene.step++;
+					scene.pickSomething(obj,'lift',-55,-136,'img/quiet/2/wrench1.png',400);
+					//scene.gotoDosomething(obj,1,0,0,'lift',800,function(){
+						scene.step=2;
+					//},function(){
+						obj.status = 2;
+						obj.visible = false;
+						//scene.items['leaflet'].status = 2;
+					//});
 				}
 				else{
 					this.sayNo();
 				}
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['recyclingbox'])){
-				var obj = this.items['recyclingbox'];
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['password'])){
+				var obj = this.items['password'];
+				scene.currentOnhandImg.visible=false;
 				if (scene.step===2) {
-					scene.gotoDosomething(obj,1,0,0,'getbattery',800,function(){
+					scene.gotoDosomething(obj,1,0,0,'lift',800,function(){
 						scene.step=3;
 					},function(){
 						obj.status = 2;
 						obj.visible = false;
-						scene.items['recyclingbox1'].status = 1;
-						scene.items['leaflet1'].visible = false;
-						scene.items['leaflet'].status = 1;
-						scene.items['leaflet1'].status = 2;
 						
-						new Hilo.Tween.to(scene.hero,{
-							posx:413,
-							posy:533,
-							scaleX:1,
-							scaleY:1,
-						},{
-							duration:120,
-							delay:20,
-							onComplete:function(){
-								scene.hero.visible=false;
-								scene.playboy.visible=true;
-								scene.playboy.x = scene.hero.posx -115;
-								scene.playboy.y = scene.hero.posy -283;
-								scene.playboy.currentFrame = 0;
-								scene.playboy._frames = scene.atlas.getSprite('unlift');
-								scene.playboy.loop = false;
-								scene.playboy.play();
-							}
-						});
-						scene.items['recyclingbox1'].visible = true;
-						scene.items['leaflet'].visible = true;
-						//scene.items['leaflet'].visible = true;
-						//scene.items['leaflet'].status = 2;
+						scene.items['specification'].visible = true;
+						scene.items['specification'].status = 1;
+						scene.hero.visible = false;
 					});
 				}
 				else{
@@ -183,35 +140,15 @@
 				
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['hammer'])){
-				var obj = this.items['hammer'];
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['specification'])){
+				var obj = this.items['specification'];
 				if(scene.step===3){
-					scene.gotoDosomething(obj,1,0,0,'lift',800,function(){
-						scene.step=4;
-					},function(){
-						obj.status = 2;
-						obj.visible = false;
+					scene.step=4;
+					obj.status = 2;
+					obj.visible = false;
+					scene.hero.visible = true;
+					scene.currentOnhandImg.visible=true;
 						
-						new Hilo.Tween.to(scene.hero,{
-							posx:413,
-							posy:563,
-							scaleX:1,
-							scaleY:1,
-						},{
-							duration:120,
-							delay:20,
-							onComplete:function(){
-								scene.hero.visible=false;
-								scene.playboy.visible=true;
-								scene.playboy.x = scene.hero.posx -115;
-								scene.playboy.y = scene.hero.posy -283;
-								scene.playboy.currentFrame = 0;
-								scene.playboy._frames = scene.atlas.getSprite('hammering');
-								scene.playboy.loop = false;
-								scene.playboy.play();
-							}
-						});
-					});
 				}
 				else{
 					this.sayNo();
@@ -219,81 +156,79 @@
 				
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['knife'])){
-				var obj = this.items['knife'];
-				if(scene.step===5){
-					scene.gotoDosomething(obj,1,0,0,'lift',800,function(){
-						scene.step=6;
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pointercover'])){
+				var obj = this.items['pointercover'];
+				scene.currentOnhandImg.visible=false;
+				if(scene.step===4){
+					scene.pointerflag++;
+					scene.gotoDosomething(obj,1,0,0,'wrench',800,function(){
 					},function(){
-						obj.status = 2;
-						obj.visible = false;
-						scene.items['leaflet'].status=1;
-						scene.items['leaflet'].visible=true;
-						scene.hero.posx=311;
-						scene.hero.posy=528;
-						scene.handonProp('img/earth/1/knifeonhand.png',283,421);
+						scene.items['pointer'].rotation+=90;
+						scene.currentOnhandImg.visible=true;
 					});
 				}
 				else{
 					this.sayNo();
+				}
+				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
+					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
-			//TODO
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['leaflet'])){
-				var obj = this.items['leaflet'];
-				if(scene.step===6){
-					if (scene.currentOnhandImg) {
-						scene.currentOnhandImg.visible = false;
-						delete scene.currentOnhandImg;
-					}
-					scene.gotoDosomething(obj,1,0,0,'tear',800,function(){
-						scene.step=7;
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pointer1cover'])){
+				var obj = this.items['pointer1cover'];
+				scene.currentOnhandImg.visible=false;
+				if(scene.step===4){
+					scene.pointer1flag++;
+					scene.gotoDosomething(obj,1,0,0,'wrench',800,function(){
 					},function(){
-						obj.status = 2;
-						obj.visible = false;
-						scene.items['leaflet2'].status=1;
+						scene.items['pointer1'].rotation+=90;
+						scene.currentOnhandImg.visible=true;
 					});
 				}
 				else{
 					this.sayNo();
+				}
+				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
+					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['leaflet2'])){
-				var obj = this.items['leaflet2'];
-				if(scene.step===7){
-					scene.gotoDosomething(obj,1,0,0,'lift',800,function(){
-						scene.step=8;
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pointer2cover'])){
+				var obj = this.items['pointer2cover'];
+				scene.currentOnhandImg.visible=false;
+				if(scene.step===4){
+					scene.pointer2flag++;
+					scene.gotoDosomething(obj,1,0,0,'wrench',800,function(){
 					},function(){
-						obj.status = 2;
-						obj.visible = false;
-						scene.items['leafletinput'].visible=true;
-						scene.items['leafletinput'].status=1;
+						scene.items['pointer2'].rotation+=90;
+						scene.currentOnhandImg.visible=true;
 					});
 				}
 				else{
 					this.sayNo();
+				}
+				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
+					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
-			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['leafletinput'])){
-				var obj = this.items['leafletinput'];
-				if(scene.step===8){
-					scene.gotoDosomething(obj,1,0,0,'putad',800,function(){
-						scene.step=9;
-						scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.earth_roadbattery);
+			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['pointer3cover'])){
+				var obj = this.items['pointer3cover'];
+				scene.currentOnhandImg.visible=false;
+				if(scene.step===4){
+					scene.pointer3flag++;
+					scene.gotoDosomething(obj,1,0,0,'wrench',800,function(){
 					},function(){
-						obj.status = 2;
-						obj.visible = false;
-						scene.items['leafletinput'].visible=false;
-						scene.items['leaflet3'].visible=true;
-						scene.items['leaflet3'].status=1;
+						scene.items['pointer3'].rotation+=90;
+						scene.currentOnhandImg.visible=true;
 					});
 				}
 				else{
 					this.sayNo();
-					
+				}
+				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
+					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
@@ -527,44 +462,52 @@
 		layoutBgMap:function(){
 			var scene = this;
 			var data = [
-			[1, 'bg', 'earth1bg.jpg', 0, 0, 't'],
-			[2, 'recyclingbox', 'batteryrecyclingboxe.png', 1,300, 256,60, 230, [0, 0, 50, 80],  't'],
-			[1, 'recyclingnote', 'reclaim.png',409, 399,'t'],
-			[2, 'recyclingbox1', 'batteryrecyclingboxe.png', 1,409, 379,-20, 100, [0, 0, 50, 80],  'f'],
-			[2, 'leaflet', 'leaflet3.png',1,409, 409,-20, 150, [0, 0, 40, 53],  'f'],
-			[2, 'cabinet', 'cabinet.png', 1,33, 535,20, 100, [0, 0, 112, 49],  't'],
-			[2, 'cabinet1', 'cabinet.png', 1,289, 449,-20, 150, [0, 0, 112, 49],  'f'],
-			[2, 'hammer', 'hammer.png',1, 859,462, 20, 80, [0, 0, 76, 30], 't'],
-			[2, 'leaflet1', 'leaflet3.png',2,300, 286,-20, 150, [0, 0, 40, 53],  't'],
-			[2, 'leaflet2', 'leaflet2.png', 2, 575, 484, 20, 80, [0, 0, 118, 22], 't'],
-			[2, 'leaflet3', 'leaflet1.png', 1, 409, 409, 20, 80, [0, 0,40, 55], 'f'],
-			[2, 'package', 'package.png', 1, 289, 449, 70, 150, [0, 0, 112, 67], 'f'],
-			[2, 'knife', 'knife.png',1, 319, 472, -20, 80, [0, 0, 42, 18], 'f'],
-			[2, 'leafletinput', 'empty',1,409, 409,20, 80, [0, 0, 40, 53],  'f'],
-			[2, 'cabinetput', 'empty', 1, 289, 429,-20, 150, [0, 0, 112, 67], 'f']
+			[1, 'bg', 'quiet2bg.png', 0, 0, 't'],
+			[1, 'pointer', 'pointer.png', 112, 309,  't'],
+			[2, 'pointercover', 'empty', 1,83, 287,-50, 250, [0, 0, 50, 60],  't'],
+			[1, 'pointer1', 'pointerup.png', 176, 309, 't'],
+			[2, 'pointer1cover', 'empty', 1,153, 287,-50, 250, [0, 0, 50, 60],  't'],
+			[1, 'pointer2', 'pointerup.png',243, 309,'t'],
+			[2, 'pointer2cover', 'empty', 1,223, 287,-50, 250, [0, 0, 50, 60],  't'],
+			[1, 'pointer3', 'pointerdown.png', 315, 309,  't'],
+			[2, 'pointer3cover', 'empty', 1,293, 287,-50, 250, [0, 0, 50, 60],  't'],
+			[2, 'wrench', 'wrench.png', 1,907, 449,20, 100, [0, 0, 87, 33],  't'],
+			[2, 'wrench1', 'wrench1.png', 2,655, 502,20, 100, [0, 0, 87, 33], 'f'],
+			[2, 'box1', 'box1.png', 2,1053, 348,20, 100, [0, 0, 112, 67],  'f'],
+			[2, 'box2', 'box2.png',1,1057, 367,20, 150, [0, 0, 112, 47],  't'],
+			[2, 'password', 'password.png', 1,1078, 371,50, 100, [0, 0, 70,70],  'f'],
+			[2, 'button', 'button.png', 1,649, 337,20, 150, [0, 0, 32,32],  't'],
+			[2, 'specification', 'specification.png', 2,0, 0,-20, 150, [0, 0, 1089,979],  'f']
+			
+			//[1, 'puzzlebg', 'puzzlebg.png', 0, 0, 'f'],
+			//[2, 'heatwithhightemperature', 'heatwithhightemperature.png', 2,124, 90,20, 100, [0, 0, 61, 58],  'f'],
+			//[2, 'importmachine', 'importmachine.png', 2,449, 87,20, 100, [0, 0, 61, 58],  'f'],
+			//[2, 'refiningheavily', 'refiningheavily.png',2,439, 355,20, 100, [0, 0, 61, 58],'f'],
+			//[2, 'trituration', 'trituration.png', 2,119, 82,20, 100, [0, 0, 61, 58],  'f'],
+			//[2, 'wastetreatment', 'wastetreatment.png', 2,120, 357,20, 100, [0, 0, 61, 58],  'f']
 			];
 		
-			this.layoutUIElement('img/earth/1/',data);
+			this.layoutUIElement('img/quiet/2/',data);
 			//game.sounds.play(17,true);
             
+			this.items['pointer3'].pivotY=18;
 			this.atlas = new Hilo.TextureAtlas({
-                image:'img/earth/1/action.png',
-                width:1024,
-                height:2048,
-                frames:[[212, 312, 210, 310], [424, 312, 210, 310], [212, 312, 210, 310], [424, 0, 210, 310], [212, 1560, 210, 310], [212, 1248, 210, 310], [212, 936, 210, 310], [212, 624, 210, 310], [424, 624, 210, 310], [212, 0, 210, 310], [0, 1560, 210, 310], [0, 1248, 210, 310], [212, 0, 210, 310], [212, 624, 210, 310], [0, 936, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310], [0, 312, 210, 310], [0, 312, 210, 310], [0, 624, 210, 310], [0, 936, 210, 310]],
+                image:'img/quiet/2/action.png',
+                width:2048,
+                height:1024,
+                frames:[[1272, 312, 210, 310], [1272, 0, 210, 310], [1060, 624, 210, 310], [1060, 312, 210, 310], [1060, 0, 210, 310], [1060, 624, 210, 310], [1272, 312, 210, 310], [848, 624, 210, 310], [848, 312, 210, 310], [848, 0, 210, 310], [1484, 312, 210, 310], [636, 312, 210, 310], [636, 312, 210, 310], [636, 312, 210, 310], [848, 312, 210, 310], [636, 0, 210, 310], [424, 624, 210, 310], [424, 312, 210, 310], [424, 0, 210, 310], [424, 312, 210, 310], [424, 312, 210, 310], [424, 624, 210, 310], [636, 0, 210, 310], [212, 624, 210, 310], [212, 312, 210, 310], [212, 0, 210, 310], [0, 624, 210, 310], [0, 312, 210, 310], [0, 0, 210, 310], [636, 624, 210, 310], [636, 624, 210, 310], [1484, 0, 210, 310], [1484, 0, 210, 310], [1272, 624, 210, 310], [1272, 624, 210, 310]],
                 sprites: {
-                	getbattery:{from:0,to:2},
-                	hammering:{from:3,to:6},
-                	lift:{from:7,to:13},
-                	unlift:[13,12,11,10,9,8,7],
-                	tear:{from:14,to:21},
-                	onbox:[21],
-                	putad:[21,20,19,18,17,16,15,14],
+                	lift:{from:0,to:6},
+                	unlift:[6,5,4,3,2,1,0],
+                	pour:{from:7,to:14},
+                	press:{from:15,to:22},
+                	put:{from:23,to:28},
+                	wrench:{from:29,to:34},
                 	stepbox:[0]
                 }
-            });
+           });
            
-            this.playboy = this.createSprite(this.atlas,'unlift',1023,211,6,this);
+            this.playboy = this.createSprite(this.atlas,'lift',813,211,6,this);
             this.playboy.visible = false;
 		},
 		

@@ -104,9 +104,13 @@ game.configdata = new function(){
 		earth_changeplant:'EARCH_CHANGEPLANT',//4
 		earth_fertilizer:'EARCH_FERTILIZER',//5
 		earth_mendrubbishmachine:'EARCH_MENDRUBBISHMACHINE',//6
-		
-		
-		
+		quiet_enterfactory:'QUIET_ENTERFACTORY',//1
+		quiet_shutmachine:'QUIET_SHUTMACHINE',//2
+		quiet_addvoicefilter:'QUIET_ADDVOICEFILTER',//3
+		quiet_addcushionblocking:'QUIET_ADDCUSHIONBLOCKING',//4
+		quiet_changebrokenglass:'QUIET_CHANGEBROKENGLASS',//5
+		quiet_wearearplug:'QUIET_WEAREARPLUG',//6
+
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
 		main:'MAIN_SCENE_NAME',
