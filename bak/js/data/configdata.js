@@ -59,8 +59,6 @@ game.configdata = new function(){
 		pass05_runaway_tile:'地震中行走要小心掉落物和地上的障碍',
 		pass05_fail:'地震中行走要小心掉落物和地上的障碍',
 		pass05_success:'干的不错，逃离险境！',
-		
-		
 	};
 	
 	self.SCENE_NAMES ={
@@ -77,6 +75,12 @@ game.configdata = new function(){
 		incar:'INCAR_SCENE',
 		repairdepot:'REPAIRDEPOT_SCENE',
 		escapebus:'ESCAPEBUS_SCENE',
+		earthquake_bedroom:'EARTHQUAKE_BEDROOM',
+		earthquake_kitchen:'EARTHQUAKE_KITCHEN',
+		earthquake_lobby:'EARTHQUAKE_LOBBY',
+		fire_gallery:'FIRE_GALLERY',
+		fire_washroom:'FIRE_WASHROOM',
+		fire_door:'FIRE_DOOR',
 		typhoon_cave:'TYPHOON_SCENE_CAVE',
 		typhoon_room:'TYPHOON_SCENE_ROOM',
 		typhoon_out:'TYPHOON_SCENE_OUT',
@@ -110,14 +114,15 @@ game.configdata = new function(){
 		quiet_addcushionblocking:'QUIET_ADDCUSHIONBLOCKING',//4
 		quiet_changebrokenglass:'QUIET_CHANGEBROKENGLASS',//5
 		quiet_wearearplug:'QUIET_WEAREARPLUG',//6
+		maze_puzzle:'MAZE_PUZZLE',
+		maze_maze:'MAZE_MAZE',
+		maze_treasure:'MAZE_TREASURE',
 
 		load:'LOAD_SCENE_NAME',
 		login:'LOGIN_SCENE_NAME',
 		main:'MAIN_SCENE_NAME',
 		over:'GAME_SCENE_NAME',
 		shop:'SHOP_SCENE_NAME',
-		
-		
 		
 		map:'MAP_SCENE',
 		stash:'STASH_SCENE',

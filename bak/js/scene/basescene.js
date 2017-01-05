@@ -304,8 +304,14 @@
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
 				scene.onTouchStart(e);
 			});
+			game.stage.on(Hilo.event.POINTER_END, function(e) {
+				scene.onTouchEnd(e);
+			});
 		},
 		onTouchMove:function(e){
+			
+		},
+		onTouchEnd:function(e){
 			
 		},
 		onTouchStart:function(e){

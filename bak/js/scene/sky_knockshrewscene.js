@@ -132,7 +132,7 @@
 				/*new Hilo.Tween.to(this,{alpha:1},{duration:100,delay:1000,onComplete:function(){
 							game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 				}});*/
-				this.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_repairairclearn);
+				this.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.sky_repairairclearn);
 				return;
 			}
 			var right = this.question[this.currentQuestionIndex-1][1];

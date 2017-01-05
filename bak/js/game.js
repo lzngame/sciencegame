@@ -155,6 +155,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.quiet_addcushionblocking]   = new game.QuietAddcushionblockscene();
 			this.scenes[game.configdata.SCENE_NAMES.quiet_changebrokenglass]   = new game.QuietChangebrokenglassscene();
 			this.scenes[game.configdata.SCENE_NAMES.quiet_wearearplug]   = new game.QuietWearearplugscene();
+			this.scenes[game.configdata.SCENE_NAMES.maze_maze]   = new game.Mazemapscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);
