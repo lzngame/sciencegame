@@ -156,6 +156,13 @@
 			this.scenes[game.configdata.SCENE_NAMES.quiet_changebrokenglass]   = new game.QuietChangebrokenglassscene();
 			this.scenes[game.configdata.SCENE_NAMES.quiet_wearearplug]   = new game.QuietWearearplugscene();
 			this.scenes[game.configdata.SCENE_NAMES.maze_maze]   = new game.Mazemapscene();
+			this.scenes[game.configdata.SCENE_NAMES.maze_puzzle]   = new game.MazePuzzlescene();
+			this.scenes[game.configdata.SCENE_NAMES.maze_treasure]   = new game.MazeTreasurescene();
+			this.scenes[game.configdata.SCENE_NAMES.earthquake_bedroom]   = new game.EarthQuakebedroomscene();
+			this.scenes[game.configdata.SCENE_NAMES.earthquake_lobby]   = new game.EarthQuakelobbyscene();
+			this.scenes[game.configdata.SCENE_NAMES.earthquake_kitchen]   = new game.Earthquakekitchenscene();
+			this.scenes[game.configdata.SCENE_NAMES.fire_gallery]   = new game.Firegalleryscene();
+			this.scenes[game.configdata.SCENE_NAMES.fire_door]   = new game.Firedoorscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

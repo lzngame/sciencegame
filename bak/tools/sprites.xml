@@ -1,9 +1,20 @@
 <TextureAtlas imagePath="sprites.png">
-	<SubTexture name="worker (1).png" x="202" y="326" width="200" height="324"/>
-	<SubTexture name="worker (2).png" x="404" y="326" width="200" height="324"/>
-	<SubTexture name="worker (3).png" x="404" y="0" width="200" height="324"/>
-	<SubTexture name="worker (4).png" x="606" y="0" width="200" height="324"/>
-	<SubTexture name="worker (5).png" x="202" y="0" width="200" height="324"/>
-	<SubTexture name="worker (6).png" x="0" y="326" width="200" height="324"/>
-	<SubTexture name="worker (7).png" x="0" y="0" width="200" height="324"/>
+	<SubTexture name="0_0000_6.png" x="424" y="624" width="210" height="310"/>
+	<SubTexture name="0_0001_5.png" x="848" y="624" width="210" height="310"/>
+	<SubTexture name="0_0002_4.png" x="424" y="0" width="210" height="310"/>
+	<SubTexture name="0_0003_3.png" x="212" y="624" width="210" height="310"/>
+	<SubTexture name="0_0004_2.png" x="212" y="312" width="210" height="310"/>
+	<SubTexture name="0_0005_1.png" x="212" y="0" width="210" height="310"/>
+	<SubTexture name="1.png" x="0" y="624" width="210" height="310"/>
+	<SubTexture name="2.png" x="0" y="312" width="210" height="310"/>
+	<SubTexture name="3.png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="4.png" x="0" y="0" width="210" height="310"/>
+	<SubTexture name="5.png" x="424" y="312" width="210" height="310"/>
+	<SubTexture name="pick (1).png" x="848" y="312" width="210" height="310"/>
+	<SubTexture name="pick (2).png" x="848" y="0" width="210" height="310"/>
+	<SubTexture name="pick (3).png" x="636" y="624" width="210" height="310"/>
+	<SubTexture name="pick (4).png" x="636" y="312" width="210" height="310"/>
+	<SubTexture name="pick (5).png" x="636" y="0" width="210" height="310"/>
+	<SubTexture name="pick (6).png" x="636" y="624" width="210" height="310"/>
+	<SubTexture name="pick (7).png" x="848" y="312" width="210" height="310"/>
 </TextureAtlas>

@@ -83,8 +83,6 @@ game.monsterdata = new function(){
 					gaseffect:[11,12,13,14]
 				}
 			});
-			
-			
 	};
 	
 	self.createAtlas = function(data){
@@ -173,10 +171,10 @@ game.monsterdata = new function(){
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			];
 			this.passdata2 = [
-			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
-			[0,'repair',game.configdata.SCENE_NAMES.sky_knockshrew],
-			[0,'planeout',game.configdata.SCENE_NAMES.earth_roadbattery],
-			[0,'typhoon',game.configdata.SCENE_NAMES.maze_maze],
+			[0,'intopipe',game.configdata.SCENE_NAMES.fire_gallery],
+			[0,'repair',game.configdata.SCENE_NAMES.fire_door],
+			[0,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
+			[0,'typhoon',game.configdata.SCENE_NAMES.earthquake_lobby],
 			];
 		},
 		addHp:function(){
