@@ -1,4 +1,4 @@
-(function(ns) {
+ (function(ns) {
 	var DepotCar = ns.DepotCar = Hilo.Class.create({
 		Extends: Hilo.Container,
 		name:'DepotCar',
@@ -23,7 +23,7 @@
 				x:80,
 			}).addTo(this);
 			new Hilo.Bitmap({
-				image:'img/car.png',
+				image:'img/traffic/car.png',
 			}).addTo(this.carimg);
 			this.tyreimg = new Hilo.Bitmap({
 				image:game.getImg('uimap'),

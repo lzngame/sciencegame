@@ -7,6 +7,8 @@
 		fingerMouse:null,
 		blocks:null,
 		ignoreTouch:false,
+		helpbtn:null,
+		helpnote:'img/notes/defaultnote.png',
 		constructor: function(properties) {
 			BaseScene.superclass.constructor.call(this, properties);
 			this.init(properties);
@@ -157,7 +159,7 @@
 			if(star && star.parent){
 				if(Math.abs(star.x - this.hero.posx) < 100 && Math.abs(star.y - this.hero.posy) < 100){
 					star.hide();
-					game.starscore.addScore();
+					
 				}
 			}
 		},
@@ -235,7 +237,7 @@
 			/*game.starscore = new game.StarScore({
 				x:150,
 				y:95,
-			}).addTo(game.uiscene);*/
+			}).addTo(game.uiscene);
 			game.notepanel = new game.DrNote({
 				txt:game.configdata.GAMETXTS.pass01_notestart,
 				x:-700,
@@ -247,19 +249,16 @@
 			game.toolspanel = new game.ToolsIconPanel({
 				initx:784,
 				inity:-395,
-			});
-			game.soundmute = new game.SwitchBtn({
-				x:500,
-				y:10,
-				state:1,
-				func:function(index){
-					game.configdata.MUTE = index;
-					game.sounds.stop(14);
-				},
-				image:game.getImg('uimap'),
-				rect:game.configdata.getPngRect('tel0','uimap'),
-				default:'tel0',
-				other:'tel1',
+			});*/
+			
+			this.helpbtn = new Hilo.Bitmap({
+				image:'img/help.png',
+				y:150,
+				x:30,
+			}).addTo(game.uiscene);
+			var scene = this;
+			this.helpbtn.on(Hilo.event.POINTER_START,function(e){
+				scene.showDialog(scene.helpnote);
 			});
 		},
 		herowalk:function(targetx,targety){
@@ -296,10 +295,10 @@
 					if(!this.active)
 						scene.fingerMouse.visible = false;
 				}
-				if(game.toolspanel.y == 0){
+				/*if(game.toolspanel.y == 0){
 					console.log('check icon');
 					game.toolspanel.showshader(targetx,targety);
-				}
+				}*/
 			});
 			game.stage.on(Hilo.event.POINTER_START, function(e) {
 				scene.onTouchStart(e);

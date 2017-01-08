@@ -27,7 +27,7 @@
 		uiscene:null,
 		drdialog:null,
 		headPanel:null,
-		starscore:null,
+		 
 		notepanel:null,
 		toolippanel:null,
 		toolspanel:null,
@@ -111,17 +111,9 @@
 
 			this.scenes[game.configdata.SCENE_NAMES.passchoice]   = new game.PassChoiceScene();
 			this.scenes[game.configdata.SCENE_NAMES.gameover]     = new game.GameoverScene();
-			this.scenes[game.configdata.SCENE_NAMES.fireglass]    = new game.FireGlassScene();
-			this.scenes[game.configdata.SCENE_NAMES.washroom]     = new game.WashroomScene();
-			this.scenes[game.configdata.SCENE_NAMES.firecorridor] = new game.FirecorridorScene();
-			this.scenes[game.configdata.SCENE_NAMES.shakecorridor]= new game.ShakecorridorScene();
-			this.scenes[game.configdata.SCENE_NAMES.saloon]  	  = new game.SaloonScene();
-			this.scenes[game.configdata.SCENE_NAMES.attack]       = new game.AttackScene();
-			this.scenes[game.configdata.SCENE_NAMES.cookieroom]   = new game.CookieroomScene();
-			this.scenes[game.configdata.SCENE_NAMES.depot]        = new game.DepotScene();
-			this.scenes[game.configdata.SCENE_NAMES.incar]        = new game.IncarScene();
-			this.scenes[game.configdata.SCENE_NAMES.repairdepot]  = new game.RepairScene();
-			this.scenes[game.configdata.SCENE_NAMES.escapebus]    = new game.EscapebusScene();
+			
+			this.scenes[game.configdata.SCENE_NAMES.traffic_repaircar]  = new game.Trafficrepaircarscene();
+			this.scenes[game.configdata.SCENE_NAMES.traffic_escapebus]    = new game.Trafficescapebusscene();
 			this.scenes[game.configdata.SCENE_NAMES.typhoon_room]    = new game.TyphoonRoomScene();
 			this.scenes[game.configdata.SCENE_NAMES.typhoon_cave]    = new game.TyphoonCaveScene();
 			this.scenes[game.configdata.SCENE_NAMES.typhoon_out]    = new game.TyphoonOutScene();
@@ -163,6 +155,7 @@
 			this.scenes[game.configdata.SCENE_NAMES.earthquake_kitchen]   = new game.Earthquakekitchenscene();
 			this.scenes[game.configdata.SCENE_NAMES.fire_gallery]   = new game.Firegalleryscene();
 			this.scenes[game.configdata.SCENE_NAMES.fire_door]   = new game.Firedoorscene();
+			this.scenes[game.configdata.SCENE_NAMES.fire_washroom]   = new game.FireWashroomscene();
 		},
 		getImg: function(id) {
 			var img = this.loadqueue.getContent(id);

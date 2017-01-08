@@ -160,11 +160,11 @@ game.monsterdata = new function(){
 			},
 			//-1 No start 0:doing -1:finished
 			this.passdata = [
-			[0,'chehuo',game.configdata.SCENE_NAMES.repairdepot],
+			[0,'chehuo',game.configdata.SCENE_NAMES.traffic_repaircar],
 			//[0,'pass01',game.configdata.SCENE_NAMES.escapebus],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_room],
-			[-1,'planecabin',game.configdata.SCENE_NAMES.water_intopipe],
-			[-1,'planeout',game.configdata.SCENE_NAMES.water_closevalue],
+			[0,'planecabin',game.configdata.SCENE_NAMES.earthquake_bedroom],
+			[0,'planeout',game.configdata.SCENE_NAMES.fire_gallery],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
@@ -174,7 +174,7 @@ game.monsterdata = new function(){
 			[0,'intopipe',game.configdata.SCENE_NAMES.fire_gallery],
 			[0,'repair',game.configdata.SCENE_NAMES.fire_door],
 			[0,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
-			[0,'typhoon',game.configdata.SCENE_NAMES.earthquake_lobby],
+			[0,'typhoon',game.configdata.SCENE_NAMES.fire_washroom],
 			];
 		},
 		addHp:function(){

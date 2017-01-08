@@ -421,7 +421,8 @@
 				var obj = this.items['confirm'];
 				if(scene.items['key1cover'].visible&&scene.items['key2cover'].visible&&scene.items['key3cover'].visible
 				&&scene.items['key4cover'].visible&&scene.items['key5cover'].visible&&scene.items['key7cover'].visible
-				&&scene.items['key8cover'].visible){
+				&&scene.items['key8cover'].visible&&!scene.items['key6cover'].visible&&!scene.items['key9cover'].visible
+				){
 					
 				obj.status=2;
 				obj.visible = false;
