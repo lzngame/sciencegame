@@ -2,6 +2,7 @@
 	var EarthChangeplantscene = ns.EarthChangeplantscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earth_changeplant,
+		helpnote:'img/notes/earth/earth4help.png',
 		
 		initPosx:360,
 		initPosy:630,
@@ -61,7 +62,7 @@
 			this.step2_firelime=false;
 			this.step3_dustpan=false;
 			this.step4_limeon=false;
-			
+			this.setHelp();
             this.showDialog('img/earth/4/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -148,7 +149,7 @@
 						
 					},function(){
 					    new Hilo.Tween.to(obj,{alpha:0},{duration:2000,delay:1000,onComplete:function(){
-							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
+							scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.earth_fertilizer);
 					   }});
 					});
 				return true;

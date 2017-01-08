@@ -1,10 +1,11 @@
 (function(ns) {
 	var WaterIntopipescene = ns.WaterIntopipescene = Hilo.Class.create({
 		Extends: game.BaseScene,
-		name: game.configdata.SCENE_NAMES.confusion_cinema,
+		name: game.configdata.SCENE_NAMES.water_intopipe,
 		
 		initPosx:650,
 		initPosy:630,
+		helpnote:'img/notes/water/water1help.png',
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		activeobjs:null,
@@ -57,7 +58,9 @@
 			this.isinstrumentonhand = false;
 			game.sounds.play(14,true);
 			this.showMask('img/water/waterbgnote.png');
+			this.setHelp();
 		},
+		
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
 				var obj = this.items[i];
@@ -122,7 +125,7 @@
 				scene.gotoDosomething(obj,0.9,0,0,'goexit',1800,function(){
 						scene.hero.alpha = 0;
 					},function(){
-						game.switchScene(game.configdata.SCENE_NAMES.water_closevalue);
+						scene.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.water_closevalue);
 					});
 				return true;
 			}

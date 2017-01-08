@@ -2,6 +2,7 @@
 	var EarthMendrubbishscene = ns.EarthMendrubbishscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earth_mendrubbishmachine,
+		helpnote:'img/notes/earth/earth6help.png',
 		
 		initPosx:720,
 		initPosy:630,
@@ -60,7 +61,7 @@
 			this.step3_installwheel = false;
 			this.step4_inshovel = false;
 			
-			
+			this.setHelp();
 			this.glove = new Hilo.Bitmap({
 				image:'img/earth/6/gloveonhand.png',
 				visible:false,
@@ -201,7 +202,7 @@
 					    obj.status = 2;
 					    scene.items['cutoffup'].visible = true;
 						scene.showGlove(true);
-						scene.flasheffect.visible = false;
+						scene.passoverReady('img/earth/1/note.png',1000,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 					});
 				return true;
 			}

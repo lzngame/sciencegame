@@ -7,12 +7,12 @@
 		fingerMouse:null,
 		blocks:null,
 		ignoreTouch:false,
-		helpbtn:null,
 		helpnote:'img/notes/defaultnote.png',
 		constructor: function(properties) {
 			BaseScene.superclass.constructor.call(this, properties);
 			this.init(properties);
 		},
+		
 		initFingerMouse:function(){
 			this.fingerMouse = new game.FingerMouse({
 				visible:false,
@@ -234,30 +234,17 @@
 				x:20,
 				y:20,
 			}).addTo(game.uiscene);
-			/*game.starscore = new game.StarScore({
-				x:150,
-				y:95,
-			}).addTo(game.uiscene);
-			game.notepanel = new game.DrNote({
-				txt:game.configdata.GAMETXTS.pass01_notestart,
-				x:-700,
-			}).addTo(game.uiscene);
-			game.toolippanel = new game.ToolipNote({
-				x:1230,
-				y:420,
-			}).addTo(game.uiscene);
-			game.toolspanel = new game.ToolsIconPanel({
-				initx:784,
-				inity:-395,
-			});*/
-			
-			this.helpbtn = new Hilo.Bitmap({
+			game.helpbtn = new Hilo.Bitmap({
 				image:'img/help.png',
 				y:150,
 				x:30,
 			}).addTo(game.uiscene);
+			//this.setHelp();
+		},
+		setHelp:function(){
 			var scene = this;
-			this.helpbtn.on(Hilo.event.POINTER_START,function(e){
+			game.helpbtn.off();
+			game.helpbtn.on(Hilo.event.POINTER_START,function(e){
 				scene.showDialog(scene.helpnote);
 			});
 		},

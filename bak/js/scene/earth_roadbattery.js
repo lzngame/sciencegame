@@ -2,6 +2,7 @@
 	var EarthRoadbatteryscene = ns.EarthRoadbatteryscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earth_roadbattery,
+		helpnote:'img/notes/earth/earth1help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -55,7 +56,7 @@
 			this.isopenbox = false;
 			this.isscissor = false;
 			this.step =0;
-			
+			this.setHelp();
 			
             this.showDialog('img/earth/1/note.png');
 		},

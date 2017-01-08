@@ -8,14 +8,7 @@
 		initx: 0,
 		isActionFirst:true,    //动作可能持续好多帧，每帧还会持续多个循环，这个值指示在动作的第一次发生 防止消息粘包
 		framename: '',
-		isdead:false,
-		iswin:false,
-		attackKeyFrame:2,
-		hitoffsetx:32,
-		hitoffsety:32,
-		shieldoffsetx:50,
-		shieldoffsety:32,
-		petrifyTime:0,
+		
 		
 		offsetx:0,
 		offsety:0,
@@ -178,21 +171,11 @@
 				msgdata: msgdata
 			});
 		},
-		shield:function(){
-			if(this.framename == 'idle')
-				this.switchState('shield',6);
-		},
-		win:function(){
-			this.switchState('win',10);
-		},
 		switchState: function(name, interval) {
 			this.framename = name;
 			this.body._frames = this.atlas.getSprite(name);
 			this.body.interval = interval;
 			this.body.currentFrame = 0;
-			if(name != 'shield'){
-				this.sendMsg(game.currentScene,game.configdata.MSAGE_TYPE.shieldfinish,'shield finished');
-			}
 		},
 		atLastFrame: function() {
 			if (this.body.currentFrame == this.body.getNumFrames() - 1) {
@@ -245,78 +228,7 @@
 				}
 			}
 		},
-		exeBehit:function(msgdata){
-			var isMiss = Math.random() <= game.userData.heroData.missRatio;
-			if(isMiss){
-				var txt = new game.FlashUpText({
-						x:this.x + 20,
-						y:this.y+10,
-						text:'闪避',
-						txtclr:'yellow'
-					}).addTo(this.parent);
-				return;
-			}
-			switch(msgdata.attacktype){
-				case 'attack':
-					this.attackBehit(msgdata);
-					break;
-				case 'magic':
-					this.magicBehit(msgdata);
-					break;
-			}
-		},
-		behitEffect:function(msgdata){
-			
-		},
-		magicBehit: function(msgdata) {
-			var power = msgdata.attackvalue;
-			var type = msgdata.attacktype;
-			this.switchState('petrify', 10);
-		},
-		attackBehit: function(msgdata) {
-			var power = msgdata.attackvalue;
-			var type = msgdata.attacktype;
-			if(this.framename != 'petrify'){
-				this.switchState('behit', 5);
-			}
-			
-			game.userData.heroData.hp -= power;
-			if(game.userData.heroData.hp < 0)
-				game.userData.heroData.hp = 0;
-			addEffect(this,'sword1');
-			getLostBlood(power,1,this.x+15,this.y+10,this.y,this.y+50).addTo(this.parent);
-			this.sendMsg(game.currentScene,game.configdata.MSAGE_TYPE.changeHerohp,game.userData.heroData.hp);
-			if (game.userData.heroData.hp <= 0) {
-				this.switchState('dead', 4);
-				this.loop = false;
-				return;
-			}
-			var hero = this;
-			Hilo.Tween.to(this, {
-				x: this.initx - 5,
-			}, {
-				duration: 100,
-				onComplete: function() {
-					Hilo.Tween.to(hero, {
-						x: hero.initx + 5,
-					}, {
-						duration: 100,
-						onComplete: function() {
-							//hero.iscd = false;
-						}
-					});
-				}
-			});
-		},
-		exeShield: function() {
-			addEffect(this,'shield');
-			var txt = new game.FlashUpText({
-				x:this.x + 20,
-				y:this.y+10,
-				text:'格挡',
-				txtclr:'white'
-			}).addTo(this.parent);
-		},
+		
 		regainIdle: function() {
 			this.switchState('idle',6);
 			

@@ -2,6 +2,7 @@
 	var SkyStartwindgeneratorscene = ns.SkyStartwindgeneratorscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.sky_startwindgenerator,
+		helpnote:'img/notes/sky/sky4help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -61,7 +62,7 @@
 			this.isOnladder=false;
 			this.isFinishFan=false;
 			this.isCleartwig=false;
-			
+			this.setHelp();
             this.showDialog('img/sky/4/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){

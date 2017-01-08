@@ -5,6 +5,8 @@
 		
 		initPosx:950,
 		initPosy:630,
+		helpnote:'img/notes/water/water3help.png',
+		
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		atlas:null,
@@ -55,6 +57,7 @@
 			this.currentpipeindex = -1;
 			this.pipes = [false,false,false,false,false];
 			this.isSpanner = false;
+			this.setHelp();
 			
 			this.pwdimg = new Hilo.Bitmap({image:'img/water/3/pwd.jpg',visible:false}).addTo(this);
 		},
@@ -250,15 +253,7 @@
 				},function(){
 					obj.status = 2;
 					obj.visible = false;
-					new Hilo.Tween.to(this,{
-						alpha:1
-					},{
-						duration:1000,
-						delay:1500,
-						onComplete:function(){
-							game.switchScene(game.configdata.SCENE_NAMES.water_clarifyingpool);
-						}
-					});
+					scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.water_clarifyingpool);
 				});
 				return true;
 			}

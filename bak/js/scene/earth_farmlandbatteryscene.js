@@ -2,6 +2,7 @@
 	var EarthFarmlandbatteryscene = ns.EarthFarmlandbatteryscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earth_farmlandbattery,
+		helpnote:'img/notes/earth/earth2help.png',
 		
 		initPosx:360,
 		initPosy:630,
@@ -54,7 +55,7 @@
 			this.layoutUI();
 			
 			game.sounds.play(14,true);
-			
+			this.setHelp();
 			this.shoes = new Hilo.Bitmap({
 				image:'img/earth/2/shoesonfoot.png',
 				visible:false,

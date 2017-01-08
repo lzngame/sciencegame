@@ -2,6 +2,7 @@
 	var EarthFertilizerscene = ns.EarthFertilizerscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earth_fertilizer,
+		helpnote:'img/notes/earth/earth5help.png',
 		
 		initPosx:720,
 		initPosy:630,
@@ -55,7 +56,7 @@
 			this.step2_takewheel = false;
 			this.step3_installwheel = false;
 			this.step4_inshovel = false;
-			
+			this.setHelp();
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -168,7 +169,7 @@
 					scene.items['block'].visible = false;
 					scene.items['car'].visible = false;
 					scene.items['carput'].visible = true;
-					scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
+					scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.earth_mendrubbishmachine);
 				}});
 				return true;
 			}

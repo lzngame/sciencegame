@@ -2,6 +2,7 @@
 	var SkySaveplantscene = ns.SkySaveplantscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.sky_saveplant,
+		helpnote:'img/notes/sky/sky6help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -63,7 +64,7 @@
 			this.isOnladder=false;
 			this.isFinishFan=false;
 			this.isCleartwig=false;
-			
+			this.setHelp();
             this.showDialog('img/sky/6/sky6note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){

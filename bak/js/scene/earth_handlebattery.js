@@ -2,6 +2,7 @@
 	var EarthHandlebatteryscene = ns.EarthHandlebatteryscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earth_handlebattery,
+		helpnote:'img/notes/earth/earth3help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -55,7 +56,7 @@
 			this.isopenbox = false;
 			this.isscissor = false;
 			this.step =0;
-			
+			this.setHelp();
 			
             //this.showDialog('img/earth/1/note.png');
 		},
@@ -264,7 +265,8 @@
 				var obj = this.items['touchpuzzle'];
 				if(scene.step===5){
 					if (scene.touchnum>=1) {
-						scene.passoverReady('img/earth/1/note.png',1000,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
+						scene.passoverReady('img/nextpasspoint.png',1000,game.configdata.SCENE_NAMES.earth_changeplant);
+
 					}
 					else{
 						scene.items['puzzlebg'].visible=true;

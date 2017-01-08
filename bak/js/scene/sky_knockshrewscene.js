@@ -4,6 +4,7 @@
 		name: game.configdata.SCENE_NAMES.sky_knockshrew,
 		initPosx:650,
 		initPosy:500,
+		helpnote:'img/notes/sky/sky1help.png',
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		atlas:null,
@@ -39,7 +40,7 @@
 			this.initFingerMouse();
 			
 			this.layoutUI();
-			
+			this.setHelp();
 			game.sounds.play(14,true);
 			this.poses = [[166,395],[484,395],[796,395]];
 			this.question = [['question1.png','b'],['question2.png','c'],['question3.png','a'],['question4.png','c'],['question5.png','b']];

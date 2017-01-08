@@ -5,6 +5,8 @@
 		
 		initPosx:950,
 		initPosy:500,
+		helpnote:'img/notes/water/water5help.png',
+		
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		atlas:null,
@@ -62,6 +64,8 @@
             game.drdialog.on(Hilo.event.POINTER_START,function(e){
             	game.drdialog.hide();
             });
+			this.setHelp();
+            
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -197,9 +201,11 @@
 				},function(){
 					obj.status = 2;
 					scene.items['openbag'].visible = true;
-					new Hilo.Tween.to(this,{alpha:1},{duration:100,delay:1000,onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.water_disinfector);
-					}});
+					scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.water_disinfector);
+					
+					//new Hilo.Tween.to(this,{alpha:1},{duration:100,delay:1000,onComplete:function(){
+					//	game.switchScene(game.configdata.SCENE_NAMES.water_disinfector);
+					//}});
 				});
 				return true;
 			}

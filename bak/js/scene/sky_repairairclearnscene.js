@@ -2,6 +2,7 @@
 	var SkyRepairairclearnscene = ns.SkyRepairairclearnscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.sky_repairairclearn,
+		helpnote:'img/notes/sky/sky2help.png',
 		
 		initPosx:650,
 		initPosy:600,
@@ -48,7 +49,7 @@
 			this.layoutUI();
 			
 			game.sounds.play(14,true);
-			
+			this.setHelp();
 			this.ispower = false;
 			this.isopen = false;
 			this.iskeyonhand = false;

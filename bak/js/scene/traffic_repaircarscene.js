@@ -1059,40 +1059,8 @@
 				y:434
 			}).addTo(this);
 		},
-		showImgAndTxt:function(){
-			if(this.noteimgsIndex > this.noteimgs.length -1){
-				this.noteimgsIndex = 0;
-				this.showNote();
-			}else{
-				var scene = this;
-				var item = this.noteimgs[this.noteimgsIndex];
-				var img = new Hilo.Bitmap({
-					image:'img/note04bg.png',
-					x:scene.passPaneleBg.x,
-					y:scene.passPaneleBg.y,
-				}).addTo(this);
-				var content = new Hilo.Bitmap({
-					image:item[0],
-					x:scene.passPaneleBg.x+334,
-					y:scene.passPaneleBg.y+185,
-				}).addTo(this);
-				img.on(Hilo.event.POINTER_START, function(e) {
-					scene.showImgAndTxt();
-				});
-				this.noteimgsIndex++;
-			}
-		},
-		showNote:function(){
-			var scene = this;
-			var img = new Hilo.Bitmap({
-				image:'img/note04.png',
-				x:scene.passPaneleBg.x,
-				y:scene.passPaneleBg.y,
-			}).addTo(this);
-			img.on(Hilo.event.POINTER_START, function(e) {
-				game.switchScene(game.configdata.SCENE_NAMES.passchoice);
-			});
-		},
+		
+		
 		layoutPassPanel:function(){
 			this.picbg = new Hilo.Bitmap({ 
 				image:'img/traffic/picbg.png',

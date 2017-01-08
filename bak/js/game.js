@@ -26,6 +26,7 @@
 		
 		uiscene:null,
 		drdialog:null,
+		helpbtn:null,
 		headPanel:null,
 		 
 		notepanel:null,

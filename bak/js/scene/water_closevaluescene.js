@@ -5,6 +5,8 @@
 		
 		initPosx:950,
 		initPosy:630,
+		helpnote:'img/notes/defaultnote.png',
+		
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		atlas:null,
@@ -57,7 +59,8 @@
 			game.sounds.play(14,true);
 			this.islube = [false,false,false,false];
 			this.valueRotations = [0,0,0,0];
-			
+			this.helpnote = 'img/notes/water/water2help.png';
+			this.setHelp();
 			this.pwdimg = new Hilo.Bitmap({image:'img/water/2/pwd.jpg',visible:false}).addTo(this);
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -211,9 +214,9 @@
 					new Hilo.Tween.to(scene.sewage,{
 						alpha:0
 					},{
-						duration:2000,
+						duration:1000,
 						onComplete:function(){
-							game.switchScene(game.configdata.SCENE_NAMES.water_repairmachine);
+							scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.water_repairmachine);
 						}
 					});
 				});

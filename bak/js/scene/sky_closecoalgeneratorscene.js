@@ -2,6 +2,7 @@
 	var SkyClosecoalgeneratorscene = ns.SkyClosecoalgeneratorscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.sky_closecoalgenerator,
+		helpnote:'img/notes/sky/sky3help.png',
 		
 		initPosx:200,
 		initPosy:627,
@@ -64,7 +65,7 @@
 			this.iskeyonhand = false;
 			this.isopenbox = false;
 			this.isscissor = false;
-			
+			this.setHelp();
 			game.drdialog.showTxt('img/sky/3/note2.png');
 			this.ignoreTouch=true;
 			var scene=this;

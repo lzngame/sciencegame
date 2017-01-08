@@ -2,6 +2,7 @@
 	var Skystartsungengeratorscene = ns.Skystartsungengeratorscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.sky_startsungengerator,
+		helpnote:'img/notes/sky/sky5help.png',
 		
 		initPosx:200,
 		initPosy:627,
@@ -58,7 +59,7 @@
 			this.layoutUI();
 			
 			game.sounds.play(14,true);
-			
+			this.setHelp();
 			this.isonhandfilter = false;
 			this.isfinishfilter = false;
 			this.iskeyonhand = false;

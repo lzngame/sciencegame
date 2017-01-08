@@ -5,6 +5,8 @@
 		
 		initPosx:950,
 		initPosy:630,
+		helpnote:'img/notes/water/water4help.png',
+		
 		currentOnhandObj:null,
 		currentOnhandImg:null,
 		atlas:null,
@@ -55,6 +57,7 @@
 			this.ishandhook = false;
 			this.isstraineronpipe = false;
 			this.ishammeronhand = false;
+			this.setHelp();
 			
 			this.pwdimg = new Hilo.Bitmap({image:'img/water/3/pwd.jpg',visible:false}).addTo(this);
 		},
@@ -233,7 +236,7 @@
 			new Hilo.Tween.to(rubbish1,{alpha:0},{duration:2000});
 			new Hilo.Tween.to(rubbish2,{alpha:0},{duration:2000});
 			new Hilo.Tween.to(rubbish3,{alpha:0},{duration:2200,onComplete:function(){
-				game.switchScene(game.configdata.SCENE_NAMES.water_filterpool);
+				scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.water_filterpool);
 			}});
 		},
 		pickHook:function(obj,offsetx,offsety,onhandimg,x,y){
