@@ -6,6 +6,8 @@
 		defaultspeed:3,
 		speedx:0,
 		speedy:0,
+		isgetgold:false,
+		isover:false,
 		
 		initPosx:550,
 		initPosy:573,
@@ -90,7 +92,8 @@
 			this.layoutUI();
 			
 			game.sounds.play(14,true);
-			
+			this.isgetgold = false;
+			this.isover = false;
 			this.boy = new Hilo.Bitmap({image:'img/maze/2/3.png',x:829,y:592}).addTo(this);
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -380,22 +383,22 @@
 				this.items['boxopen4'].visible = true;
 				this.items['gold'].visible = true;
 				var obj = this.items['gold'];
+				this.isgetgold = true;
 				var scene = this;
 				new Hilo.Tween.to(obj,{alpha:0},{duration:1500,delay:1000,onComplete:function(){
 					scene.showDialog('img/maze/2/note.png');
 				}});
 			}
 		},
-		checkend:function(){
-			if(this.items['gold'].visible && Math.abs(350-this.boy.x) <50 && Math.abs(85-this.boy.y) <50){
-				this.alpha = 0.5;
-			}
-		},
+		
 		onUpdate:function(){
 			if(!this.checkblocks(this.mapdata,304,41)){
 				this.runboy();
 				this.checkbox();
-				this.checkend();
+			}
+			if(!this.isover && this.isgetgold && Math.abs(this.boy.x - 350) < 50 && Math.abs(this.boy.y - 85) < 50){
+				this.isover = true;
+				this.passoverReady('img/nextpasspoint.png',1200,game.configdata.SCENE_NAMES.maze_treasure);
 			}
 		},
 	});

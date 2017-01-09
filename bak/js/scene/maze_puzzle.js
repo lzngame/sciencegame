@@ -133,7 +133,7 @@
 					scene.ismap1=false;
 					if (scene.items['map4'].visible&&scene.items['map3'].visible&&scene.items['map2'].visible&&scene.items['map1'].visible) {
 						
-						scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
+						scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.maze_maze);
 					}
 				}
 				else{

@@ -207,6 +207,7 @@
 						scene.worker._frames = scene.workeratlas.getSprite('turn');
 						scene.worker.loop = false;
 						obj.status = 2;
+						scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.maze_puzzle);
 					});
 				}
 				return true;

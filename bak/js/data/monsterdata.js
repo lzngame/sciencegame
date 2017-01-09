@@ -25,7 +25,6 @@ game.monsterdata = new function(){
 					idle: [28,24,28,24,24,24,24,24,25,26,27,28,28,28,28,28],
 					walk:{from:75,to:80},
 					turn180:[69,70,71,66,67,68],
-					turn1802:[68,67,66,71,70,69],
 					backpick:[0,1,2,3],
 					idleback:[68,68],
 					handup:[8,8],

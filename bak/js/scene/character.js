@@ -16,17 +16,14 @@
 		offsetxLeft:0,
 		posx:0,
 		posy:0,
-		jumpspeed:0,
-		jumpPower:-18,
-		floory:0,
+		
 		speed:5.0,
 		speedx:0,
 		speedy:0,
 		targetx:0,
 		targety:0,
-		ispillow:false,
-		isRunaway:false,
-		gravity:1.5,
+		
+		
 		
 		prop:null,
 		hand:null,
@@ -67,16 +64,7 @@
 			}).addTo(this);
 		},
 		receiveMsg: function(msg) {
-			switch (msg.msgtype) {
-				case game.configdata.MSAGE_TYPE.behit:
-					if (this.framename == 'idle' || this.framename == 'petrify')
-						this.exeBehit(msg.msgdata);
-					else if (this.framename == 'shield')
-						this.exeShield();
-					else if (this.framename == 'attack' && this.body.currentFrame > this.attackKeyFrame)
-						this.exeBehit(msg.msgdata);
-					break;
-			}
+			
 		},
 		putProp:function(){
 			this.prop.visible = this.hand.visible = this.inProp = false;
@@ -87,14 +75,7 @@
 			this.prop.y = y;
 			this.prop.setImage(game.getImg('uimap'),game.configdata.getPngRect(propname,'uimap'));
 		},
-		turnleft:function(){
-			this.scaleX = -1;
-			//this.offsetx = this.offsetxLeft;
-		},
-		turnright:function(){
-			this.scaleX = 1;
-			//this.offsetx = this.offsetxRight;
-		},
+		
 		blockStop:function(){
 			this.speedx = 0;
 			this.speedy = 0;
@@ -124,24 +105,6 @@
 					if(this.body.currentFrame == 2 || this.body.currentFrame ==5){
 						//this.posy += 40;
 					}
-				}
-			}
-			if(this.framename =='jump'){
-				this.posy += this.jumpspeed;
-				if(this.posy >= this.floory){
-					this.posy = this.floory;
-					this.speedx = 0;
-					this.speedy = 0;
-					this.targetx = this.posx;
-					this.targety = this.posy;
-					if(this.isRunaway){
-						this.switchState('run',6);
-					}else{
-						this.switchState('idle',6);
-					}
-					this.jumpspeed = 0;
-				}else{
-					this.jumpspeed += this.gravity;
 				}
 			}
 			
@@ -205,25 +168,6 @@
 						break;
 					case 'pick':
 						this.regainIdle();
-						break;
-					case 'dead':
-						if(!this.isdead){
-							this.sendMsg(game.currentScene, game.configdata.MSAGE_TYPE.herodead, 'hero dead');
-							this.isdead = true;
-						}
-						break;
-					case 'win':
-						if(!this.iswin){
-							this.sendMsg(game.currentScene, game.configdata.MSAGE_TYPE.winpoint, 'hero win');
-							this.iswin = true;
-						}
-						break;
-					case 'petrify':
-						this.petrifyTime += 10;
-						if(this.petrifyTime > 3550){
-							this.petrifyTime = 0;
-							this.regainIdle();
-						}
 						break;
 				}
 			}
@@ -290,21 +234,7 @@
 
 })(window.game);
 
-function getLostBlood(n,direct,x,y,inity,floory){
-	var num = new game.NumFontBmp({
-		txt: n,
-		sourceImg: game.getImg('uimap'),
-		prefix:'rednum',
-		direct:direct,
-		x: x,
-		y: y,
-		initY:inity,
-		floor:floory
-	});
-	num.setJumpseed();
-	num.jump = true;
-	return num;
-}
+
 
 function sendMsg(target, msgtype, msgdata){
 	target.receiveMsg({

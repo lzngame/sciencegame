@@ -223,7 +223,7 @@
 					    scene.items['jackover'].visible = true;
 					    scene.items['machine'].visible = true;
 					    scene.items['machine2'].visible = false;
-					    scene.passoverReady('img/nextpasspoint.png',1200,game.configdata.quiet_changebrokenglass);
+					    scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.quiet_changebrokenglass);
 					});
 				return true;
 			}

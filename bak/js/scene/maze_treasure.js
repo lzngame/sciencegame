@@ -145,7 +145,7 @@
 				var obj = this.items['scroll'];
 					obj.visible = false;
 					obj.status=2;
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
+					scene.passoverReady('img/nextpasspoint.png',1000,game.configdata.SCENE_NAMES.main);
 				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}

@@ -85,11 +85,6 @@
 				interval: 10,
 				alpha:1,
 			}).addTo(this);
-			if(dir == 'left'){
-				this.hero.turnleft();
-			}else{
-				this.hero.turnright();
-			}
 		},
 		deactive: function() {
 			this.destory();
