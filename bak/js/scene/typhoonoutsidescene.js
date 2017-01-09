@@ -2,6 +2,8 @@
 	var TyphoonOutScene = ns.TyphoonOutScene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.typhoon_out,
+		helpnote:'img/notes/typhoon/typhoon2help.png',
+		
 		bench:null,
 		rod:null,
 		rainboot:null,
@@ -54,6 +56,8 @@
 			game.sounds.play(14,true);
 			//game.boydata.currentHp = 4;
 			//game.headPanel.setHp(game.boydata.currentHp);
+			this.setHelp();
+			
 		},
 		checkFinishedAllTask:function(){
 			return (this.isFlower_l && this.isFlower_m && this.isFlower_s && this.isFullbucket && this.isClosewindow && this.isRepairwindow);
@@ -250,7 +254,8 @@
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.doorobj)){
 				if(this.doorobj.state == 2){
-					game.switchScene(game.configdata.SCENE_NAMES.typhoon_room);
+					//game.switchScene(game.configdata.SCENE_NAMES.typhoon_room);
+					this.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.typhoon_room);
 				}else{
 					this.sayNo();
 				}

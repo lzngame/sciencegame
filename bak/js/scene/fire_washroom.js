@@ -2,6 +2,7 @@
 	var FireWashroomscene = ns.FireWashroomscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.fire_washroom,
+		helpnote:'img/notes/fire/fire2help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -57,6 +58,7 @@
 			
 			game.sounds.play(14,true);
 			this.step =0;
+			this.setHelp();
 			
 			
             //this.showDialog('img/earth/1/note.png');
@@ -224,7 +226,7 @@
 				var obj = this.items['door'];
 					obj.status=2;
 					obj.visible = false;
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.fire_door);
+					scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.fire_door);
 					
 				return true;
 			}
@@ -241,7 +243,7 @@
 					scene.items['instrainer'+obj.state.toString()].visible = true;
 				});
 		},
-		finishpass:function(){
+		/*finishpass:function(){
 			var scene = this;
 			new Hilo.Tween.to(this,{
 				alpha:1,
@@ -256,7 +258,7 @@
            			 });
 				}
 			})
-		},
+		},*/
 		pickSomething:function(obj,action,offsetx,offsety,onhandimg,time){
 			var scene = this;
 			scene.gotoDosomething(obj,1,0,0,action,time,function(){

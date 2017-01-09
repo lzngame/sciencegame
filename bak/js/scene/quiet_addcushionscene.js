@@ -2,6 +2,7 @@
 	var QuietAddcushionblockscene = ns.QuietAddcushionblockscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.quiet_addcushionblocking,
+		helpnote:'img/notes/quiet/quiet4help.png',
 		
 		initPosx:720,
 		initPosy:630,
@@ -70,6 +71,7 @@
 			this.step4_inshovel = false;
 			
 			
+			this.setHelp();
 			
 			
 		},
@@ -221,6 +223,7 @@
 					    scene.items['jackover'].visible = true;
 					    scene.items['machine'].visible = true;
 					    scene.items['machine2'].visible = false;
+					    scene.passoverReady('img/nextpasspoint.png',1200,game.configdata.quiet_changebrokenglass);
 					});
 				return true;
 			}

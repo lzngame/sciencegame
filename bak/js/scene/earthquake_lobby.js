@@ -2,6 +2,7 @@
 	var EarthQuakelobbyscene = ns.EarthQuakelobbyscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earthquake_lobby,
+		helpnote:'img/notes/earthquake/earthquake3help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -55,7 +56,7 @@
 			
 			game.sounds.play(14,true);
 			this.step =0;
-			
+			this.setHelp();
 			
             //this.showDialog('img/earth/1/note.png');
 		},
@@ -485,7 +486,7 @@
 					obj.visible = false;
 					scene.gotoDosomething(obj,1,0,0,'click',820,function(){
 					},function(){
-						scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
+						scene.passoverReady('img/notes/earth/earthquakeintroduce.png',500,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
 					});
 				return true;
 			}
@@ -502,7 +503,7 @@
 					scene.items['instrainer'+obj.state.toString()].visible = true;
 				});
 		},
-		finishpass:function(){
+		/*finishpass:function(){
 			var scene = this;
 			new Hilo.Tween.to(this,{
 				alpha:1,
@@ -517,7 +518,7 @@
            			 });
 				}
 			})
-		},
+		},*/
 		pickSomething:function(obj,action,offsetx,offsety,onhandimg,time){
 			var scene = this;
 			scene.gotoDosomething(obj,1,0,0,action,time,function(){

@@ -2,6 +2,8 @@
 	var Trafficrepaircarscene = ns.Trafficrepaircarscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.traffic_repaircar,
+		helpnote:'img/notes/traffic/traffic1help.png',
+		
 		ladder:null,
 		cloud1:null,
 		cloud2:null,
@@ -104,6 +106,7 @@
 			game.sounds.play(14,true);
 			game.boydata.currentHp = 4;
 			game.headPanel.setHp(game.boydata.currentHp);
+			this.setHelp();
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -1120,21 +1123,8 @@
 						game.sounds.play(15,false);
 						game.sounds.play(28,false);
 						
-						new Hilo.Tween.to(this,{
-								alpha:1
-							},{
-								duration:1300,
-								delay:100,
-								onComplete:function(){
-									//scene.ignoreTouch = false;
-									//scene.hero.visible = true;
-									//scene.fingerMouse.visible = true;
-									console.log('end');
-									//scene.showImgAndTxt();
-									//scene.showNote();
-									game.switchScene(game.configdata.SCENE_NAMES.traffic_escapebus);
-							}
-						});
+						scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.traffic_escapebus);
+						
 					}else{
 						game.headPanel.sayNo();
 					}

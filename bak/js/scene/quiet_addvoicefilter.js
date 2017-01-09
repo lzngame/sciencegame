@@ -2,6 +2,7 @@
 	var QuietAddvoicefilterscene = ns.QuietAddvoicefilterscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.quiet_addvoicefilter,
+		helpnote:'img/notes/quiet/quiet3help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -61,6 +62,7 @@
 			this.isnailed = 0;
 			this.step =0;
 			
+			this.setHelp();
 			
             //this.showDialog('img/earth/1/note.png');
 		},

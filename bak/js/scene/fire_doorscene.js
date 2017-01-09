@@ -2,6 +2,8 @@
 	var Firedoorscene = ns.Firedoorscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.fire_door,
+		helpnote:'img/notes/fire/fire3help.png',
+		
 		initPosx:550,
 		initPosy:573,
 		currentOnhandObj:null,
@@ -68,6 +70,8 @@
 			this.step2_pickspanner = false;
 			this.step3_closegas = false;
 			this.step4_pickrag = false;
+			
+			this.setHelp();
 		},
 		addNum:function(n){
 			if(this.numposinit > 2)
@@ -283,6 +287,7 @@
 					    obj.status = 2;
 					    obj.visible = true;
 					    scene.items['glassonfloor'].visible = true;
+						scene.passoverReady('img/notes/fire/fireintroduce.png',500,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
 					});
 				return true;
 			}

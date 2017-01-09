@@ -2,6 +2,8 @@
 	var PlaneOutsidescene = ns.PlaneOutsidescene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.plane_outside,
+		helpnote:'img/notes/plane/plane3help.png',
+		
 		pinkbox:null,
 		safetybelt:null,
 		doorimg:null,
@@ -63,6 +65,8 @@
 				interval:10,
 				visible:false,
 			}).addTo(this);
+			this.setHelp();
+			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -236,7 +240,9 @@
 							duration:500,
 							delay:1000,
 							onComplete:function(){
-								game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+								scene.passoverReady('img/notes/plane/planeintroduce.png',500,game.configdata.SCENE_NAMES.main);
+								//scene.passoverReady('img/notes/plane/planeintroduce.png',500,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
+								//game.switchScene(game.configdata.SCENE_NAMES.passchoice);
 							}
 						});
 					}

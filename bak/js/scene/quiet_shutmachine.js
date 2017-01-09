@@ -2,6 +2,7 @@
 	var QuietShutmachinescene = ns.QuietShutmachinescene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.quiet_shutmachine,
+		helpnote:'img/notes/quiet/quiet2help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -60,6 +61,7 @@
 			this.isscissor = false;
 			this.step =0;
 			
+			this.setHelp();
 			
             //this.showDialog('img/earth/1/note.png');
 		},
@@ -171,7 +173,7 @@
 					this.sayNo();
 				}
 				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
+					scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
@@ -190,7 +192,7 @@
 					this.sayNo();
 				}
 				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
+					scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
@@ -209,7 +211,7 @@
 					this.sayNo();
 				}
 				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
+					scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}
@@ -228,7 +230,7 @@
 					this.sayNo();
 				}
 				if(scene.step===4&&(scene.pointerflag%4===0)&&((scene.pointer1flag+1)%4===0)&&((scene.pointer2flag+1)%4===0)&&((scene.pointer3flag+3)%4===0)){
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
+					scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.quiet_addvoicefilter);
 				}
 				return true;
 			}

@@ -73,8 +73,7 @@ game.configdata = new function(){
 		gameover:'GAMEOVER_SCENE',
 		depot:'DEPOT_SCENE',
 		incar:'INCAR_SCENE',
-		//repairdepot:'REPAIRDEPOT_SCENE',
-		//escapebus:'ESCAPEBUS_SCENE',
+		
 		traffic_repaircar:'TRAFFIC_REPAIRSCENE',
 		traffic_escapebus:'TRAFFIC_ESCAPEBUSSCENE',
 		earthquake_bedroom:'EARTHQUAKE_BEDROOM',

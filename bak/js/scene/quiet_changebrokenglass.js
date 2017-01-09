@@ -2,6 +2,7 @@
 	var QuietChangebrokenglassscene = ns.QuietChangebrokenglassscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.quiet_changebrokenglass,
+		helpnote:'img/notes/quiet/quiet5help.png',
 		
 		initPosx:700,
 		initPosy:630,
@@ -60,6 +61,7 @@
 			this.isscissor = false;
 			this.step =0;
 			
+			this.setHelp();
 			
             //this.showDialog('img/earth/1/note.png');
 		},
@@ -240,7 +242,7 @@
 						obj.status = 2;
 						obj.visible = false;
 						scene.items['glass'].visible=true;
-						scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_wearearplug);
+						scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.quiet_wearearplug);
 							
 					});
 				}

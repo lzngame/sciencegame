@@ -2,6 +2,7 @@
 	var QuietWearearplugscene = ns.QuietWearearplugscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.quiet_wearearplug,
+		helpnote:'img/notes/quiet/quiet6help.png',
 		
 		initPosx:550,
 		initPosy:573,
@@ -72,6 +73,9 @@
 			this.step2_takewheel = false;
 			this.step3_installwheel = false;
 			this.step4_inshovel = false;
+			
+			this.setHelp();
+			
 		
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){

@@ -2,6 +2,8 @@
 	var TyphoonRoomScene = ns.TyphoonRoomScene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.typhoon_room,
+		helpnote:'img/notes/typhoon/typhoon3help.png',
+		
 		flowerpot_s:null,
 		flowerpot_m:null,
 		flowerpot_l:null,
@@ -79,6 +81,8 @@
 			this.isRepairwindow=false;
 			this.boardState = 0;
 			this.boardTime = 0;
+			this.setHelp();
+			
 		},
 		checkFinishedAllTask:function(){
 			var scene = this;
@@ -89,7 +93,8 @@
 					duration:100,
 					delay:3000,
 					onComplete:function(){
-						game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+						//game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+            			scene.passoverReady('img/notes/typhoon/typhooninstroduce.png',100,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
 					}
 				})
 			}

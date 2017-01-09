@@ -2,6 +2,8 @@
 	var Earthquakekitchenscene = ns.Earthquakekitchenscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.earthquake_kitchen,
+		helpnote:'img/notes/earthquake/earthquake2help.png',
+		
 		initPosx:550,
 		initPosy:573,
 		currentOnhandObj:null,
@@ -59,7 +61,7 @@
 			this.step2_pickspanner = false;
 			this.step3_closegas = false;
 			this.step4_pickrag = false;
-		
+			this.setHelp();
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -174,6 +176,7 @@
 						
 					},function(){
 						scene.handonProp('img/earthquake/2/ragup.png',237,400);
+						scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.earthquake_lobby);
 					});
 				return true;
 			}

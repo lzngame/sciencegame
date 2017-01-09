@@ -2,6 +2,8 @@
 	var Firegalleryscene = ns.Firegalleryscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.fire_gallery,
+		helpnote:'img/notes/fire/fire1help.png',
+		
 		initPosx:550,
 		initPosy:573,
 		currentOnhandObj:null,
@@ -61,6 +63,8 @@
 			this.step2_pickspanner = false;
 			this.step3_closegas = false;
 			this.step4_pickrag = false;
+			this.setHelp();
+			
 		},
 		
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -356,7 +360,7 @@
 			var scene = this;
 			scene.crower.visible = true;
 			new Hilo.Tween.to(scene.crower,{x:1300,alpha:0},{duration:4000,onComplete:function(){
-					
+					scene.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.fire_washroom);
 				}});
 		},
 		createSprite:function(sourceatlas,defaultaction,x,y,interval,parent){

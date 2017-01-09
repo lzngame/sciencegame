@@ -2,6 +2,7 @@
 	var PlaneCabinscene = ns.PlaneCabinscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.plane_board,
+		helpnote:'img/notes/plane/plane2help.png',
 		
 		shakeTime:320,
 		isshake:true,
@@ -92,6 +93,8 @@
 			}).addTo(this);
 			
 			this.initFingerMouse();
+			this.setHelp();
+			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -197,13 +200,15 @@
 					this.airjacketonbodyimg.visible = true;
 					this.safetybeltobj.state = 2;
 					this.safetybeltobj.status = 1;
-					new Hilo.Tween.to(this,{alpha:1},{
+					this.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.plane_outside);
+					
+					/*new Hilo.Tween.to(this,{alpha:1},{
 						duration:1100,
 						delay:3500,
 						onComplete:function(){
 							game.switchScene(game.configdata.SCENE_NAMES.plane_outside);
 						}
-					});
+					});*/
 					return true;
 				}
 			}

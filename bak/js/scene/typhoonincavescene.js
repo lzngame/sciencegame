@@ -2,6 +2,8 @@
 	var TyphoonCaveScene = ns.TyphoonCaveScene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.typhoon_cave,
+		helpnote:'img/notes/typhoon/typhoon1help.png',
+		
 		monster:null,
 		helmet:null,
 		helmetimg:null,
@@ -72,6 +74,8 @@
 			this.ishelmet = false;
 			this.isangry = false;
 			this.angrytime = 0;
+			this.setHelp();
+			
 		},
 		checkFinishedAllTask:function(){
 			
@@ -333,7 +337,8 @@
             	},{
             		duration:2000,
             		onComplete:function(){
-            			game.switchScene(game.configdata.SCENE_NAMES.typhoon_out);
+            			//game.switchScene(game.configdata.SCENE_NAMES.typhoon_out);
+            			scene.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.typhoon_out);
             		}
             	})
             );

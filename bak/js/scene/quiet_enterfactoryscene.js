@@ -2,6 +2,7 @@
 	var QuietEnterfactoryscene = ns.QuietEnterfactoryscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.quiet_enterfactory,
+		helpnote:'img/notes/quiet/quiet1help.png',
 		
 		initPosx:720,
 		initPosy:630,
@@ -70,6 +71,7 @@
 			
 			
 			
+			this.setHelp();
 			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
@@ -383,7 +385,9 @@
 					scene.step4_password = true;
 					scene.items['closedoor'].visible = false;
 					scene.items['opendoor'].visible = true;
-					//scene.passoverReady()
+					
+            		scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.quiet_shutmachine);
+					
 					console.log('c1:%d c2:%d c3:%d',scene.c1Num,scene.c2Num,scene.c3Num); //622,346,
 				}else{
 					console.log('c1:%d c2:%d c3:%d',scene.c1Num,scene.c2Num,scene.c3Num); //622,346,

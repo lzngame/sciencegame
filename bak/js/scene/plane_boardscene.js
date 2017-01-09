@@ -2,6 +2,7 @@
 	var PlaneBoardscene = ns.PlaneBoardscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.plane_board,
+		helpnote:'img/notes/plane/plane1help.png',
 		
 		boardcard:null,
 		carimg:null,
@@ -104,14 +105,17 @@
 			
 			this.initFingerMouse();
 			this.showMask();
+			this.setHelp();
+			
 		},
 		checkAll:function(){
 			if(this.isSunvisor && this.isDesk && this.isBelt){
-				game.drdialog.showTxt('img/plane/note2.png');
+				this.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.plane_cabin);
+				/*game.drdialog.showTxt('img/plane/note2.png');
 				game.drdialog.on(Hilo.event.POINTER_START,function(e){
 					game.drdialog.hide();
 					game.switchScene(game.configdata.SCENE_NAMES.plane_cabin);
-				});
+				});*/
 			}
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){

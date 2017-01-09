@@ -2,6 +2,8 @@
 	var Trafficescapebusscene = ns.Trafficescapebusscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.traffic_escapebus,
+		helpnote:'img/notes/traffic/traffic2help.png',
+		
 		skybg:null,
 		hill1:null,
 		hill2:null,
@@ -83,6 +85,7 @@
 			this.layoutUI();
 			
 			this.breakStep = 0;
+			this.setHelp();
 		},
 		pickProp:function(picktype,obj){
 			var scene = this;
@@ -1044,7 +1047,8 @@
 						console.log('change---');
 						scene.on(Hilo.event.POINTER_START, function(e) {
 							scene.off();
-							game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+							//game.switchScene(game.configdata.SCENE_NAMES.passchoice);
+							scene.passoverReady('img/notes/traffic/trafficintroduce.png',100,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
 						});
 				});
 		},

@@ -2,6 +2,8 @@
 	var ConfusionSwitchboxscene = ns.ConfusionSwitchboxscene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.confusion_switchbox,
+		helpnote:'img/notes/crowd/crowd1help.png',
+		
 		leftdoor:null,
 		rightdoor:null,
 		leftdoor_open:null,
@@ -108,7 +110,7 @@
 			game.sounds.play(14,true);
 			game.drdialog.showTxt('img/confusion/note.png');
 			
-			
+			this.setHelp();
 		},
 		checkFinishedAllTask:function(){
 			return (this.isFlower_l && this.isFlower_m && this.isFlower_s && this.isFullbucket && this.isClosewindow && this.isRepairwindow);
@@ -542,7 +544,8 @@
 				if(this.exitdoor.state == 0){
 					this.sayNo();
 				}else{
-					game.switchScene(game.configdata.SCENE_NAMES.confusion_cinema);
+					//game.switchScene(game.configdata.SCENE_NAMES.confusion_cinema);
+					this.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.confusion_cinema);
 				}
 			}
 			

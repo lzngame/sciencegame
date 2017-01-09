@@ -2,6 +2,8 @@
 	var ConfusionCinemascene = ns.ConfusionCinemascene = Hilo.Class.create({
 		Extends: game.BaseScene,
 		name: game.configdata.SCENE_NAMES.confusion_cinema,
+		helpnote:'img/notes/crowd/crowd2help.png',
+		
 		hammer:null,
 		boxobj:null,
 		speaker:null,
@@ -64,6 +66,7 @@
 			this.isHelp1 = false;
 			this.isHelp2 = false;
 			game.sounds.play(14,true);
+			this.setHelp();
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(
@@ -234,6 +237,8 @@
 		},
 		isAllhelp:function(){
 			if(this.isHelp1 && this.isHelp2){
+				this.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.confusion_doorway);
+				/*
 				new Hilo.Tween.to(this,{
 					alpha:1,
 				},{
@@ -242,7 +247,7 @@
 					onComplete:function(){
 						game.switchScene(game.configdata.SCENE_NAMES.confusion_doorway);
 					}
-				});
+				});*/
 			}
 		},
 		callpublic:function(){
