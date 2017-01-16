@@ -163,7 +163,7 @@
 					   scene.isonbattery = false;
 					   scene.items['battery_barrel0'+scene.putbatterynum.toString()].visible = true;
 					   if(scene.putbatterynum >= 4){
-							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.earth_handlebattery);
+							scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.earth_handlebattery);
 					   }
 					});
 				return true;

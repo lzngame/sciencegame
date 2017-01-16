@@ -132,7 +132,7 @@
 					scene.items['buttongreen'].visible= true;
 					scene.items['button'].status = 2;
 					scene.items['button'].visible = false;
-					scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_closecoalgenerator);
+					scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.sky_closecoalgenerator);
 				});
 				return true;
 			}
@@ -257,7 +257,7 @@
 					game.drdialog.showTxt('img/water/6/note2.png');
             		game.drdialog.on(Hilo.event.POINTER_START,function(e){
             			game.drdialog.hide();
-						scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_closecoalgenerator);
+						scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.sky_closecoalgenerator);
             			
 						//game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
            			 });

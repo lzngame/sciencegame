@@ -58,7 +58,6 @@
 			this.step =0;
 			this.setHelp();
 			
-            //this.showDialog('img/earth/1/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){

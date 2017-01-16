@@ -394,7 +394,7 @@
 			];
 		
 			this.layoutUIElement(data);
-			game.sounds.play(17,true);
+			//game.sounds.play(17,true);
             this.items['hookonfloor'].visible = false;
             this.items['boardfall1'].visible = false;
             this.items['boardfall2'].visible = false;

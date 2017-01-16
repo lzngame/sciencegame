@@ -58,7 +58,7 @@
 			this.step =0;
 			this.setHelp();
 			
-            this.showDialog('img/earth/1/note.png');
+            //this.showDialog('img/earth/1/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -283,7 +283,7 @@
 				if(scene.step===8){
 					scene.gotoDosomething(obj,1,0,0,'putad',800,function(){
 						scene.step=9;
-						scene.passoverReady('img/earth/1/note.png',3500,game.configdata.SCENE_NAMES.earth_farmlandbattery);
+						scene.passoverReady('img/nextpasspoint.png',3500,game.configdata.SCENE_NAMES.earth_farmlandbattery);
 					},function(){
 						obj.status = 2;
 						obj.visible = false;

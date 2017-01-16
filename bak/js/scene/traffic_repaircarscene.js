@@ -492,7 +492,6 @@
 										scene.crowfoot.x = 500;
 										scene.crowfoot.y = 1000;
 										scene.crowfoot.visible = true;
-										scene.crowfoot.status = 1;
 										scene.ignoreTouch = false;
 										if(onCall)
 											onCall();
@@ -602,6 +601,7 @@
 					return false;
 				}
 				this.carForjack.status = 2;
+				this.crowfoot.status = 1;
 				this.workjackObj.status = 1;
 				this.putProp();
 				this.hero.switchState('takebackput',6);
@@ -748,18 +748,19 @@
 					this.sayNo();
 					return true;
 				}
+				this.crowfoot.status = 2;
 				if(this.jack.state !=2){
 					if(this.isCrowfootonhand){
 						this.putProp();
 						this.pryBox(0.7,'jackonhand',this.jack,43,170);
-						this.crowfoot.status = 1;
+						//this.crowfoot.status = 1;
 					}else{
 						this.hero.switchState('nocan',8);
 					}
 				}else{
 					this.takeJack();
 					this.currentOnhandObj = this.workjack;
-					this.crowfoot.status = 1;
+					//this.crowfoot.status = 1;
 					this.carForjack.status = 1;
 				}
 				return true;

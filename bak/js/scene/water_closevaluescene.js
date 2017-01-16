@@ -472,7 +472,7 @@
 			this.createSprite(this.effectatlas,'vapour',615-5,219,11,this.vapourpanel);
 			this.createSprite(this.effectatlas,'vapour',703-5,219,7,this.vapourpanel);
 			this.createSprite(this.effectatlas,'vapour',792-5,219,11,this.vapourpanel);
-			game.sounds.play(17,true);
+			//game.sounds.play(17,true);
             
 			this.atlas = new Hilo.TextureAtlas({
                 image:'img/water/2/water2boyatlas.png',

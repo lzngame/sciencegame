@@ -58,7 +58,6 @@
 			this.step =0;
 			this.setHelp();
 			
-            //this.showDialog('img/earth/1/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -131,8 +130,6 @@
 						scene.items['placard2'].visible = true;
 					}
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['hammer'])){
@@ -145,8 +142,6 @@
 					scene.items['hammercover'].visible = true;
 					scene.handonProp('img/earthquake/3/hammeronhand.png',660,510);
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['placard2'])){
@@ -163,8 +158,6 @@
 				else{
 					scene.sayNo();
 				}
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['placard1'])){
@@ -185,8 +178,6 @@
 				else{
 					scene.sayNo();
 				}
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['passwordpiece1'])){
@@ -486,7 +477,7 @@
 					obj.visible = false;
 					scene.gotoDosomething(obj,1,0,0,'click',820,function(){
 					},function(){
-						scene.passoverReady('img/notes/earth/earthquakeintroduce.png',500,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
+						scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
 					});
 				return true;
 			}

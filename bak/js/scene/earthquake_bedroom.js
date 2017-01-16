@@ -59,7 +59,6 @@
 			this.step =0;
 			this.setHelp();
 			
-            //this.showDialog('img/earth/1/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -121,8 +120,6 @@
 					scene.items['mobilephone'].status = 1;
 					scene.items['mobilephone'].visible = true;
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['mobilephone'])){
@@ -134,8 +131,6 @@
 					scene.items['plug1'].status = 1;
 					scene.items['plug1'].visible = true;
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['plug1'])){
@@ -151,8 +146,6 @@
 					scene.items['door'].status = 1;
 					scene.items['door'].visible = true;
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['door'])){

@@ -677,7 +677,7 @@
 					scene.items['noisehood1cover'].status=2;
 				}
 				else if (scene.isnailed) {
-					scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.quiet_addcushionblocking);
+					scene.passoverReady('img/nextpasspoint.png',500,game.configdata.SCENE_NAMES.quiet_addcushionblocking);
 				}
 			}
 		},

@@ -63,13 +63,18 @@
 			
 			game.sounds.play(14,true);
 			
+			
 			this.warntime = 0;
 			this.iswarn = false;
 			
-			this.step1_extinguisher = false;
-			this.step2_pickspanner = false;
-			this.step3_closegas = false;
-			this.step4_pickrag = false;
+			this.numposinit =0;
+			this.iswarn = false;
+			this.ischangelamp =false;
+			this.warntime = 0;
+			this.step0_isphone = false;
+			this.step2_pickcard =false;
+			this.step1_iscard = false;
+			this.step2_isstool = false;
 			
 			this.setHelp();
 		},

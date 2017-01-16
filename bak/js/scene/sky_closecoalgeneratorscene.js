@@ -163,7 +163,7 @@
 						if (scene.step===5) {
 							scene.stream.visible=false;
 							//scene.finishpass();
-							scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startwindgenerator);
+							scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.sky_startwindgenerator);
 							
 						}
 						else{

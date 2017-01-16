@@ -168,20 +168,7 @@
 			var scene = this;
 			scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 			
-			/*new Hilo.Tween.to(this,{
-				alpha:1,
-			},{
-				duration:1000,
-				delay:1000,
-				onComplete:function(){
-					//scene.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
-					//game.drdialog.showTxt('img/water/6/note2.png');
-            		//game.drdialog.on(Hilo.event.POINTER_START,function(e){
-            		//	game.drdialog.hide();
-					//	game.switchScene(game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
-           			// });
-				}
-			})*/
+			
 		},
 		pickSomething:function(obj,action,offsetx,offsety,onhandimg,time){
 			var scene = this;

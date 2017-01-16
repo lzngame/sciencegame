@@ -202,7 +202,7 @@
 					    obj.status = 2;
 					    scene.items['cutoffup'].visible = true;
 						scene.showGlove(true);
-						scene.passoverReady('img/earth/1/note.png',1000,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
+						scene.passoverReady('img/nextpasspoint.png',1000,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.ecosystem);
 					});
 				return true;
 			}

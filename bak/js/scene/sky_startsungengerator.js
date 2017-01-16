@@ -234,7 +234,7 @@
 				if (scene.step===9) {
 					var obj = this.items['anniu1'];
 					scene.gotoDosomething(obj,1,0,0,'take',800,function(){
-						scene.passoverReady('img/sky/4/happy.png',1500,game.configdata.SCENE_NAMES.sky_saveplant);
+						scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.sky_saveplant);
 					},function(){
 						
 					});

@@ -243,14 +243,17 @@
 			
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['greenlamp'])){
 				var obj = this.items['greenlamp'];
+
 				var scene = this;
 				if(obj.state == 0){
 					this.sayNo();
 					return true;
 				}
 				scene.gotoDosomething(obj,1,0,0,'pushbutton',800,function(){
-
+					game.sounds.play(37,false);
+					
 				},function(){
+					
 					obj.status = 2;
 					obj.visible = false;
 					scene.passoverReady('img/nextpasspoint.png',1500,game.configdata.SCENE_NAMES.water_clarifyingpool);
@@ -517,7 +520,7 @@
 			];
 			
 			this.layoutUIElement(data);
-			game.sounds.play(17,true);
+			//game.sounds.play(17,true);
             
 			this.atlas = new Hilo.TextureAtlas({
                 image:'img/water/3/water3boyatlas.png',

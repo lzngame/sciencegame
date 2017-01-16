@@ -185,7 +185,7 @@
 				scene.playboy.play();
 				scene.isRotate = true;
 				
-				scene.passoverReady('img/sky/4/happy.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
+				scene.passoverReady('img/nextpasspoint.png',2000,game.configdata.SCENE_NAMES.sky_startsungengerator);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['btngreen'])){

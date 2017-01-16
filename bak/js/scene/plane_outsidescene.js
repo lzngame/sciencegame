@@ -67,6 +67,9 @@
 			}).addTo(this);
 			this.setHelp();
 			
+            this.showDialog('img/plane/plane3showfirst.png');
+			
+			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			if(

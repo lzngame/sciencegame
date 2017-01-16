@@ -94,6 +94,8 @@
 			
 			this.initFingerMouse();
 			this.setHelp();
+            this.showDialog('img/plane/plane2showfirst.png');
+			
 			
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){

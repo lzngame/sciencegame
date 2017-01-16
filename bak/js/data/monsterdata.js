@@ -158,17 +158,16 @@ game.monsterdata = new function(){
 				clipperused:false,
 			},
 			//-1 No start 0:doing -1:finished
+			//calamity
 			this.passdata = [
 			[0,'chehuo',game.configdata.SCENE_NAMES.traffic_repaircar],
-			//[0,'pass01',game.configdata.SCENE_NAMES.escapebus],
-			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_room],
 			[0,'planecabin',game.configdata.SCENE_NAMES.fire_gallery],
-			[0,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
+			[-1,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
-			//[0,'pass01',game.configdata.SCENE_NAMES.typhoon_out],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
 			];
+			//ecosystem
 			this.passdata2 = [
 			[0,'intopipe',game.configdata.SCENE_NAMES.water_intopipe],
 			[0,'repair',game.configdata.SCENE_NAMES.sky_knockshrew],

@@ -63,7 +63,7 @@
 			
 			this.setHelp();
 			
-            //this.showDialog('img/earth/1/note.png');
+            //this.showDialog('img/nextpasspoint.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){

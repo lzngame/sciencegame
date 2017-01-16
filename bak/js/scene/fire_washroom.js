@@ -61,7 +61,6 @@
 			this.setHelp();
 			
 			
-            //this.showDialog('img/earth/1/note.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -140,8 +139,6 @@
 					scene.items['flow'].status =2;
 					scene.items['flow'].visible = true;
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['birdbath'])){
@@ -157,8 +154,6 @@
 					scene.items['firecover'].visible = true;
 					
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['firecover'])){
@@ -175,8 +170,6 @@
 					scene.items['stool'].visible = true;
 					scene.stream.visible = false;
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['stool'])){
@@ -192,8 +185,6 @@
 					scene.hero.posx = 700;
 					scene.hero.posy = 504;
 				});
-				//scene.passoverReady('img/earth/1/note.png',500,game.configdata.SCENE_NAMES.maze_maze);
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['towel'])){
@@ -208,7 +199,6 @@
 					scene.items['birdbathcover'].status = 1;
 					scene.items['birdbathcover'].visible = true;
 				});
-				//this.pickSomething(obj,'pick',-60,-130,'img/sky/4/fanonhand.png',400);
 				return true;
 			}
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['washbasin'])){

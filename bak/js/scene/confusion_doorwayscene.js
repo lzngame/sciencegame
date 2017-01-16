@@ -325,7 +325,7 @@
 				duration:2230,
 				onComplete:function(){
 					//game.switchScene(game.configdata.SCENE_NAMES.passchoice);
-					scene.passoverReady('img/notes/crowd/crowdintroduce.png',100,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
+					scene.passoverReady('img/nextpasspoint.png',100,game.configdata.SCENE_NAMES.passchoice,game.configdata.largePassName.calamity);
 				}
 			});
 		},
