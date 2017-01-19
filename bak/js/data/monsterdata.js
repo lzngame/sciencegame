@@ -162,7 +162,7 @@ game.monsterdata = new function(){
 			this.passdata = [
 			[0,'chehuo',game.configdata.SCENE_NAMES.traffic_repaircar],
 			[0,'planecabin',game.configdata.SCENE_NAMES.fire_gallery],
-			[-1,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
+			[0,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
 			[0,'plane',game.configdata.SCENE_NAMES.plane_board],

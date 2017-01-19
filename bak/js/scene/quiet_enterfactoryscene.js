@@ -148,7 +148,10 @@
 			if(this.checkActiveItemWithoutPos(mouseX,mouseY,this.items['dogobj'])){
 				var obj = this.items['dogobj'];
 				var scene = this;
-				
+				if(!this.step2_pickbone){
+					this.sayNo();
+					return true;
+				}
 				scene.currentOnhandImg.removeFromParent();
 				scene.gotoDosomething(obj,1,0,0,'pick',800,function(){
 						
