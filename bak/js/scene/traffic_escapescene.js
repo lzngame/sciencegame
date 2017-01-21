@@ -465,7 +465,8 @@
                 	[0,0,226,295],
                 ],
                 sprites: {
-                    effect:[0,1,2,3,4,5,6,7,8],
+                    //effect:[0,1,2,3,4,5,6,7,8],
+                    effect:[8,7,6,5,4,3,2,1],
                 }
             });
 			this.runman1 = new Hilo.Sprite({
@@ -867,7 +868,7 @@
 				targety:0,
 				readyImgUrl:'empty',
 				finishedImgUrl:'empty',
-				clickArea:[0,0,80,50],
+				clickArea:[0,0,100,70],
 				status:2,
 			}).addTo(this);
 			

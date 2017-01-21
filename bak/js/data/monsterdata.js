@@ -165,7 +165,7 @@ game.monsterdata = new function(){
 			[0,'planeout',game.configdata.SCENE_NAMES.earthquake_bedroom],
 			[0,'typhoon',game.configdata.SCENE_NAMES.typhoon_cave],
 			[0,'confusion',game.configdata.SCENE_NAMES.confusion_switchbox],
-			[0,'plane',game.configdata.SCENE_NAMES.plane_board],
+			[0,'plane',game.configdata.SCENE_NAMES.confusion_cinema],
 			];
 			//ecosystem
 			this.passdata2 = [

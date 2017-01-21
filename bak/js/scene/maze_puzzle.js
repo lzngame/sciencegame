@@ -59,6 +59,9 @@
 			this.ismap3 = false;
 			this.ismap4 = false;
 			this.step =0;
+			
+			
+            //this.showDialog('img/nextpasspoint.png');
 		},
 		checkShowFingerObjects:function(mouseX,mouseY){
 			for(var i in this.items){
@@ -477,9 +480,9 @@
 			[2, 'map4', 'map4.png', 2,411, 8,20, 80, [0, 0, 316, 212],  'f'],
 			[2, 'list', 'tips.png', 2,110,110,20, 80, [0, 0, 710, 160],  'f'],
 			[2, 'map1tiny', 'empty', 2,110,110,20, 70, [0, 0,150, 160],  'f'],
-			[2, 'map2tiny', 'empty', 2,310,110,40, 80, [0, 0, 160, 160],  'f'],
-			[2, 'map3tiny', 'empty',2,480, 110,20, 280, [0, 0,160, 160],  'f'],
-			[2, 'map4tiny', 'empty', 2,660,110,20, 80, [0, 0, 160, 160],  'f']
+			[2, 'map3tiny', 'empty', 2,310,110,40, 80, [0, 0, 160, 160],  'f'],
+			[2, 'map4tiny', 'empty',2,480, 110,20, 280, [0, 0,160, 160],  'f'],
+			[2, 'map2tiny', 'empty', 2,660,110,20, 80, [0, 0, 160, 160],  'f']
 			
 			//[1, 'puzzlebg', 'puzzlebg.png', 0, 0, 'f'],
 			//[2, 'heatwithhightemperature', 'heatwithhightemperature.png', 2,124, 90,20, 100, [0, 0, 61, 58],  'f'],

@@ -520,7 +520,6 @@
 			];
 			
 			this.layoutUIElement(data);
-			//game.sounds.play(17,true);
             
 			this.atlas = new Hilo.TextureAtlas({
                 image:'img/water/3/water3boyatlas.png',
@@ -537,7 +536,6 @@
             
             this.playboy = this.createSprite(this.atlas,'idle',1023,211,10,this);
             this.playboy.visible = false;
-            
 		},
 		
 		createSprite:function(sourceatlas,defaultaction,x,y,interval,parent){

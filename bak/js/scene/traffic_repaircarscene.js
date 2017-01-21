@@ -770,6 +770,7 @@
 				if(!this.checkFinger(-1)){
 					return false;
 				}
+				this.beeclickobj.status = 2;
 				game.sounds.play(27,false);
 				this.targets = [[661,205],[640,305],[600,405],[640,524]];
 				this.currentTarget = [661,205];

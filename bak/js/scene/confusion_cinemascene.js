@@ -203,6 +203,7 @@
 						scene.speakerinbox.visible = false;
 						scene.currentOnhandImg.removeFromParent();
 						scene.callpublic();
+						
 					});
 				});
 				this.speakerobj.status = 2;
@@ -270,6 +271,8 @@
 					scene.hero.visible = true;
 					scene.help1.visible = true;
 					scene.help2.visible = true;
+					scene.helpobj1.status = 1;
+					scene.helpobj2.status = 1;
 				}
 			});
 		},
@@ -407,8 +410,8 @@
 			
 
 			this.boxobj  = this.createActiveObj('box',180,110,50,180,'empty','empty',[0,0,40,40],1);
-			this.helpobj1  = this.createActiveObj('help1',320,150,160,210,'empty','empty',[0,0,70,140],1);
-			this.helpobj2 = this.createActiveObj('help2',456,210,160,160,'empty','empty',[0,0,70,140],1);
+			this.helpobj1  = this.createActiveObj('help1',320,150,160,210,'empty','empty',[0,0,70,140],2);
+			this.helpobj2 = this.createActiveObj('help2',456,210,160,160,'empty','empty',[0,0,70,140],2);
 			this.speakerobj  = this.createActiveObj('speakerobj',180,110,0,130,'empty','empty',[0,-30,60,90],2);
 			
 			
