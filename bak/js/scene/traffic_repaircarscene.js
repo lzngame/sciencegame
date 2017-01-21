@@ -1034,6 +1034,7 @@
 			this.snail.state = 0;
 			this.snail.on(Hilo.event.POINTER_START, function(e) {
 				if(this.state == 0){
+					this.currentFrame = 0;
 					this._frames = game.monsterdata.soliderhero_atlas.getSprite('snailtouch');
 					this.loop = false;
 					this.state = 1;
